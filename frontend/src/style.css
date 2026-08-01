@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 html {
     background-color: rgba(44, 142, 185, 0.327);
     text-align: center;
