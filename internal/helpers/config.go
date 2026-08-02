@@ -13,6 +13,7 @@ func LoadConfig() dto.Config {
 	configPath := "config.yaml"
 	if _, err := os.Stat(configPath); os.IsNotExist(err) {
 		defaultConfig := dto.Config{
+			Theme:  "default",
 			Left:   []string{},
 			Center: []string{"clock"},
 			Right:  []string{},
@@ -33,6 +34,10 @@ func LoadConfig() dto.Config {
 	if err != nil {
 		fmt.Println("Error parsing config:", err)
 		return dto.Config{}
+	}
+
+	if cfg.Theme == "" {
+		cfg.Theme = "default"
 	}
 
 	return cfg

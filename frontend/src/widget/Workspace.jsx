@@ -14,7 +14,7 @@ export default function WorkspaceWidget() {
     const workspaces = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
     return (
-        <div className="bg-blue-500/50 rounded-md px-2 p-1 flex items-center gap-1 text-white">
+        <div className="widget p-1! gap-1!">
             {workspaces.map((ws) => (
                 <div 
                     key={ws}

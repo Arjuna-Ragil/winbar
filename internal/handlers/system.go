@@ -34,6 +34,14 @@ func (h *SystemHandler) GetConfig() dto.Config {
 	return helpers.LoadConfig()
 }
 
+func (h *SystemHandler) GetTheme() dto.Theme {
+	cfg := h.GetConfig()
+	if cfg.Theme == "" {
+		cfg.Theme = "default"
+	}
+	return helpers.LoadTheme(cfg.Theme)
+}
+
 func (h *SystemHandler) SwitchWorkspace(ws int) {
 	h.service.SwitchWorkspace(ws)
 }

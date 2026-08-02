@@ -14,8 +14,8 @@ export default function Clock() {
     const dateString = time.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' });
 
     return (
-        <div className="bg-blue-500/50 rounded-md px-3 flex items-baseline gap-3">
-            <span className="text-xl font-semibold tracking-wide text-white">{timeString}</span>
+        <div className="widget px-2! py-0! items-baseline gap-3!">
+            <span className="text-xl font-semibold tracking-wide">{timeString}</span>
             <span className="text-base font-normal text-white/90">{dateString}</span>
         </div>
     );

@@ -26,9 +26,9 @@ export default function BatteryWidget() {
     }
 
     return (
-        <div className="bg-blue-500/50 rounded-md px-3 py-1 flex items-center gap-2 text-white">
+        <div className="widget">
             <Icon size={18} />
-            <span className="text-sm font-medium">{data.percentage}%</span>
+            <span className="widget-text">{data.percentage}%</span>
         </div>
     );
 }

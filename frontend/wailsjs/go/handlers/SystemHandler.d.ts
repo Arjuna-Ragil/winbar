@@ -6,6 +6,8 @@ export function GetBattery():Promise<dto.BatteryData>;
 
 export function GetConfig():Promise<dto.Config>;
 
+export function GetTheme():Promise<dto.Theme>;
+
 export function GetVolume():Promise<dto.VolumeData>;
 
 export function GetWifi():Promise<dto.WifiData>;

@@ -10,6 +10,10 @@ export function GetConfig() {
   return window['go']['handlers']['SystemHandler']['GetConfig']();
 }
 
+export function GetTheme() {
+  return window['go']['handlers']['SystemHandler']['GetTheme']();
+}
+
 export function GetVolume() {
   return window['go']['handlers']['SystemHandler']['GetVolume']();
 }

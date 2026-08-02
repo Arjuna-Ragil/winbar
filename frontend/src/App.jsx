@@ -1,16 +1,17 @@
 import { useState, useEffect } from 'react';
 import WidgetRenderer from './widget/WidgetRenderer';
-import { GetConfig } from '../wailsjs/go/handlers/SystemHandler.js';
+import { GetConfig, GetTheme } from '../wailsjs/go/handlers/SystemHandler.js';
 import { ExpandWindow, ShrinkWindow } from '../wailsjs/go/main/App.js';
 import HomeOverlay from './overlay/HomeOverlay';
 import PowerOverlay from './overlay/PowerOverlay';
 
 function App() {
     const [config, setConfig] = useState({ left: [], center: [], right: [] });
+    const [theme, setTheme] = useState(null);
     const [activeOverlay, setActiveOverlay] = useState(null);
 
     useEffect(() => {
-        // Fetch config from Go backend
+        // Fetch config and theme from Go backend
         GetConfig().then((cfg) => {
             setConfig({
                 left: cfg.left || [],
@@ -19,9 +20,10 @@ function App() {
             });
         }).catch((err) => {
             console.error("Failed to load config from Go:", err);
-            // Fallback for development if Wails hasn't recompiled yet
             setConfig({ left: [], center: ["clock"], right: [] });
         });
+
+        GetTheme().then(setTheme).catch(console.error);
     }, []);
 
     const toggleOverlay = (overlayName) => {
@@ -48,8 +50,16 @@ function App() {
         ));
     };
 
+    const themeStyle = theme ? {
+        '--color-widget': theme.colors.widget,
+        '--color-widget-hover': theme.colors.widgetHover,
+        '--color-widget-active': theme.colors.widgetActive,
+        '--color-widget-active-hover': theme.colors.widgetActiveHover,
+        '--color-widget-text': theme.colors.widgetText,
+    } : {};
+
     return (
-        <div className="w-full h-screen overflow-hidden text-white font-sans relative">
+        <div className="w-full h-screen overflow-hidden text-white font-sans relative" style={themeStyle}>
             <div 
                 className={`absolute inset-0 transition-all duration-300 ${
                     activeOverlay !== null ? 'bg-blue-900/90 opacity-100 pointer-events-auto' : 'bg-transparent opacity-0 pointer-events-none'
@@ -58,7 +68,7 @@ function App() {
 
             {/* Widget Section */}
 
-            <div className="absolute inset-0 flex flex-col p-2 pointer-events-none">
+            <div className="absolute inset-0 flex flex-col p-1 px-2 pointer-events-none">
                 <div className="flex justify-between items-center select-none pointer-events-auto">
                     {/* Left */}
                     <div className="flex items-center gap-1 flex-1">
