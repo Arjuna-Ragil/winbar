@@ -38,6 +38,7 @@ export namespace dto {
 	    widgetActive: string;
 	    widgetActiveHover: string;
 	    widgetText: string;
+	    background: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new ThemeColors(source);
@@ -50,6 +51,7 @@ export namespace dto {
 	        this.widgetActive = source["widgetActive"];
 	        this.widgetActiveHover = source["widgetActiveHover"];
 	        this.widgetText = source["widgetText"];
+	        this.background = source["background"];
 	    }
 	}
 	export class Theme {

@@ -27,6 +27,7 @@ func LoadTheme(themeName string) dto.Theme {
 			WidgetActive:      "rgba(168, 85, 247, 0.8)",
 			WidgetActiveHover: "rgba(168, 85, 247, 0.6)",
 			WidgetText:        "#ffffff",
+			Background:        "rgba(30, 58, 138, 0.9)",
 		},
 	}
 
@@ -52,4 +53,32 @@ func LoadTheme(themeName string) dto.Theme {
 	}
 
 	return theme
+}
+
+func ListThemes() []string {
+	themeDir := "themes"
+	var themes []string
+
+	// Ensure directory exists
+	if _, err := os.Stat(themeDir); os.IsNotExist(err) {
+		return []string{"default"}
+	}
+
+	entries, err := os.ReadDir(themeDir)
+	if err != nil {
+		return []string{"default"}
+	}
+
+	for _, entry := range entries {
+		if !entry.IsDir() && filepath.Ext(entry.Name()) == ".json" {
+			name := entry.Name()
+			themes = append(themes, name[:len(name)-5]) // strip .json
+		}
+	}
+
+	if len(themes) == 0 {
+		return []string{"default"}
+	}
+
+	return themes
 }

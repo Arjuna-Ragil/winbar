@@ -6,6 +6,7 @@ import NotificationWidget from './Notification';
 import WorkspaceWidget from './Workspace';
 import PowerMenuWidget from './Home';
 import PowerWidget from './Power';
+import ThemeToggle from './ThemeToggle';
 
 export default function WidgetRenderer({ name, activeOverlay, toggleOverlay }) {
     switch (name.toLowerCase()) {
@@ -25,6 +26,8 @@ export default function WidgetRenderer({ name, activeOverlay, toggleOverlay }) {
             return <PowerMenuWidget activeOverlay={activeOverlay} toggleOverlay={toggleOverlay} />;
         case 'power':
             return <PowerWidget activeOverlay={activeOverlay} toggleOverlay={toggleOverlay} />;
+        case 'theme_toggle':
+            return <ThemeToggle />;
         default:
             return (
                 <div className="bg-red-500/80 backdrop-blur-md rounded-full px-4 py-1 text-white text-sm font-semibold">

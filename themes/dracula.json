@@ -1,0 +1,12 @@
+{
+  "name": "Dracula Theme",
+  "author": "WinBar",
+  "colors": {
+    "widget": "rgba(40, 42, 54, 0.8)",
+    "widgetHover": "rgba(68, 71, 90, 0.8)",
+    "widgetActive": "rgba(189, 147, 249, 0.8)",
+    "widgetActiveHover": "rgba(255, 121, 198, 0.8)",
+    "widgetText": "#f8f8f2",
+    "background": "rgba(40, 42, 54, 0.95)"
+  }
+}

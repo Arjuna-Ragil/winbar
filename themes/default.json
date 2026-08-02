@@ -6,6 +6,7 @@
     "widgetHover": "rgba(59, 130, 246, 0.7)",
     "widgetActive": "rgba(168, 85, 247, 0.8)",
     "widgetActiveHover": "rgba(168, 85, 247, 0.6)",
-    "widgetText": "#ffffff"
+    "widgetText": "#ffffff",
+    "background": "rgba(30, 58, 138, 0.9)"
   }
 }

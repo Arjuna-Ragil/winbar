@@ -8,6 +8,8 @@ export function GetConfig():Promise<dto.Config>;
 
 export function GetTheme():Promise<dto.Theme>;
 
+export function GetThemes():Promise<Array<string>>;
+
 export function GetVolume():Promise<dto.VolumeData>;
 
 export function GetWifi():Promise<dto.WifiData>;
@@ -15,6 +17,8 @@ export function GetWifi():Promise<dto.WifiData>;
 export function OpenNotifications():Promise<void>;
 
 export function Restart():Promise<void>;
+
+export function SetTheme(arg1:string):Promise<void>;
 
 export function Shutdown():Promise<void>;
 

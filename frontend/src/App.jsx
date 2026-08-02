@@ -24,6 +24,13 @@ function App() {
         });
 
         GetTheme().then(setTheme).catch(console.error);
+
+        const handleThemeChange = () => {
+            GetTheme().then(setTheme).catch(console.error);
+        };
+        window.addEventListener('theme_changed', handleThemeChange);
+
+        return () => window.removeEventListener('theme_changed', handleThemeChange);
     }, []);
 
     const toggleOverlay = (overlayName) => {
@@ -56,14 +63,16 @@ function App() {
         '--color-widget-active': theme.colors.widgetActive,
         '--color-widget-active-hover': theme.colors.widgetActiveHover,
         '--color-widget-text': theme.colors.widgetText,
+        '--color-background': theme.colors.background || 'rgba(30, 58, 138, 0.9)',
     } : {};
 
     return (
         <div className="w-full h-screen overflow-hidden text-white font-sans relative" style={themeStyle}>
             <div 
                 className={`absolute inset-0 transition-all duration-300 ${
-                    activeOverlay !== null ? 'bg-blue-900/90 opacity-100 pointer-events-auto' : 'bg-transparent opacity-0 pointer-events-none'
+                    activeOverlay !== null ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
                 }`}
+                style={{ backgroundColor: 'var(--color-background)' }}
             />
 
             {/* Widget Section */}

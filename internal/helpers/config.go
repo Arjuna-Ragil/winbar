@@ -16,7 +16,7 @@ func LoadConfig() dto.Config {
 			Theme:  "default",
 			Left:   []string{},
 			Center: []string{"clock"},
-			Right:  []string{},
+			Right:  []string{"theme_toggle"},
 		}
 		yamlData, _ := yaml.Marshal(&defaultConfig)
 		os.WriteFile(configPath, yamlData, 0644)
@@ -41,4 +41,13 @@ func LoadConfig() dto.Config {
 	}
 
 	return cfg
+}
+
+func SaveConfig(cfg dto.Config) error {
+	configPath := "config.yaml"
+	yamlData, err := yaml.Marshal(&cfg)
+	if err != nil {
+		return err
+	}
+	return os.WriteFile(configPath, yamlData, 0644)
 }

@@ -14,6 +14,10 @@ export function GetTheme() {
   return window['go']['handlers']['SystemHandler']['GetTheme']();
 }
 
+export function GetThemes() {
+  return window['go']['handlers']['SystemHandler']['GetThemes']();
+}
+
 export function GetVolume() {
   return window['go']['handlers']['SystemHandler']['GetVolume']();
 }
@@ -28,6 +32,10 @@ export function OpenNotifications() {
 
 export function Restart() {
   return window['go']['handlers']['SystemHandler']['Restart']();
+}
+
+export function SetTheme(arg1) {
+  return window['go']['handlers']['SystemHandler']['SetTheme'](arg1);
 }
 
 export function Shutdown() {

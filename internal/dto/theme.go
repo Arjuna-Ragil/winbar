@@ -6,6 +6,7 @@ type ThemeColors struct {
 	WidgetActive      string `json:"widgetActive"`
 	WidgetActiveHover string `json:"widgetActiveHover"`
 	WidgetText        string `json:"widgetText"`
+	Background        string `json:"background"`
 }
 
 type Theme struct {
