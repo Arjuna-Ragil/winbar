@@ -37,3 +37,15 @@ func (h *SystemHandler) GetConfig() dto.Config {
 func (h *SystemHandler) SwitchWorkspace(ws int) {
 	h.service.SwitchWorkspace(ws)
 }
+
+func (h *SystemHandler) Shutdown() {
+	h.service.Shutdown()
+}
+
+func (h *SystemHandler) Restart() {
+	h.service.Restart()
+}
+
+func (h *SystemHandler) Sleep() {
+	h.service.Sleep()
+}

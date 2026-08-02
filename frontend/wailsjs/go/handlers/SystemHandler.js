@@ -22,6 +22,18 @@ export function OpenNotifications() {
   return window['go']['handlers']['SystemHandler']['OpenNotifications']();
 }
 
+export function Restart() {
+  return window['go']['handlers']['SystemHandler']['Restart']();
+}
+
+export function Shutdown() {
+  return window['go']['handlers']['SystemHandler']['Shutdown']();
+}
+
+export function Sleep() {
+  return window['go']['handlers']['SystemHandler']['Sleep']();
+}
+
 export function SwitchWorkspace(arg1) {
   return window['go']['handlers']['SystemHandler']['SwitchWorkspace'](arg1);
 }

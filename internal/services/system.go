@@ -32,3 +32,15 @@ func (s *SystemService) OpenNotifications() {
 func (s *SystemService) SwitchWorkspace(ws int) {
 	s.db.SwitchWorkspace(ws)
 }
+
+func (s *SystemService) Shutdown() {
+	s.db.Shutdown()
+}
+
+func (s *SystemService) Restart() {
+	s.db.Restart()
+}
+
+func (s *SystemService) Sleep() {
+	s.db.Sleep()
+}

@@ -12,4 +12,10 @@ export function GetWifi():Promise<dto.WifiData>;
 
 export function OpenNotifications():Promise<void>;
 
+export function Restart():Promise<void>;
+
+export function Shutdown():Promise<void>;
+
+export function Sleep():Promise<void>;
+
 export function SwitchWorkspace(arg1:number):Promise<void>;

@@ -110,3 +110,15 @@ func (db *SystemDB) SwitchWorkspace(ws int) {
 	keybdEvent.Call(vkCode, 0, uintptr(KEYEVENTF_KEYUP), 0)
 	keybdEvent.Call(uintptr(VK_MENU), 0, uintptr(KEYEVENTF_KEYUP), 0)
 }
+
+func (db *SystemDB) Shutdown() {
+	exec.Command("shutdown", "/s", "/t", "0").Run()
+}
+
+func (db *SystemDB) Restart() {
+	exec.Command("shutdown", "/r", "/t", "0").Run()
+}
+
+func (db *SystemDB) Sleep() {
+	exec.Command("rundll32.exe", "powrprof.dll,SetSuspendState", "0,1,0").Run()
+}
