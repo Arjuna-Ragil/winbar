@@ -14,12 +14,12 @@ export default function WorkspaceWidget() {
     const workspaces = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
     return (
-        <div className="bg-blue-500/50 rounded-md px-2 py-1.5 flex items-center gap-1 text-white">
+        <div className="bg-blue-500/50 rounded-md px-2 p-1 flex items-center gap-1 text-white">
             {workspaces.map((ws) => (
                 <div 
                     key={ws}
                     onClick={() => SwitchWorkspace(ws)}
-                    className={`cursor-pointer w-6 h-6 flex items-center justify-center rounded-sm text-sm font-bold transition-all duration-300 ${
+                    className={`cursor-pointer w-5 h-5 flex items-center justify-center rounded-sm text-sm font-bold transition-all duration-300 ${
                         activeWs === ws 
                         ? 'bg-white text-blue-600 shadow-sm' 
                         : 'text-white/60 hover:bg-white/20 hover:text-white'

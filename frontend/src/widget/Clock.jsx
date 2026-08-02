@@ -15,7 +15,7 @@ export default function Clock() {
 
     return (
         <div className="bg-blue-500/50 rounded-md px-3 flex items-baseline gap-3">
-            <span className="text-2xl font-semibold tracking-wide text-white">{timeString}</span>
+            <span className="text-xl font-semibold tracking-wide text-white">{timeString}</span>
             <span className="text-base font-normal text-white/90">{dateString}</span>
         </div>
     );

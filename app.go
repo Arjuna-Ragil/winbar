@@ -31,7 +31,8 @@ type APPBARDATA struct{
 }
 
 type App struct {
-	ctx context.Context
+	ctx  context.Context
+	hwnd win.HWND
 }
 
 func NewApp() *App {
@@ -50,6 +51,7 @@ func (a *App) startup(ctx context.Context) {
 	if hwnd == 0 {
 		return
 	}
+	a.hwnd = hwnd
 	proc := shell32.NewProc("SHAppBarMessage")
 	if proc == nil {
 		fmt.Println("Failed to find SHAppBarMessage")
@@ -79,9 +81,9 @@ func (a *App) startup(ctx context.Context) {
 	win.SetWindowPos(
 		hwnd, 
 		win.HWND_TOPMOST,
-		10, 
-		5,
-		screenWidth - 20,
+		0, 
+		0,
+		screenWidth,
 		40,
 		win.SWP_NOACTIVATE,
 	)
@@ -101,7 +103,23 @@ func (a *App) startup(ctx context.Context) {
 				ws := strings.TrimSpace(scanner.Text())
 				runtime.EventsEmit(ctx, "workspace_changed", ws)
 			}
-			conn.Close()
 		}
 	}()
+}
+
+func (a *App) ExpandWindow() {
+	if a.hwnd == 0 {
+		return
+	}
+	screenWidth := win.GetSystemMetrics(win.SM_CXSCREEN)
+	screenHeight := win.GetSystemMetrics(win.SM_CYSCREEN)
+	win.SetWindowPos(a.hwnd, win.HWND_TOPMOST, 0, 0, screenWidth, screenHeight, win.SWP_NOACTIVATE)
+}
+
+func (a *App) ShrinkWindow() {
+	if a.hwnd == 0 {
+		return
+	}
+	screenWidth := win.GetSystemMetrics(win.SM_CXSCREEN)
+	win.SetWindowPos(a.hwnd, win.HWND_TOPMOST, 0, 0, screenWidth, 40, win.SWP_NOACTIVATE)
 }

@@ -15,7 +15,7 @@ export default function WifiWidget() {
     }, []);
 
     return (
-        <div className="bg-blue-500/50 rounded-md px-3 py-1.5 flex items-center gap-2 text-white">
+        <div className="bg-blue-500/50 rounded-md px-3 py-1 flex items-center gap-2 text-white">
             {data.isConnected ? <Wifi size={18} /> : <WifiOff size={18} />}
             {data.isConnected && <span className="text-sm font-medium">{data.signal}</span>}
         </div>

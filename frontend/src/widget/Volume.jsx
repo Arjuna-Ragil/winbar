@@ -15,7 +15,7 @@ export default function VolumeWidget() {
     }, []);
 
     return (
-        <div className="bg-blue-500/50 rounded-md px-3 py-1.5 flex items-center gap-2 text-white">
+        <div className="bg-blue-500/50 rounded-md px-3 py-1 flex items-center gap-2 text-white">
             {data.muted ? <VolumeX size={18} /> : <Volume2 size={18} />}
             <span className="text-sm font-medium">{data.level}%</span>
         </div>

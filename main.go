@@ -30,10 +30,8 @@ func main() {
 	// Create application with options
 	err := wails.Run(&options.App{
 		Title:       "winbar",
-		Width:       int(screenWidth - 10),
+		Width:       int(screenWidth),
 		Height:      40,
-		MaxWidth:    int(screenWidth - 10),
-		MaxHeight:   40,
 		Frameless:   true,
 		DisableResize: true,
 		Windows: &windows.Options{
