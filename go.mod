@@ -2,7 +2,22 @@ module winbar
 
 go 1.25.0
 
-require github.com/wailsapp/wails/v2 v2.13.0
+require (
+	github.com/distatus/battery v0.11.0
+	github.com/itchyny/volume-go v0.2.3
+	github.com/wailsapp/wails/v2 v2.13.0
+)
+
+require (
+	github.com/moutend/go-wca v0.3.0 // indirect
+	howett.net/plist v1.0.2-0.20250314012144-ee69052608d9 // indirect
+)
+
+require (
+	github.com/yaml/go-yaml v2.1.0+incompatible
+	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
+	gopkg.in/yaml.v2 v2.4.0 // indirect
+)
 
 require (
 	git.sr.ht/~jackmordaunt/go-toast/v2 v2.0.3 // indirect

@@ -1,23 +1,47 @@
 import { useState, useEffect } from 'react';
+import WidgetRenderer from './widget/WidgetRenderer';
+import { GetConfig } from '../wailsjs/go/handlers/SystemHandler';
 
 function App() {
-    const [time, setTime] = useState(new Date());
+    const [config, setConfig] = useState({ left: [], center: [], right: [] });
 
     useEffect(() => {
-        const timer = setInterval(() => {
-            setTime(new Date());
-        }, 1000);
-        return () => clearInterval(timer);
+        // Fetch config from Go backend
+        GetConfig().then((cfg) => {
+            setConfig({
+                left: cfg.left || [],
+                center: cfg.center || [],
+                right: cfg.right || []
+            });
+        }).catch((err) => {
+            console.error("Failed to load config from Go:", err);
+            // Fallback for development if Wails hasn't recompiled yet
+            setConfig({ left: [], center: ["clock"], right: [] });
+        });
     }, []);
 
-    const timeString = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    const dateString = time.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' });
+    // Helper to render an array of widgets
+    const renderZone = (widgets) => {
+        return widgets.map((widgetName, index) => (
+            <WidgetRenderer key={`${widgetName}-${index}`} name={widgetName} />
+        ));
+    };
 
     return (
-        <div className="h-screen w-full flex items-center justify-center overflow-hidden select-none text-white font-sans">
-            <div className="flex items-baseline gap-3">
-                <span className="text-2xl font-semibold tracking-wide">{timeString}</span>
-                <span className="text-base font-normal opacity-90">{dateString}</span>
+        <div className="h-screen w-full flex justify-between items-center px-4 overflow-hidden select-none font-sans">
+            {/* Left Zone */}
+            <div className="flex items-center gap-4 flex-1">
+                {renderZone(config.left)}
+            </div>
+
+            {/* Center Zone */}
+            <div className="flex items-center gap-4 flex-1 justify-center">
+                {renderZone(config.center)}
+            </div>
+
+            {/* Right Zone */}
+            <div className="flex items-center gap-1 flex-1 justify-end">
+                {renderZone(config.right)}
             </div>
         </div>
     )

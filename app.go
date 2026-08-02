@@ -66,6 +66,11 @@ func (a *App) startup(ctx context.Context) {
 	proc.Call(uintptr(ABM_NEW), uintptr(unsafe.Pointer(&abb)))
 	proc.Call(uintptr(ABM_QUERYPOS), uintptr(unsafe.Pointer(&abb)))
 	proc.Call(uintptr(ABM_SETPOS), uintptr(unsafe.Pointer(&abb)))
+
+	style := win.GetWindowLong(hwnd, win.GWL_STYLE)
+	style = style &^ (win.WS_BORDER | win.WS_THICKFRAME)
+	win.SetWindowLong(hwnd, win.GWL_STYLE, style)
+
 	win.SetWindowPos(
 		hwnd, 
 		win.HWND_TOPMOST,
