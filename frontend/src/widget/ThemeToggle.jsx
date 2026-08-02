@@ -32,7 +32,7 @@ export default function ThemeToggle() {
             className="widget-btn"
             title={`Toggle Theme (Current: ${currentTheme})`}
         >
-            <Palette size={18} />
+            <Palette size={20} />
         </button>
     );
 }

@@ -22,6 +22,10 @@ export function GetVolume() {
   return window['go']['handlers']['SystemHandler']['GetVolume']();
 }
 
+export function GetWeather() {
+  return window['go']['handlers']['SystemHandler']['GetWeather']();
+}
+
 export function GetWifi() {
   return window['go']['handlers']['SystemHandler']['GetWifi']();
 }

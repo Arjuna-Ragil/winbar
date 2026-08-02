@@ -26,6 +26,10 @@ func (h *SystemHandler) GetWifi() dto.WifiData {
 	return h.service.GetWifi()
 }
 
+func (h *SystemHandler) GetWeather() dto.WeatherData {
+	return h.service.GetWeather()
+}
+
 func (h *SystemHandler) OpenNotifications() {
 	h.service.OpenNotifications()
 }

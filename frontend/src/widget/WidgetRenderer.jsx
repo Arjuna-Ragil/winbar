@@ -1,4 +1,4 @@
-import Clock from './Clock';
+import Day from './day';
 import BatteryWidget from './Battery';
 import VolumeWidget from './Volume';
 import WifiWidget from './Wifi';
@@ -10,8 +10,8 @@ import ThemeToggle from './ThemeToggle';
 
 export default function WidgetRenderer({ name, activeOverlay, toggleOverlay }) {
     switch (name.toLowerCase()) {
-        case 'clock':
-            return <Clock />;
+        case 'day':
+            return <Day />;
         case 'battery':
             return <BatteryWidget />;
         case 'volume':

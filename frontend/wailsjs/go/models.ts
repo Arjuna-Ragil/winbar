@@ -103,6 +103,22 @@ export namespace dto {
 	        this.muted = source["muted"];
 	    }
 	}
+	export class WeatherData {
+	    temperature: number;
+	    weatherCode: number;
+	    isDay: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new WeatherData(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.temperature = source["temperature"];
+	        this.weatherCode = source["weatherCode"];
+	        this.isDay = source["isDay"];
+	    }
+	}
 	export class WifiData {
 	    isConnected: boolean;
 	    signal: string;

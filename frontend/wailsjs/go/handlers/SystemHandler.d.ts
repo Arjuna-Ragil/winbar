@@ -12,6 +12,8 @@ export function GetThemes():Promise<Array<string>>;
 
 export function GetVolume():Promise<dto.VolumeData>;
 
+export function GetWeather():Promise<dto.WeatherData>;
+
 export function GetWifi():Promise<dto.WifiData>;
 
 export function OpenNotifications():Promise<void>;
