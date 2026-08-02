@@ -17,7 +17,7 @@ func (s *SystemService) GetBattery() dto.BatteryData {
 	return s.db.GetBattery()
 }
 
-func (s *SystemService) GetVolume() dto.VolumeData {
+func (s *SystemService) GetVolume() (dto.VolumeData, error) {
 	return s.db.GetVolume()
 }
 
@@ -27,4 +27,8 @@ func (s *SystemService) GetWifi() dto.WifiData {
 
 func (s *SystemService) OpenNotifications() {
 	s.db.OpenNotifications()
+}
+
+func (s *SystemService) SwitchWorkspace(ws int) {
+	s.db.SwitchWorkspace(ws)
 }

@@ -32,10 +32,10 @@ func (db *SystemDB) GetBattery() dto.BatteryData {
 	}
 }
 
-func (db *SystemDB) GetVolume() dto.VolumeData {
+func (db *SystemDB) GetVolume() (dto.VolumeData, error) {
 	vol, err := volume.GetVolume()
 	if err != nil {
-		return dto.VolumeData{Level: 0, Muted: false}
+		return dto.VolumeData{}, err
 	}
 	muted, err := volume.GetMuted()
 	if err != nil {
@@ -44,7 +44,7 @@ func (db *SystemDB) GetVolume() dto.VolumeData {
 	return dto.VolumeData{
 		Level: vol,
 		Muted: muted,
-	}
+	}, nil
 }
 
 func (db *SystemDB) GetWifi() dto.WifiData {
@@ -90,4 +90,23 @@ func (db *SystemDB) OpenNotifications() {
 	keybdEvent.Call(uintptr(VK_N), 0, 0, 0)
 	keybdEvent.Call(uintptr(VK_N), 0, uintptr(KEYEVENTF_KEYUP), 0)
 	keybdEvent.Call(uintptr(VK_LWIN), 0, uintptr(KEYEVENTF_KEYUP), 0)
+}
+
+func (db *SystemDB) SwitchWorkspace(ws int) {
+	if ws < 1 || ws > 9 {
+		return
+	}
+
+	user32 := syscall.NewLazyDLL("user32.dll")
+	keybdEvent := user32.NewProc("keybd_event")
+
+	const VK_MENU = 0x12
+	const KEYEVENTF_KEYUP = 0x0002
+
+	vkCode := uintptr(0x30 + ws) // 0x31 is '1'
+
+	keybdEvent.Call(uintptr(VK_MENU), 0, 0, 0)
+	keybdEvent.Call(vkCode, 0, 0, 0)
+	keybdEvent.Call(vkCode, 0, uintptr(KEYEVENTF_KEYUP), 0)
+	keybdEvent.Call(uintptr(VK_MENU), 0, uintptr(KEYEVENTF_KEYUP), 0)
 }

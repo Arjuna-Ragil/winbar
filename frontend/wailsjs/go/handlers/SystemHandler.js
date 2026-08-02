@@ -21,3 +21,7 @@ export function GetWifi() {
 export function OpenNotifications() {
   return window['go']['handlers']['SystemHandler']['OpenNotifications']();
 }
+
+export function SwitchWorkspace(arg1) {
+  return window['go']['handlers']['SystemHandler']['SwitchWorkspace'](arg1);
+}

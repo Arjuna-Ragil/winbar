@@ -1,12 +1,17 @@
 package main
 
 import (
+	"bufio"
 	"context"
 	"fmt"
+	"os"
+	"strings"
 	"syscall"
+	"time"
 	"unsafe"
 
 	"github.com/lxn/win"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 const (
@@ -80,4 +85,23 @@ func (a *App) startup(ctx context.Context) {
 		40,
 		win.SWP_NOACTIVATE,
 	)
+
+	go func() {
+		for {
+			conn, err := os.OpenFile(`\\.\pipe\SpaceWorkspace`, os.O_RDWR, 0)
+			if err != nil {
+				time.Sleep(2 * time.Second)
+				continue
+			}
+			scanner := bufio.NewScanner(conn)
+			if err := scanner.Err(); err != nil {
+				continue
+			}
+			for scanner.Scan() {
+				ws := strings.TrimSpace(scanner.Text())
+				runtime.EventsEmit(ctx, "workspace_changed", ws)
+			}
+			conn.Close()
+		}
+	}()
 }

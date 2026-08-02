@@ -18,7 +18,7 @@ func (h *SystemHandler) GetBattery() dto.BatteryData {
 	return h.service.GetBattery()
 }
 
-func (h *SystemHandler) GetVolume() dto.VolumeData {
+func (h *SystemHandler) GetVolume() (dto.VolumeData, error) {
 	return h.service.GetVolume()
 }
 
@@ -32,4 +32,8 @@ func (h *SystemHandler) OpenNotifications() {
 
 func (h *SystemHandler) GetConfig() dto.Config {
 	return helpers.LoadConfig()
+}
+
+func (h *SystemHandler) SwitchWorkspace(ws int) {
+	h.service.SwitchWorkspace(ws)
 }

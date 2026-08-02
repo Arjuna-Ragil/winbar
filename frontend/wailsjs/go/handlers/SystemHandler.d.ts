@@ -11,3 +11,5 @@ export function GetVolume():Promise<dto.VolumeData>;
 export function GetWifi():Promise<dto.WifiData>;
 
 export function OpenNotifications():Promise<void>;
+
+export function SwitchWorkspace(arg1:number):Promise<void>;
