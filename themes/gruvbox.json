@@ -1,0 +1,12 @@
+{
+  "name": "Gruvbox Theme",
+  "author": "WinBar",
+  "colors": {
+    "widget": "rgba(60, 56, 54, 0.8)",
+    "widgetHover": "rgba(80, 73, 69, 0.8)",
+    "widgetActive": "rgba(215, 153, 33, 0.8)",
+    "widgetActiveHover": "rgba(254, 128, 25, 0.8)",
+    "widgetText": "#ebdbb2",
+    "background": "rgba(40, 40, 40, 0.95)"
+  }
+}

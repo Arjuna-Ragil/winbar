@@ -1,0 +1,12 @@
+{
+  "name": "Nord Theme",
+  "author": "WinBar",
+  "colors": {
+    "widget": "rgba(59, 66, 82, 0.8)",
+    "widgetHover": "rgba(67, 76, 94, 0.8)",
+    "widgetActive": "rgba(136, 192, 208, 0.8)",
+    "widgetActiveHover": "rgba(129, 161, 193, 0.8)",
+    "widgetText": "#eceff4",
+    "background": "rgba(46, 52, 64, 0.95)"
+  }
+}
