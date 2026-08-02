@@ -28,7 +28,7 @@ function App() {
     };
 
     return (
-        <div className="h-screen w-full flex justify-between items-center px-4 overflow-hidden select-none font-sans">
+        <div className="h-screen w-full flex justify-between items-center px-1 overflow-hidden select-none font-sans">
             {/* Left Zone */}
             <div className="flex items-center gap-4 flex-1">
                 {renderZone(config.left)}
