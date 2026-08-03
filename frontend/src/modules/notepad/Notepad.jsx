@@ -1,84 +1,70 @@
-import { useEffect, useRef } from 'react';
-import { Bold, Italic, Underline, Strikethrough, List, Heading1, Heading2, Heading3 } from 'lucide-react';
+import useNotepad from './hooks/useNotepad';
+import TableOfContents from './components/TableOfContents';
+import NotepadEditor from './components/NotepadEditor';
 
 export default function Notepad() {
-    const editorRef = useRef(null);
-
-    useEffect(() => {
-        const saved = localStorage.getItem('notepad_content');
-        if (saved && editorRef.current) {
-            editorRef.current.innerHTML = saved;
-        } else if (editorRef.current && !saved) {
-            editorRef.current.innerHTML = "<div>Write something here...</div>";
-        }
-    }, []);
-
-    const handleInput = () => {
-        if (editorRef.current) {
-            localStorage.setItem('notepad_content', editorRef.current.innerHTML);
-        }
-    };
-
-    const format = (command, value = null) => {
-        document.execCommand(command, false, value);
-        if (editorRef.current) {
-            editorRef.current.focus();
-        }
-    };
+    const {
+        notes,
+        activeNoteId,
+        setActiveNoteId,
+        saveNotes,
+        handleCreateNote,
+        handleDeleteNote
+    } = useNotepad();
 
     return (
-        <div className="flex flex-col bg-[#fff9c4]/95 backdrop-blur-xl rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)] border border-yellow-400/50 text-slate-800 pointer-events-auto resize overflow-hidden relative" style={{ width: '320px', height: '400px', minWidth: '250px', minHeight: '200px' }}>
+        <div className="flex flex-col rounded-md shadow-[5px_5px_15px_rgba(0,0,0,0.6)] border-2 border-widget text-black pointer-events-auto resize overflow-hidden relative" 
+             style={{ width: '420px', height: '500px', minWidth: '350px', minHeight: '300px', backgroundColor: 'var(--color-background)' }}>
+            
             <style>{`
-                @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap');
+                @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap');
+                
                 .notepad-editor { 
                     font-family: 'Caveat', cursive; 
-                    font-size: 1.5rem; 
+                    font-size: 1.6rem; 
                     line-height: 1.3; 
                     outline: none;
                 }
-                .notepad-editor h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 0.2rem; }
-                .notepad-editor h2 { font-size: 2.0rem; font-weight: 700; margin-bottom: 0.2rem; }
-                .notepad-editor h3 { font-size: 1.7rem; font-weight: 700; margin-bottom: 0.2rem; }
+                .notepad-editor h1 { font-family: 'Playfair Display', serif; font-size: 2.2rem; margin-bottom: 0.5rem; text-align: center; }
+                .notepad-editor h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-bottom: 0.5rem; }
+                .notepad-editor h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: 0.5rem; }
                 .notepad-editor ul { list-style-type: disc; padding-left: 2rem; margin-bottom: 0.5rem; }
                 .notepad-editor b, .notepad-editor strong { font-weight: 700; }
                 
+                .book-title { font-family: 'Playfair Display', serif; }
+                
                 /* Custom scrollbar for notepad */
-                .notepad-editor::-webkit-scrollbar { width: 6px; }
-                .notepad-editor::-webkit-scrollbar-track { background: transparent; }
-                .notepad-editor::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
-                .notepad-editor::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.2); }
+                .scrollable::-webkit-scrollbar { width: 8px; }
+                .scrollable::-webkit-scrollbar-track { background: transparent; }
+                .scrollable::-webkit-scrollbar-thumb { background: var(--color-widget); border-radius: 10px; border: 2px solid #f4ecd8; }
             `}</style>
             
-            {/* Toolbar - Also acts as a drag handle */}
-            <div className="flex items-center gap-1 p-2 bg-[#fff176] border-b border-yellow-400/50 drag-handle cursor-move select-none shrink-0">
-                <button onClick={() => format('formatBlock', 'H1')} className="p-1.5 hover:bg-yellow-500/30 active:bg-yellow-500/50 rounded transition-colors" title="Heading 1"><Heading1 size={16} /></button>
-                <button onClick={() => format('formatBlock', 'H2')} className="p-1.5 hover:bg-yellow-500/30 active:bg-yellow-500/50 rounded transition-colors" title="Heading 2"><Heading2 size={16} /></button>
-                <button onClick={() => format('formatBlock', 'H3')} className="p-1.5 hover:bg-yellow-500/30 active:bg-yellow-500/50 rounded transition-colors" title="Heading 3"><Heading3 size={16} /></button>
-                
-                <div className="w-px h-5 bg-yellow-600/30 mx-1"></div>
-                
-                <button onClick={() => format('bold')} className="p-1.5 hover:bg-yellow-500/30 active:bg-yellow-500/50 rounded transition-colors" title="Bold"><Bold size={16} /></button>
-                <button onClick={() => format('italic')} className="p-1.5 hover:bg-yellow-500/30 active:bg-yellow-500/50 rounded transition-colors" title="Italic"><Italic size={16} /></button>
-                <button onClick={() => format('underline')} className="p-1.5 hover:bg-yellow-500/30 active:bg-yellow-500/50 rounded transition-colors" title="Underline"><Underline size={16} /></button>
-                <button onClick={() => format('strikeThrough')} className="p-1.5 hover:bg-yellow-500/30 active:bg-yellow-500/50 rounded transition-colors" title="Strikethrough"><Strikethrough size={16} /></button>
-                
-                <div className="w-px h-5 bg-yellow-600/30 mx-1"></div>
-                
-                <button onClick={() => format('insertUnorderedList')} className="p-1.5 hover:bg-yellow-500/30 active:bg-yellow-500/50 rounded transition-colors" title="Bullet List"><List size={16} /></button>
+            {/* Leather cover top padding (drag handle) */}
+            <div className="drag-handle cursor-move h-4 shrink-0 w-full flex items-center justify-center">
+                <div className="w-12 h-1 bg-widget-text rounded-full opacity-50"></div>
             </div>
 
-            {/* Editor Area */}
-            <div 
-                ref={editorRef}
-                className="flex-1 p-5 overflow-y-auto notepad-editor cursor-text text-black/80"
-                contentEditable
-                onInput={handleInput}
-                suppressContentEditableWarning
-            >
+            {/* Inner Paper Pages */}
+            <div className="flex-1 m-1 mt-0 bg-[#f4ecd8] rounded-sm shadow-[inset_4px_0_10px_rgba(0,0,0,0.1),inset_-1px_0_2px_rgba(0,0,0,0.05)] overflow-hidden flex flex-col relative border-l border-black/10">
+                
+                {!activeNoteId ? (
+                    <TableOfContents 
+                        notes={notes} 
+                        setActiveNoteId={setActiveNoteId} 
+                        handleCreateNote={handleCreateNote} 
+                        handleDeleteNote={handleDeleteNote} 
+                    />
+                ) : (
+                    <NotepadEditor 
+                        activeNoteId={activeNoteId} 
+                        notes={notes} 
+                        saveNotes={saveNotes} 
+                        setActiveNoteId={setActiveNoteId} 
+                    />
+                )}
             </div>
             
-            {/* Visual resize indicator in bottom right corner */}
-            <div className="absolute bottom-1 right-1 w-3 h-3 border-r-2 border-b-2 border-yellow-600/30 pointer-events-none rounded-br-sm"></div>
+            <div className="absolute bottom-1 right-1 w-3 h-3 border-r-2 border-b-2 border-widget-text/50 pointer-events-none rounded-br-sm"></div>
         </div>
     );
 }
