@@ -7,8 +7,9 @@ import WorkspaceWidget from './Workspace';
 import PowerMenuWidget from './Home';
 import PowerWidget from './Power';
 import ThemeToggle from './ThemeToggle';
+import OverlayToggleWidget from './OverlayToggle';
 
-export default function WidgetRenderer({ name, activeOverlay, toggleOverlay }) {
+export default function WidgetRenderer({ name, activeOverlay, toggleOverlay, overlayTransparent, toggleOverlayTransparent }) {
     switch (name.toLowerCase()) {
         case 'day':
             return <Day />;
@@ -28,6 +29,8 @@ export default function WidgetRenderer({ name, activeOverlay, toggleOverlay }) {
             return <PowerWidget activeOverlay={activeOverlay} toggleOverlay={toggleOverlay} />;
         case 'theme_toggle':
             return <ThemeToggle />;
+        case 'overlay_toggle':
+            return <OverlayToggleWidget overlayTransparent={overlayTransparent} toggleOverlayTransparent={toggleOverlayTransparent} />;
         default:
             return (
                 <div className="bg-red-500/80 backdrop-blur-md rounded-full px-4 py-1 text-white text-sm font-semibold">

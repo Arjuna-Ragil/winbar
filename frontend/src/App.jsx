@@ -9,6 +9,7 @@ function App() {
     const [config, setConfig] = useState({ left: [], center: [], right: [], modules: {} });
     const [theme, setTheme] = useState(null);
     const [activeOverlay, setActiveOverlay] = useState(null);
+    const [overlayTransparent, setOverlayTransparent] = useState(false);
 
     useEffect(() => {
         // Fetch config and theme from Go backend
@@ -46,7 +47,6 @@ function App() {
         }
     };
 
-    // Helper to render an array of widgets
     const renderZone = (widgets) => {
         return widgets.map((widgetName, index) => (
             <WidgetRenderer 
@@ -54,6 +54,8 @@ function App() {
                 name={widgetName} 
                 activeOverlay={activeOverlay}
                 toggleOverlay={toggleOverlay}
+                overlayTransparent={overlayTransparent}
+                toggleOverlayTransparent={() => setOverlayTransparent(!overlayTransparent)}
             />
         ));
     };
@@ -73,7 +75,8 @@ function App() {
                 className={`absolute inset-0 transition-all duration-300 ${
                     activeOverlay !== null ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
                 }`}
-                style={{ backgroundColor: 'var(--color-background)' }}
+                style={{ backgroundColor: overlayTransparent ? 'transparent' : 'var(--color-background)' }}
+                onClick={() => { if (activeOverlay) toggleOverlay(activeOverlay) }}
             />
 
             {/* Widget Section */}
@@ -109,3 +112,4 @@ function App() {
 }
 
 export default App
+
