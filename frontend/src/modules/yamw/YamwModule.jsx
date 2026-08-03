@@ -102,7 +102,7 @@ export default function YamwModule() {
                 />
             )}
 
-            {isPlayerOpen && activeSong && (
+            {activeSong && (
                 <PlayerOverlay 
                     t={t} 
                     activeSong={activeSong}
