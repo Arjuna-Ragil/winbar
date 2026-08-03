@@ -14,7 +14,7 @@ interface MiniPlayerProps {
 export const MiniPlayer = ({ activeSong, t, isPlayerOpen, isPlaying, setIsPlayerOpen, togglePlayPause }: MiniPlayerProps) => {
     return (
         <div 
-            className={`absolute bottom-0 left-0 w-full p-2 bg-slate-950/95 backdrop-blur-xl border-t ${t.borderLight} z-30 cursor-pointer flex items-center gap-3 shadow-[0_-5px_15px_rgba(0,0,0,0.5)] transition-transform duration-300 [--wails-draggable:no-drag] ${isPlayerOpen ? 'translate-y-full' : 'translate-y-0'}`}
+            className={`absolute bottom-0 left-0 w-full p-2 bg-slate-950/95 backdrop-blur-xl border-t ${t.borderLight} z-30 cursor-pointer flex gap-3 shadow-[0_-5px_15px_rgba(0,0,0,0.5)] transition-transform duration-300 [--wails-draggable:no-drag] ${isPlayerOpen ? 'translate-y-full' : 'translate-y-0'}`}
             onClick={() => setIsPlayerOpen(true)}
         >
             <CoverImage id={activeSong.id} className="w-10 h-10 rounded-sm object-cover shrink-0" t={t} />

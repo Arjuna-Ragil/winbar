@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import WidgetRenderer from './widget/WidgetRenderer';
 import { GetConfig, GetTheme } from '../wailsjs/go/handlers/SystemHandler.js';
 import { ExpandWindow, ShrinkWindow } from '../wailsjs/go/main/App.js';
-import HomeOverlay from './overlay/HomeOverlay';
+import DraggableOverlay from './overlay/DraggableOverlay';
 import PowerOverlay from './overlay/PowerOverlay';
 
 function App() {
@@ -101,7 +101,10 @@ function App() {
 
                 {/* Overlay Section */}
                 <div style={{ display: activeOverlay === 'home' ? 'contents' : 'none' }}>
-                    <HomeOverlay modules={config.modules.home || []} />
+                    <DraggableOverlay overlayId="home" title="Home Dashboard" modules={config.modules.home || []} />
+                </div>
+                <div style={{ display: activeOverlay === 'notes' ? 'contents' : 'none' }}>
+                    <DraggableOverlay overlayId="notes" title="Notes & Tasks" modules={config.modules.notes || []} />
                 </div>
                 <div style={{ display: activeOverlay === 'power' ? 'contents' : 'none' }}>
                     <PowerOverlay />

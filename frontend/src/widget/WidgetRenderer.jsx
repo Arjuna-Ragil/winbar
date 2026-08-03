@@ -8,6 +8,7 @@ import PowerMenuWidget from './Home';
 import PowerWidget from './Power';
 import ThemeToggle from './ThemeToggle';
 import OverlayToggleWidget from './OverlayToggle';
+import NotesWidget from './NotesWidget';
 
 export default function WidgetRenderer({ name, activeOverlay, toggleOverlay, overlayTransparent, toggleOverlayTransparent }) {
     switch (name.toLowerCase()) {
@@ -31,6 +32,8 @@ export default function WidgetRenderer({ name, activeOverlay, toggleOverlay, ove
             return <ThemeToggle />;
         case 'overlay_toggle':
             return <OverlayToggleWidget overlayTransparent={overlayTransparent} toggleOverlayTransparent={toggleOverlayTransparent} />;
+        case 'notes':
+            return <NotesWidget activeOverlay={activeOverlay} toggleOverlay={toggleOverlay} />;
         default:
             return (
                 <div className="bg-red-500/80 backdrop-blur-md rounded-full px-4 py-1 text-white text-sm font-semibold">
@@ -39,3 +42,4 @@ export default function WidgetRenderer({ name, activeOverlay, toggleOverlay, ove
             );
     }
 }
+
