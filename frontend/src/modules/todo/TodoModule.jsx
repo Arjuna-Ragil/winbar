@@ -13,7 +13,7 @@ export default function TodoModule() {
 
     return (
         <div className="flex flex-col rounded-md shadow-[5px_5px_15px_rgba(0,0,0,0.6)] border-2 border-widget text-black pointer-events-auto resize overflow-hidden relative" 
-             style={{ width: '450px', height: '550px', minWidth: '350px', minHeight: '400px', backgroundColor: 'var(--color-background)' }}>
+             style={{ width: '600px', height: '700px', minWidth: '350px', minHeight: '400px', backgroundColor: 'var(--color-background)' }}>
             
             <style>{`
                 @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap');

@@ -110,18 +110,19 @@ const TaskCard = ({ task, handleDragStart, handleDragEnd, deleteTask, editTask }
 
 export default function KanbanView({ todos, addTask, updateTaskStatus, deleteTask, editTask }) {
     const [newTaskText, setNewTaskText] = useState("");
+    const [newTaskDate, setNewTaskDate] = useState(() => new Date().toISOString().split('T')[0]);
 
     const handleAdd = (e) => {
         e.preventDefault();
         if (newTaskText.trim()) {
-            addTask(newTaskText.trim());
+            addTask(newTaskText.trim(), newTaskDate);
             setNewTaskText("");
         }
     };
 
     return (
         <div className="flex flex-col h-full bg-[#f4ecd8]">
-            <form onSubmit={handleAdd} className="flex gap-2 p-3 border-b border-black/10 bg-black/5">
+            <form onSubmit={handleAdd} className="flex gap-2 p-3 border-b border-black/10 bg-black/5 items-center">
                 <input 
                     type="text" 
                     placeholder="Add a new task..." 
@@ -129,9 +130,15 @@ export default function KanbanView({ todos, addTask, updateTaskStatus, deleteTas
                     onChange={(e) => setNewTaskText(e.target.value)}
                     className="flex-1 bg-transparent border-b border-black/20 focus:border-widget outline-none px-2 font-['Caveat'] text-2xl text-black transition-colors"
                 />
+                <input 
+                    type="date"
+                    value={newTaskDate}
+                    onChange={(e) => setNewTaskDate(e.target.value)}
+                    className="bg-transparent border-b border-black/20 focus:border-widget outline-none px-2 text-black/60 font-sans text-sm transition-colors"
+                />
                 <button 
                     type="submit"
-                    className="p-2 rounded bg-widget text-widget-text hover:bg-widget-hover transition-colors shadow-sm"
+                    className="p-2 rounded bg-widget text-widget-text hover:bg-widget-hover transition-colors shadow-sm shrink-0"
                 >
                     <Plus size={20} />
                 </button>
