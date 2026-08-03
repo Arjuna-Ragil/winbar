@@ -14,7 +14,7 @@ const DraggableModule = ({ id, overlayId, modName, position, onStop }) => {
             bounds="parent"
             handle=".drag-handle"
         >
-            <div ref={nodeRef} className="absolute flex flex-row group items-start">
+            <div ref={nodeRef} className="absolute flex flex-row group items-start pointer-events-auto">
                 <div className="drag-handle opacity-0 group-hover:opacity-100 cursor-move p-1 bg-black/40 hover:bg-black/60 text-white/80 hover:text-white rounded-l-md transition-all duration-200 backdrop-blur-sm z-50 shadow-md h-full flex flex-col justify-center">
                     <GripVertical size={20} />
                 </div>
@@ -56,7 +56,7 @@ export default function DraggableOverlay({ overlayId, title, modules = [] }) {
     if (!loaded) return null;
 
     return (
-        <div className="flex-1 w-full relative p-4 animate-in fade-in duration-300 pointer-events-auto overflow-hidden">
+        <div className="flex-1 w-full relative p-4 animate-in fade-in duration-300 pointer-events-none overflow-hidden">
             {modules.length === 0 ? (
                 <div className="w-full h-full flex flex-col items-center justify-center">
                     <h1 className="text-6xl font-bold mb-4 bg-linear-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent drop-shadow-lg">

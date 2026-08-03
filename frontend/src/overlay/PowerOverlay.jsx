@@ -3,13 +3,13 @@ import { Shutdown, Restart, Sleep } from '../../wailsjs/go/handlers/SystemHandle
 
 export default function PowerOverlay() {
     return (
-        <div className="flex-1 w-full flex flex-col items-center justify-center animate-in fade-in duration-300 pointer-events-auto">
-            <h1 className="text-6xl font-bold mb-4  drop-shadow-lg">
+        <div className="flex-1 w-full flex flex-col items-center justify-center animate-in fade-in duration-300 pointer-events-none">
+            <h1 className="text-6xl font-bold mb-4 drop-shadow-lg pointer-events-auto">
                 Power Options
             </h1>
-            <p className="text-white/60 mb-12 text-lg">Select an action to perform on your system.</p>
+            <p className="text-white/60 mb-12 text-lg pointer-events-auto">Select an action to perform on your system.</p>
             
-            <div className="flex gap-8">
+            <div className="flex gap-8 pointer-events-auto">
                 <button 
                     onClick={() => Sleep()}
                     className="w-40 h-40 rounded-3xl bg-white/3 hover:bg-white/8 border border-white/10 flex flex-col items-center justify-center gap-4 cursor-pointer transition-all hover:scale-105 hover:border-blue-500/50 hover:shadow-[0_0_32px_rgba(59,130,246,0.2)]"

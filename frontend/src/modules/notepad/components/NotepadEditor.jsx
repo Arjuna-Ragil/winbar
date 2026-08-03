@@ -9,13 +9,13 @@ export default function NotepadEditor({ activeNoteId, notes, saveNotes, setActiv
     useEffect(() => {
         if (activeNoteId && editorRef.current) {
             const note = notes.find(n => n.id === activeNoteId);
-            if (note) {
+            if (note && editorRef.current.innerHTML !== note.content) {
                 editorRef.current.innerHTML = note.content;
             }
             editorRef.current.focus();
             checkActiveFormats();
         }
-    }, [activeNoteId, notes]);
+    }, [activeNoteId]); // Do NOT include notes here, it destroys cursor position!
 
     const handleInput = () => {
         if (!editorRef.current || !activeNoteId) return;
