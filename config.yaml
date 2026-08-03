@@ -1,0 +1,21 @@
+theme: default
+left:
+- power
+- home
+- notes
+- workspace
+center:
+- day
+right:
+- overlay_toggle
+- theme_toggle
+- wifi
+- volume
+- battery
+- notification
+modules:
+  home:
+  - yamw
+  notes:
+  - notepad
+  - todo
