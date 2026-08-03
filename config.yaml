@@ -1,4 +1,4 @@
-theme: default
+theme: tokyo-night
 left:
 - power
 - home
@@ -9,8 +9,9 @@ center:
 right:
 - overlay_toggle
 - theme_toggle
-- wifi
+- music
 - volume
+- wifi
 - battery
 - notification
 modules:

@@ -250,6 +250,30 @@ export const useAppLogic = () => {
         fetchSongs();
     };
 
+    // --- Global Event Broadcasters & Listeners for Music Widget ---
+    useEffect(() => {
+        window.dispatchEvent(new CustomEvent('yamw-state', { 
+            detail: { activeSong, isPlaying } 
+        }));
+    }, [activeSong, isPlaying]);
+
+    useEffect(() => {
+        const handlePlayPause = () => togglePlayPause();
+        const handleNext = () => playNext();
+        const handlePrev = () => playPrevious();
+
+        window.addEventListener('yamw-cmd-toggle', handlePlayPause);
+        window.addEventListener('yamw-cmd-next', handleNext);
+        window.addEventListener('yamw-cmd-prev', handlePrev);
+
+        return () => {
+            window.removeEventListener('yamw-cmd-toggle', handlePlayPause);
+            window.removeEventListener('yamw-cmd-next', handleNext);
+            window.removeEventListener('yamw-cmd-prev', handlePrev);
+        };
+    }, [togglePlayPause, playNext, playPrevious]);
+    // -------------------------------------------------------------
+
     return {
         isConfigured, setIsConfigured,
         showSettings, setShowSettings,

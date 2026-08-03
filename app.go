@@ -82,7 +82,7 @@ func (a *App) startup(ctx context.Context) {
 
 	win.SetWindowPos(
 		hwnd, 
-		win.HWND_TOPMOST,
+		win.HWND_NOTOPMOST,
 		0, 
 		0,
 		screenWidth,
@@ -123,7 +123,7 @@ func (a *App) ShrinkWindow() {
 		return
 	}
 	screenWidth := win.GetSystemMetrics(win.SM_CXSCREEN)
-	win.SetWindowPos(a.hwnd, win.HWND_TOPMOST, 0, 0, screenWidth, 40, win.SWP_NOACTIVATE)
+	win.SetWindowPos(a.hwnd, win.HWND_NOTOPMOST, 0, 0, screenWidth, 40, win.SWP_NOACTIVATE)
 }
 
 func (a *App) HasConfig() bool {
