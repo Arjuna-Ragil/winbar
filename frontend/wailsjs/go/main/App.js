@@ -6,6 +6,14 @@ export function ExpandWindow() {
   return window['go']['main']['App']['ExpandWindow']();
 }
 
+export function HasConfig() {
+  return window['go']['main']['App']['HasConfig']();
+}
+
+export function SaveConfig(arg1, arg2, arg3) {
+  return window['go']['main']['App']['SaveConfig'](arg1, arg2, arg3);
+}
+
 export function ShrinkWindow() {
   return window['go']['main']['App']['ShrinkWindow']();
 }

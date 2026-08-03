@@ -9,9 +9,11 @@ import (
 	"syscall"
 	"time"
 	"unsafe"
+	"encoding/json"
 
 	"github.com/lxn/win"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
+	yamwHelper "winbar/internal/modules/yamw/helpers"
 )
 
 const (
@@ -122,4 +124,35 @@ func (a *App) ShrinkWindow() {
 	}
 	screenWidth := win.GetSystemMetrics(win.SM_CXSCREEN)
 	win.SetWindowPos(a.hwnd, win.HWND_TOPMOST, 0, 0, screenWidth, 40, win.SWP_NOACTIVATE)
+}
+
+func (a *App) HasConfig() bool {
+	path, err := yamwHelper.GetConfigPath()
+	if err != nil {
+		return false
+	}
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		return false
+	}
+	return true
+}
+
+func (a *App) SaveConfig(serverURL, username, password string) error {
+	path, err := yamwHelper.GetConfigPath()
+	if err != nil {
+		return err
+	}
+	
+	config := yamwHelper.Config{
+		ServerURL: serverURL,
+		Username:  username,
+		Password:  password,
+	}
+	
+	data, err := json.Marshal(config)
+	if err != nil {
+		return err
+	}
+	
+	return os.WriteFile(path, data, 0644)
 }

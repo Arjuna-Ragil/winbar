@@ -12,6 +12,10 @@ import (
 	"winbar/internal/database"
 	"winbar/internal/handlers"
 	"winbar/internal/services"
+	
+	yamwDB "winbar/internal/modules/yamw/database"
+	yamwHandlers "winbar/internal/modules/yamw/handlers"
+	yamwServices "winbar/internal/modules/yamw/services"
 )
 
 //go:embed all:frontend/dist
@@ -24,6 +28,21 @@ func main() {
 	systemDB := database.NewSystemDB()
 	systemService := services.NewSystemService(systemDB)
 	systemHandler := handlers.NewSystemHandler(systemService)
+
+	Subsonic := yamwDB.NewSubsonic()
+
+	hpService := yamwServices.NewHPService(Subsonic)
+	yamwHealth := yamwHandlers.NewHealth(hpService)
+
+	listServ := yamwServices.NewListServ(Subsonic)
+	yamwList := yamwHandlers.NewList(listServ)
+
+	streamServ := yamwServices.NewStreamServ()
+	yamwStream := yamwHandlers.NewStream(streamServ)
+
+	lrclib := yamwDB.NewLrclib()
+	lyricsServ := yamwServices.NewLyricsServ(lrclib)
+	yamwLyrics := yamwHandlers.NewLyrics(lyricsServ)
 
 	screenWidth := win.GetSystemMetrics(win.SM_CXSCREEN)
 
@@ -46,6 +65,10 @@ func main() {
 		Bind: []interface{}{
 			app,
 			systemHandler,
+			yamwHealth,
+			yamwList,
+			yamwStream,
+			yamwLyrics,
 		},
 	})
 

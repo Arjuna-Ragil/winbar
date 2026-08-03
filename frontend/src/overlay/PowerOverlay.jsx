@@ -4,7 +4,7 @@ import { Shutdown, Restart, Sleep } from '../../wailsjs/go/handlers/SystemHandle
 export default function PowerOverlay() {
     return (
         <div className="flex-1 w-full flex flex-col items-center justify-center animate-in fade-in duration-300 pointer-events-auto">
-            <h1 className="text-6xl font-bold mb-4 bg-linear-to-r from-red-400 to-orange-500 bg-clip-text text-transparent drop-shadow-lg">
+            <h1 className="text-6xl font-bold mb-4  drop-shadow-lg">
                 Power Options
             </h1>
             <p className="text-white/60 mb-12 text-lg">Select an action to perform on your system.</p>

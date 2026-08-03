@@ -6,7 +6,7 @@ import HomeOverlay from './overlay/HomeOverlay';
 import PowerOverlay from './overlay/PowerOverlay';
 
 function App() {
-    const [config, setConfig] = useState({ left: [], center: [], right: [] });
+    const [config, setConfig] = useState({ left: [], center: [], right: [], modules: {} });
     const [theme, setTheme] = useState(null);
     const [activeOverlay, setActiveOverlay] = useState(null);
 
@@ -16,11 +16,12 @@ function App() {
             setConfig({
                 left: cfg.left || [],
                 center: cfg.center || [],
-                right: cfg.right || []
+                right: cfg.right || [],
+                modules: cfg.modules || {}
             });
         }).catch((err) => {
             console.error("Failed to load config from Go:", err);
-            setConfig({ left: [], center: ["clock"], right: [] });
+            setConfig({ left: [], center: ["clock"], right: [], modules: {} });
         });
 
         GetTheme().then(setTheme).catch(console.error);
@@ -96,9 +97,12 @@ function App() {
                 </div>
 
                 {/* Overlay Section */}
-
-                {activeOverlay === 'home' && <HomeOverlay />}
-                {activeOverlay === 'power' && <PowerOverlay />}
+                <div style={{ display: activeOverlay === 'home' ? 'contents' : 'none' }}>
+                    <HomeOverlay modules={config.modules.home || []} />
+                </div>
+                <div style={{ display: activeOverlay === 'power' ? 'contents' : 'none' }}>
+                    <PowerOverlay />
+                </div>
             </div>
         </div>
     )

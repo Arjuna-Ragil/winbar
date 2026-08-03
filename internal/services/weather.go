@@ -28,7 +28,6 @@ type openMeteoResponse struct {
 
 func (s *SystemService) GetWeather() dto.WeatherData {
 	if !hasLocation {
-		// Fetch location from IP-API
 		client := &http.Client{Timeout: 3 * time.Second}
 		resp, err := client.Get("http://ip-api.com/json/")
 		if err == nil {

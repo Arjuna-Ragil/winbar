@@ -3,4 +3,8 @@
 
 export function ExpandWindow():Promise<void>;
 
+export function HasConfig():Promise<boolean>;
+
+export function SaveConfig(arg1:string,arg2:string,arg3:string):Promise<void>;
+
 export function ShrinkWindow():Promise<void>;

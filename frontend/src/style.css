@@ -6,6 +6,7 @@
   --color-widget-active: rgb(168 85 247 / 0.8);
   --color-widget-active-hover: rgb(168 85 247 / 0.6);
   --color-widget-text: #ffffff;
+  --font-retro: "VT323", monospace;
 }
 
 @layer components {
@@ -27,6 +28,16 @@
   /* Standard Text Styling */
   .widget-text {
     @apply text-sm font-medium;
+  }
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .hide-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
   }
 }
 html {
