@@ -3,18 +3,26 @@ package main
 import (
 	"bufio"
 	"context"
+	_ "embed"
+	"encoding/json"
 	"fmt"
 	"os"
+	"os/exec"
+	"path/filepath"
 	"strings"
 	"syscall"
 	"time"
 	"unsafe"
-	"encoding/json"
 
+	"github.com/getlantern/systray"
 	"github.com/lxn/win"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
+	"golang.org/x/sys/windows/registry"
 	yamwHelper "winbar/internal/modules/yamw/helpers"
 )
+
+//go:embed build/windows/icon.ico
+var iconData []byte
 
 const (
 	ABM_NEW = 0
@@ -43,6 +51,17 @@ func NewApp() *App {
 
 func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
+
+	pwd, _ := os.Getwd()
+	themesPath := filepath.Join(pwd, "themes")
+	if _, err := os.Stat(themesPath); os.IsNotExist(err) {
+		os.MkdirAll(themesPath, 0755)
+	}
+	
+	configPath := filepath.Join(pwd, "config.yaml")
+	if _, err := os.Stat(configPath); os.IsNotExist(err) {
+		os.WriteFile(configPath, []byte(""), 0644)
+	}
 	shell32 := syscall.NewLazyDLL("shell32.dll")
 
 	title, err := syscall.UTF16PtrFromString("winbar")
@@ -80,6 +99,11 @@ func (a *App) startup(ctx context.Context) {
 	style = style &^ (win.WS_BORDER | win.WS_THICKFRAME)
 	win.SetWindowLong(hwnd, win.GWL_STYLE, style)
 
+	exStyle := win.GetWindowLong(hwnd, win.GWL_EXSTYLE)
+	exStyle = exStyle | win.WS_EX_TOOLWINDOW
+	exStyle = exStyle &^ win.WS_EX_APPWINDOW
+	win.SetWindowLong(hwnd, win.GWL_EXSTYLE, exStyle)
+
 	win.SetWindowPos(
 		hwnd, 
 		win.HWND_NOTOPMOST,
@@ -87,7 +111,7 @@ func (a *App) startup(ctx context.Context) {
 		0,
 		screenWidth,
 		40,
-		win.SWP_NOACTIVATE,
+		win.SWP_NOACTIVATE | win.SWP_FRAMECHANGED,
 	)
 
 	go func() {
@@ -107,6 +131,8 @@ func (a *App) startup(ctx context.Context) {
 			}
 		}
 	}()
+
+	go systray.Run(a.onReady, a.onExit)
 }
 
 func (a *App) ExpandWindow() {
@@ -155,4 +181,72 @@ func (a *App) SaveConfig(serverURL, username, password string) error {
 	}
 	
 	return os.WriteFile(path, data, 0644)
+}
+
+func (a *App) onReady() {
+	systray.SetIcon(iconData)
+	systray.SetTitle("Winbar")
+	systray.SetTooltip("Winbar")
+
+	mConfig := systray.AddMenuItem("Open Config", "Open Configuration")
+	mThemes := systray.AddMenuItem("Open Themes", "Open Themes")
+	mRunOnLaunch := systray.AddMenuItemCheckbox("Run on Launch", "Run Winbar on system startup", a.isRunOnLaunchEnabled())
+	
+	systray.AddSeparator()
+	mQuit := systray.AddMenuItem("Quit", "Quit Winbar")
+
+	go func() {
+		for {
+			select {
+			case <-mConfig.ClickedCh:
+				pwd, _ := os.Getwd()
+				exec.Command("explorer", "/select,", filepath.Join(pwd, "config.yaml")).Start()
+			case <-mThemes.ClickedCh:
+				pwd, _ := os.Getwd()
+				exec.Command("explorer", filepath.Join(pwd, "themes")).Start()
+			case <-mRunOnLaunch.ClickedCh:
+				if mRunOnLaunch.Checked() {
+					a.toggleRunOnLaunch(false)
+					mRunOnLaunch.Uncheck()
+				} else {
+					a.toggleRunOnLaunch(true)
+					mRunOnLaunch.Check()
+				}
+			case <-mQuit.ClickedCh:
+				systray.Quit()
+			}
+		}
+	}()
+}
+
+func (a *App) toggleRunOnLaunch(enabled bool) error {
+	exePath, err := os.Executable()
+	if err != nil {
+		return err
+	}
+	key, err := registry.OpenKey(registry.CURRENT_USER, `Software\Microsoft\Windows\CurrentVersion\Run`, registry.ALL_ACCESS)
+	if err != nil {
+		return err
+	}
+	defer key.Close()
+
+	if enabled {
+		return key.SetStringValue("Winbar", exePath)
+	} else {
+		return key.DeleteValue("Winbar")
+	}
+}
+
+func (a *App) isRunOnLaunchEnabled() bool {
+	key, err := registry.OpenKey(registry.CURRENT_USER, `Software\Microsoft\Windows\CurrentVersion\Run`, registry.QUERY_VALUE)
+	if err != nil {
+		return false
+	}
+	defer key.Close()
+	_, _, err = key.GetStringValue("Winbar")
+	return err == nil
+}
+
+func (a *App) onExit() {
+	runtime.Quit(a.ctx)
 }
