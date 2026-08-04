@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import Draggable from 'react-draggable';
+import { GripVertical } from 'lucide-react';
 import ModuleRenderer from '../modules/ModuleRenderer';
 
 const DraggableModule = ({ id, overlayId, modName, position, onStop }) => {

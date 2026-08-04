@@ -51,8 +51,6 @@ export default function HomeOverlay({ modules = [] }) {
         localStorage.setItem('modulePositions', JSON.stringify(newPositions));
     };
 
-    // Don't render draggable items until we've loaded positions from localStorage
-    // to prevent them jumping from 0,0 to their saved position.
     if (!loaded) return null;
 
     return (

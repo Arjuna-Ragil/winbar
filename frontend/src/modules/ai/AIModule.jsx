@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Prompt } from '../../../wailsjs/go/handlers/Chat';
 import { GetCompanions, GetCompanionImageAsBase64 } from '../../../wailsjs/go/handlers/Companion';
-import { Send, Settings2, History, X, Loader2 } from 'lucide-react';
+import { Send, Settings2, History, X, Loader2, Eye, EyeOff } from 'lucide-react';
 
 export default function AIModule() {
     const [companions, setCompanions] = useState([]);
@@ -17,6 +17,7 @@ export default function AIModule() {
     const [showHistory, setShowHistory] = useState(false);
     const [imageError, setImageError] = useState(false);
     const [currentImageSrc, setCurrentImageSrc] = useState('');
+    const [hideUI, setHideUI] = useState(false);
 
     // Fetch image base64 when companion or expression changes
     useEffect(() => {
@@ -180,33 +181,48 @@ export default function AIModule() {
             <div className="flex-1 pointer-events-none"></div>
 
             {/* Controls (Just above dialog box) */}
-            <div className="z-20 flex justify-between px-3 mb-2 pointer-events-none">
-                <div className="pointer-events-auto bg-black/40 backdrop-blur-md rounded px-2 py-1 flex items-center gap-2 border border-white/10 shadow-md">
-                    <Settings2 size={14} className="text-white/70" />
-                    <select
-                        value={activeCompanionId}
-                        onChange={e => setActiveCompanionId(e.target.value)}
-                        className="bg-transparent text-sm font-semibold outline-none text-white cursor-pointer"
+            <div className={`z-20 flex px-3 mb-2 pointer-events-none transition-all duration-300 ${hideUI ? 'justify-end' : 'justify-between'}`}>
+                {!hideUI && (
+                    <div className="pointer-events-auto bg-black/40 backdrop-blur-md rounded px-2 py-1 flex items-center gap-2 border border-white/10 shadow-md">
+                        <Settings2 size={14} className="text-white/70" />
+                        <select
+                            value={activeCompanionId}
+                            onChange={e => setActiveCompanionId(e.target.value)}
+                            className="bg-transparent text-sm font-semibold outline-none text-white cursor-pointer"
+                        >
+                            {companions.map(c => (
+                                <option key={c.id} value={c.id} className="bg-slate-800">{c.name}</option>
+                            ))}
+                            {companions.length === 0 && <option>Loading...</option>}
+                        </select>
+                    </div>
+                )}
+                
+                <div className="flex gap-2">
+                    {!hideUI && (
+                        <button
+                            onClick={() => setShowHistory(!showHistory)}
+                            className="pointer-events-auto bg-black/40 backdrop-blur-md border border-white/10 p-1.5 rounded hover:bg-black/60 transition-colors shadow-md"
+                            title="Conversation Log"
+                        >
+                            {showHistory ? <X size={16} /> : <History size={16} />}
+                        </button>
+                    )}
+                    <button
+                        onClick={() => setHideUI(!hideUI)}
+                        className={`pointer-events-auto bg-black/40 backdrop-blur-md border border-white/10 p-1.5 rounded transition-colors shadow-md ${hideUI ? 'opacity-30 hover:opacity-100 hover:bg-black/60' : 'hover:bg-black/60'}`}
+                        title={hideUI ? "Show UI" : "Hide UI"}
                     >
-                        {companions.map(c => (
-                            <option key={c.id} value={c.id} className="bg-slate-800">{c.name}</option>
-                        ))}
-                        {companions.length === 0 && <option>Loading...</option>}
-                    </select>
+                        {hideUI ? <Eye size={16} /> : <EyeOff size={16} />}
+                    </button>
                 </div>
-                <button
-                    onClick={() => setShowHistory(!showHistory)}
-                    className="pointer-events-auto bg-black/40 backdrop-blur-md border border-white/10 p-1.5 rounded hover:bg-black/60 transition-colors shadow-md"
-                    title="Conversation Log"
-                >
-                    {showHistory ? <X size={16} /> : <History size={16} />}
-                </button>
             </div>
 
             {/* Visual Novel Dialog Box */}
-            <div className="z-10 p-3 flex flex-col gap-2 shrink-0 border-t border-white/10 bg-linear-to-b from-black/60 to-black/90 backdrop-blur-md">
+            {!hideUI && (
+                <div className="z-10 p-3 flex flex-col gap-2 shrink-0 border-t border-white/10 bg-linear-to-b from-black/60 to-black/90 backdrop-blur-md">
 
-                {/* Nameplate */}
+                    {/* Nameplate */}
                 <div className="flex justify-between items-end">
                     <div className="bg-widget text-widget-text px-3 py-1 rounded-sm text-sm font-bold uppercase tracking-wider inline-block border border-white/20 shadow-lg">
                         {activeCompanion ? activeCompanion.name : 'System'}
@@ -247,6 +263,7 @@ export default function AIModule() {
                     </button>
                 </div>
             </div>
+            )}
 
             {/* History Modal Overlay */}
             {showHistory && (
