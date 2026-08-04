@@ -10,6 +10,6 @@ func NewChat(chatServ *services.ChatServ) *Chat {
 	return &Chat{ChatServ: chatServ}
 }
 
-func (c *Chat) Prompt(message string) (string, error) {
-	return c.ChatServ.Prompt(message)
+func (c *Chat) Prompt(messages []services.ChatMessage) (string, error) {
+	return c.ChatServ.Prompt(messages)
 }

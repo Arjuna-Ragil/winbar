@@ -178,3 +178,40 @@ export namespace dto {
 
 }
 
+export namespace services {
+	
+	export class ChatMessage {
+	    role: string;
+	    content: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new ChatMessage(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.role = source["role"];
+	        this.content = source["content"];
+	    }
+	}
+	export class Companion {
+	    id: string;
+	    name: string;
+	    systemPrompt: string;
+	    expressions: string[];
+	
+	    static createFrom(source: any = {}) {
+	        return new Companion(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.id = source["id"];
+	        this.name = source["name"];
+	        this.systemPrompt = source["systemPrompt"];
+	        this.expressions = source["expressions"];
+	    }
+	}
+
+}
+

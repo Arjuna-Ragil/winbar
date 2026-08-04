@@ -2,3 +2,6 @@ build/bin
 node_modules
 frontend/dist
 scripts/
+config.yaml
+themes/
+companions/

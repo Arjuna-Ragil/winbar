@@ -9,20 +9,23 @@ import (
 	"net/http"
 )
 
+type ChatMessage struct {
+	Role    string `json:"role"`
+	Content string `json:"content"`
+}
+
 type ChatServ struct{}
 
 func NewChatServ() *ChatServ {
 	return &ChatServ{}
 }
 
-func (s *ChatServ) Prompt(message string) (string, error) {
+func (s *ChatServ) Prompt(messages []ChatMessage) (string, error) {
 	url := "http://localhost:8080/v1/chat/completions"
 
 	payload := map[string]interface{}{
 		"model": "gemma-4-E4B",
-		"messages": []map[string]string{
-			{"role": "user", "content": message},
-		},
+		"messages": messages,
 	}
 	
 	jsonPayload, err := json.Marshal(payload)
@@ -52,6 +55,8 @@ func (s *ChatServ) Prompt(message string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+
+	fmt.Println(string(body))
 
 	var result map[string]interface{}
 	if err := json.Unmarshal(body, &result); err != nil {
