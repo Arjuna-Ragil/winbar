@@ -11,8 +11,8 @@ export default function AIModule() {
     const [isLoading, setIsLoading] = useState(false);
 
     // VN States
-    const [currentExpression, setCurrentExpression] = useState('happy');
-    const [fullMessage, setFullMessage] = useState('Hello there! :)');
+    const [currentExpression, setCurrentExpression] = useState('');
+    const [fullMessage, setFullMessage] = useState('');
     const [displayedMessage, setDisplayedMessage] = useState('');
     const [showHistory, setShowHistory] = useState(false);
     const [imageError, setImageError] = useState(false);
@@ -53,6 +53,15 @@ export default function AIModule() {
     }, []);
 
     const activeCompanion = companions.find(c => c.id === activeCompanionId) || null;
+
+    // Set start message and clear history when companion changes
+    useEffect(() => {
+        if (activeCompanion) {
+            setFullMessage(activeCompanion.startMessage || 'Hello there! How can I help you today?');
+            setCurrentExpression('happy');
+            setMessages([]);
+        }
+    }, [activeCompanionId, companions]);
 
     // Typewriter effect
     useEffect(() => {

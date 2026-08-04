@@ -198,6 +198,7 @@ export namespace services {
 	    id: string;
 	    name: string;
 	    systemPrompt: string;
+	    startMessage: string;
 	    expressions: string[];
 	
 	    static createFrom(source: any = {}) {
@@ -209,6 +210,7 @@ export namespace services {
 	        this.id = source["id"];
 	        this.name = source["name"];
 	        this.systemPrompt = source["systemPrompt"];
+	        this.startMessage = source["startMessage"];
 	        this.expressions = source["expressions"];
 	    }
 	}

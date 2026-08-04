@@ -12,12 +12,14 @@ import (
 type CompanionConfig struct {
 	Name         string `json:"name"`
 	SystemPrompt string `json:"system_prompt"`
+	StartMessage string `json:"start_message,omitempty"`
 }
 
 type Companion struct {
 	ID           string   `json:"id"`
 	Name         string   `json:"name"`
 	SystemPrompt string   `json:"systemPrompt"`
+	StartMessage string   `json:"startMessage"`
 	Expressions  []string `json:"expressions"`
 }
 
@@ -81,6 +83,7 @@ func (s *CompanionServ) GetCompanions() ([]Companion, error) {
 			ID:           id,
 			Name:         cfg.Name,
 			SystemPrompt: finalPrompt,
+			StartMessage: cfg.StartMessage,
 			Expressions:  expressions,
 		}
 		companions = append(companions, comp)

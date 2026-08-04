@@ -32,7 +32,32 @@ function App() {
         };
         window.addEventListener('theme_changed', handleThemeChange);
 
-        return () => window.removeEventListener('theme_changed', handleThemeChange);
+        // Disable right-click context menu
+        const handleContextMenu = (e) => e.preventDefault();
+        window.addEventListener('contextmenu', handleContextMenu);
+
+        // Disable pinch-to-zoom (ctrl + scroll)
+        const handleWheel = (e) => {
+            if (e.ctrlKey) {
+                e.preventDefault();
+            }
+        };
+        window.addEventListener('wheel', handleWheel, { passive: false });
+
+        // Disable keyboard zoom (ctrl + plus/minus)
+        const handleKeyDown = (e) => {
+            if (e.ctrlKey && (e.key === '=' || e.key === '-' || e.key === '+' || e.key === '0')) {
+                e.preventDefault();
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            window.removeEventListener('theme_changed', handleThemeChange);
+            window.removeEventListener('contextmenu', handleContextMenu);
+            window.removeEventListener('wheel', handleWheel);
+            window.removeEventListener('keydown', handleKeyDown);
+        };
     }, []);
 
     const toggleOverlay = (overlayName) => {
