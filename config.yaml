@@ -16,10 +16,10 @@ right:
 - battery
 - notification
 modules:
+  chat:
+  - ai
   home:
   - yamw
   notes:
   - notepad
   - todo
-  chat:
-  - ai

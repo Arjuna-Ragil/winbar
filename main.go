@@ -49,6 +49,9 @@ func main() {
 	chatServ := aiServices.NewChatServ()
 	aiChat := aiHandlers.NewChat(chatServ)
 
+	companionServ := aiServices.NewCompanionServ()
+	aiCompanion := aiHandlers.NewCompanion(companionServ)
+
 	screenWidth := win.GetSystemMetrics(win.SM_CXSCREEN)
 
 	// Create application with options
@@ -75,6 +78,7 @@ func main() {
 			yamwStream,
 			yamwLyrics,
 			aiChat,
+			aiCompanion,
 		},
 	})
 

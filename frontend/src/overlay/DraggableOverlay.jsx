@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import Draggable from 'react-draggable';
-import { GripVertical } from 'lucide-react';
 import ModuleRenderer from '../modules/ModuleRenderer';
 
 const DraggableModule = ({ id, overlayId, modName, position, onStop }) => {
@@ -14,9 +13,9 @@ const DraggableModule = ({ id, overlayId, modName, position, onStop }) => {
             bounds="parent"
             handle=".drag-handle"
         >
-            <div ref={nodeRef} className="absolute flex flex-row group items-start pointer-events-auto">
-                <div className="drag-handle opacity-0 group-hover:opacity-100 cursor-move p-1 bg-black/40 hover:bg-black/60 text-white/80 hover:text-white rounded-l-md transition-all duration-200 backdrop-blur-sm z-50 shadow-md h-full flex flex-col justify-center">
-                    <GripVertical size={20} />
+            <div ref={nodeRef} className="absolute flex flex-col group items-center pointer-events-auto rounded-md overflow-hidden backdrop-blur-md">
+                <div className="drag-handle w-full h-3 cursor-move bg-black/40 hover:bg-black/60 transition-all duration-200 z-50 flex items-center justify-center px-2">
+                    <div className="w-12 h-1 bg-white/30 rounded-full group-hover:bg-white/50 transition-colors"></div>
                 </div>
                 <div className="relative w-full">
                     <ModuleRenderer name={modName} />

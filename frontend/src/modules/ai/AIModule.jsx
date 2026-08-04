@@ -11,8 +11,8 @@ export default function AIModule() {
     const [isLoading, setIsLoading] = useState(false);
 
     // VN States
-    const [currentExpression, setCurrentExpression] = useState('normal');
-    const [fullMessage, setFullMessage] = useState('Hello there! How can I help you today?');
+    const [currentExpression, setCurrentExpression] = useState('happy');
+    const [fullMessage, setFullMessage] = useState('Hello there! :)');
     const [displayedMessage, setDisplayedMessage] = useState('');
     const [showHistory, setShowHistory] = useState(false);
     const [imageError, setImageError] = useState(false);
@@ -158,51 +158,49 @@ export default function AIModule() {
                 .chat-scrollable::-webkit-scrollbar-thumb { background: var(--color-widget); border-radius: 10px; }
             `}</style>
 
-            {/* Drag Handle & Top Bar */}
-            <div className="absolute top-0 left-0 right-0 z-20 flex flex-col pointer-events-none">
-                <div className="drag-handle cursor-move h-4 w-full flex items-center justify-center pointer-events-auto">
-                    <div className="w-12 h-1 bg-widget-text rounded-full opacity-50 mt-1"></div>
-                </div>
-                <div className="flex items-center justify-between p-2 pointer-events-auto">
-                    <div className="bg-black/40 backdrop-blur-md rounded px-2 py-1 flex items-center gap-2 border border-white/10">
-                        <Settings2 size={14} className="text-white/70" />
-                        <select
-                            value={activeCompanionId}
-                            onChange={e => setActiveCompanionId(e.target.value)}
-                            className="bg-transparent text-sm font-semibold outline-none text-white cursor-pointer"
-                        >
-                            {companions.map(c => (
-                                <option key={c.id} value={c.id} className="bg-slate-800">{c.name}</option>
-                            ))}
-                            {companions.length === 0 && <option>Loading...</option>}
-                        </select>
-                    </div>
-                    <button
-                        onClick={() => setShowHistory(!showHistory)}
-                        className="bg-black/40 backdrop-blur-md border border-white/10 p-1.5 rounded hover:bg-black/60 transition-colors"
-                        title="Conversation Log"
-                    >
-                        {showHistory ? <X size={16} /> : <History size={16} />}
-                    </button>
-                </div>
-            </div>
-
-            {/* Character Sprite Layer */}
-            <div className="flex-1 relative flex items-end justify-center overflow-hidden pt-10">
+            {/* Character Sprite Layer (Absolute, fills window behind dialog) */}
+            <div className="absolute inset-0 flex items-end justify-center pointer-events-none z-0 overflow-hidden pt-8">
                 {activeCompanion && !imageError && currentImageSrc && (
                     <img
                         src={currentImageSrc}
                         alt={`Expression: ${currentExpression}`}
-                        className="max-h-[90%] max-w-[90%] object-contain drop-shadow-2xl transition-all duration-300"
+                        className="max-h-full max-w-full object-contain drop-shadow-2xl transition-all duration-300 pointer-events-auto"
                         onError={() => setImageError(true)}
                     />
                 )}
                 {activeCompanion && imageError && (
-                    <div className="flex flex-col items-center justify-center h-full w-full opacity-30 border-2 border-dashed border-white/20 rounded-xl p-4 m-4">
+                    <div className="flex flex-col items-center justify-center h-full w-full opacity-30 border-2 border-dashed border-white/20 rounded-xl p-4 m-4 pointer-events-none">
                         <span>Missing Image</span>
                         <span className="text-xs font-mono mt-2">{activeCompanion.id}/{currentExpression}.png</span>
                     </div>
                 )}
+            </div>
+
+            {/* Spacer to push everything else down */}
+            <div className="flex-1 pointer-events-none"></div>
+
+            {/* Controls (Just above dialog box) */}
+            <div className="z-20 flex justify-between px-3 mb-2 pointer-events-none">
+                <div className="pointer-events-auto bg-black/40 backdrop-blur-md rounded px-2 py-1 flex items-center gap-2 border border-white/10 shadow-md">
+                    <Settings2 size={14} className="text-white/70" />
+                    <select
+                        value={activeCompanionId}
+                        onChange={e => setActiveCompanionId(e.target.value)}
+                        className="bg-transparent text-sm font-semibold outline-none text-white cursor-pointer"
+                    >
+                        {companions.map(c => (
+                            <option key={c.id} value={c.id} className="bg-slate-800">{c.name}</option>
+                        ))}
+                        {companions.length === 0 && <option>Loading...</option>}
+                    </select>
+                </div>
+                <button
+                    onClick={() => setShowHistory(!showHistory)}
+                    className="pointer-events-auto bg-black/40 backdrop-blur-md border border-white/10 p-1.5 rounded hover:bg-black/60 transition-colors shadow-md"
+                    title="Conversation Log"
+                >
+                    {showHistory ? <X size={16} /> : <History size={16} />}
+                </button>
             </div>
 
             {/* Visual Novel Dialog Box */}

@@ -26,7 +26,6 @@ const ModuleRenderer = ({ name }) => {
                 return <DrawingModule />;
             case 'ai':
                 return <AIModule />;
-            // Future modules can be added here
             default:
                 return <div className="p-4 bg-red-500/20 text-red-200 rounded">Unknown module: {name}</div>;
         }

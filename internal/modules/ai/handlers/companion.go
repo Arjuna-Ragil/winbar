@@ -13,3 +13,7 @@ func NewCompanion(companionServ *services.CompanionServ) *Companion {
 func (c *Companion) GetCompanions() ([]services.Companion, error) {
 	return c.CompanionServ.GetCompanions()
 }
+
+func (c *Companion) GetCompanionImageAsBase64(id string, expression string) (string, error) {
+	return c.CompanionServ.GetCompanionImageAsBase64(id, expression)
+}

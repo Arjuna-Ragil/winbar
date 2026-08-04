@@ -39,11 +39,6 @@ export default function Notepad() {
                 .scrollable::-webkit-scrollbar-thumb { background: var(--color-widget); border-radius: 10px; border: 2px solid #f4ecd8; }
             `}</style>
             
-            {/* Leather cover top padding (drag handle) */}
-            <div className="drag-handle cursor-move h-4 shrink-0 w-full flex items-center justify-center">
-                <div className="w-12 h-1 bg-widget-text rounded-full opacity-50"></div>
-            </div>
-
             {/* Inner Paper Pages */}
             <div className="flex-1 m-1 mt-0 bg-[#f4ecd8] rounded-sm shadow-[inset_4px_0_10px_rgba(0,0,0,0.1),inset_-1px_0_2px_rgba(0,0,0,0.05)] overflow-hidden flex flex-col relative border-l border-black/10">
                 

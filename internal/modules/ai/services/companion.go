@@ -35,7 +35,6 @@ func (s *CompanionServ) GetCompanions() ([]Companion, error) {
 
 	companionsDir := filepath.Join(pwd, "companions")
 	
-	// Create directory if it doesn't exist
 	if _, err := os.Stat(companionsDir); os.IsNotExist(err) {
 		os.MkdirAll(companionsDir, 0755)
 	}
@@ -55,19 +54,17 @@ func (s *CompanionServ) GetCompanions() ([]Companion, error) {
 		id := entry.Name()
 		compPath := filepath.Join(companionsDir, id)
 		
-		// Read config.json
 		configPath := filepath.Join(compPath, "config.json")
 		configData, err := os.ReadFile(configPath)
 		if err != nil {
-			continue // Skip if no config
+			continue 
 		}
 
 		var cfg CompanionConfig
 		if err := json.Unmarshal(configData, &cfg); err != nil {
-			continue // Skip if invalid config
+			continue 
 		}
 
-		// Find expressions (png files)
 		var expressions []string
 		files, _ := os.ReadDir(compPath)
 		for _, file := range files {
@@ -77,7 +74,6 @@ func (s *CompanionServ) GetCompanions() ([]Companion, error) {
 			}
 		}
 
-		// Construct the final system prompt by appending the JSON instructions
 		expList := strings.Join(expressions, ", ")
 		finalPrompt := fmt.Sprintf("%s\n\nCRITICAL INSTRUCTION: You must respond to all inputs in strict JSON format containing exactly two keys:\n1. \"expression\": Must be exactly one of these strings: [%s]\n2. \"message\": Your spoken response text.\n\nExample response:\n{\"expression\": \"normal\", \"message\": \"Hello there!\"}", cfg.SystemPrompt, expList)
 
@@ -93,7 +89,6 @@ func (s *CompanionServ) GetCompanions() ([]Companion, error) {
 	return companions, nil
 }
 
-// GetCompanionImageAsBase64 reads an image file and returns its base64 string
 func (s *CompanionServ) GetCompanionImageAsBase64(id string, expression string) (string, error) {
 	pwd, err := os.Getwd()
 	if err != nil {
@@ -107,7 +102,6 @@ func (s *CompanionServ) GetCompanionImageAsBase64(id string, expression string) 
 		return "", fmt.Errorf("image not found: %s", err.Error())
 	}
 
-	// Convert to base64
 	base64Str := base64.StdEncoding.EncodeToString(imgData)
 	return fmt.Sprintf("data:image/png;base64,%s", base64Str), nil
 }
