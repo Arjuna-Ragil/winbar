@@ -16,6 +16,8 @@ import (
 	yamwDB "winbar/internal/modules/yamw/database"
 	yamwHandlers "winbar/internal/modules/yamw/handlers"
 	yamwServices "winbar/internal/modules/yamw/services"
+	aiHandlers "winbar/internal/modules/ai/handlers"
+	aiServices "winbar/internal/modules/ai/services"
 )
 
 //go:embed all:frontend/dist
@@ -44,6 +46,9 @@ func main() {
 	lyricsServ := yamwServices.NewLyricsServ(lrclib)
 	yamwLyrics := yamwHandlers.NewLyrics(lyricsServ)
 
+	chatServ := aiServices.NewChatServ()
+	aiChat := aiHandlers.NewChat(chatServ)
+
 	screenWidth := win.GetSystemMetrics(win.SM_CXSCREEN)
 
 	// Create application with options
@@ -69,6 +74,7 @@ func main() {
 			yamwList,
 			yamwStream,
 			yamwLyrics,
+			aiChat,
 		},
 	})
 

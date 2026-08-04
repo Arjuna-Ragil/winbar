@@ -10,6 +10,7 @@ import ThemeToggle from './ThemeToggle';
 import OverlayToggleWidget from './OverlayToggle';
 import NotesWidget from './NotesWidget';
 import MusicWidget from './Music';
+import ChatWidget from './ChatWidget';
 
 export default function WidgetRenderer({ name, activeOverlay, toggleOverlay, overlayTransparent, toggleOverlayTransparent }) {
     switch (name.toLowerCase()) {
@@ -37,6 +38,8 @@ export default function WidgetRenderer({ name, activeOverlay, toggleOverlay, ove
             return <NotesWidget activeOverlay={activeOverlay} toggleOverlay={toggleOverlay} />;
         case 'music':
             return <MusicWidget toggleOverlay={toggleOverlay} />;
+        case 'chat':
+            return <ChatWidget activeOverlay={activeOverlay} toggleOverlay={toggleOverlay} />;
         default:
             return (
                 <div className="bg-red-500/80 backdrop-blur-md rounded-full px-4 py-1 text-white text-sm font-semibold">

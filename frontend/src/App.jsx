@@ -109,6 +109,9 @@ function App() {
                 <div style={{ display: activeOverlay === 'power' ? 'contents' : 'none' }}>
                     <PowerOverlay />
                 </div>
+                <div style={{ display: activeOverlay === 'chat' ? 'contents' : 'none' }}>
+                    <DraggableOverlay overlayId="chat" title="AI Chat" modules={config.modules.chat || []} />
+                </div>
             </div>
         </div>
     )

@@ -3,6 +3,7 @@ left:
 - power
 - home
 - notes
+- chat
 - workspace
 center:
 - day
@@ -20,3 +21,5 @@ modules:
   notes:
   - notepad
   - todo
+  chat:
+  - ai
