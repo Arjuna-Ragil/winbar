@@ -19,7 +19,7 @@ export namespace dto {
 	    left: string[];
 	    center: string[];
 	    right: string[];
-	    modules: Record<string, Array<string>>;
+	    modules: string[];
 	
 	    static createFrom(source: any = {}) {
 	        return new Config(source);

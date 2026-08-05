@@ -4,7 +4,7 @@ import TopControls from './components/TopControls';
 import ChatDialog from './components/ChatDialog';
 import HistoryModal from './components/HistoryModal';
 
-export default function AIModule() {
+export default function Companion() {
     const {
         companions, activeCompanion, activeCompanionId, setActiveCompanionId,
         messages, input, setInput, isLoading,

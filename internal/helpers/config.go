@@ -20,13 +20,10 @@ func LoadConfig() dto.Config {
 	if writeDefault {
 		defaultConfig := dto.Config{
 			Theme:  "default",
-			Left:   []string{"power", "home", "notes", "chat", "workspace"},
+			Left:   []string{"power", "home", "theme_toggle", "overlay_toggle", "workspace"},
 			Center: []string{"day"},
-			Right:  []string{"overlay_toggle", "theme_toggle", "music", "volume", "battery", "wifi", "notification"},
-			Modules: map[string][]string{
-				"home": {"yamw", "sysinfo"},
-				"notes": {"todo", "notepad"},
-			},
+			Right:  []string{"music", "volume", "battery", "wifi", "notification"},
+			Modules: []string{"yamw", "sysinfo", "todo", "notepad"},
 		}
 		yamlData, err := yaml.Marshal(&defaultConfig)
 		if err == nil {

@@ -5,7 +5,7 @@ const YamwModule = lazy(() => import('./yamw/YamwModule'));
 const Notepad = lazy(() => import('./notepad/Notepad'));
 const TodoModule = lazy(() => import('./todo/TodoModule'));
 const DrawingModule = lazy(() => import('./drawing/DrawingModule'));
-const AIModule = lazy(() => import('./ai/AIModule'));
+const Companion = lazy(() => import('./companion/Companion'))
 const SysInfoModule = lazy(() => import('./sysinfo/SysInfoModule'));
 
 const FallbackLoader = () => (
@@ -25,8 +25,8 @@ const ModuleRenderer = ({ name }) => {
                 return <TodoModule />;
             case 'drawing':
                 return <DrawingModule />;
-            case 'ai':
-                return <AIModule />;
+            case 'companion':
+                return <Companion />;
             case 'sysinfo':
                 return <SysInfoModule />;
             default:

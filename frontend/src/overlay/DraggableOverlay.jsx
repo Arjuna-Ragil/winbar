@@ -26,20 +26,44 @@ const DraggableModule = ({ id, overlayId, modName, position, onStop }) => {
     );
 };
 
-export default function DraggableOverlay({ overlayId, title, modules = [] }) {
+const CATEGORY_MAP = {
+    yamw: 'Home',
+    sysinfo: 'Home',
+    todo: 'Notes',
+    notepad: 'Notes',
+    drawing: 'Notes',
+    companion: 'AI'
+};
+
+export default function DraggableOverlay({ overlayId, title, modules = [], overlayTransparent = false }) {
     const [positions, setPositions] = useState({});
+    const [hiddenModules, setHiddenModules] = useState([]);
+    
+    const availableCategories = Array.from(new Set(modules.map(m => CATEGORY_MAP[m] || 'Other')));
+    const [activeTab, setActiveTab] = useState(availableCategories[0] || 'Home');
+    
     const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
-        const storageKey = `modulePositions_${overlayId}`;
-        const saved = localStorage.getItem(storageKey);
-        if (saved) {
-            try {
-                setPositions(JSON.parse(saved));
-            } catch (e) {
-                console.error(`Failed to parse ${storageKey}`, e);
-            }
+        if (!availableCategories.includes(activeTab) && availableCategories.length > 0) {
+            setActiveTab(availableCategories[0]);
         }
+    }, [modules]);
+
+    useEffect(() => {
+        const posKey = `modulePositions_${overlayId}`;
+        const hidKey = `hiddenModules_${overlayId}`;
+        
+        const savedPos = localStorage.getItem(posKey);
+        if (savedPos) {
+            try { setPositions(JSON.parse(savedPos)); } catch (e) {}
+        }
+        
+        const savedHid = localStorage.getItem(hidKey);
+        if (savedHid) {
+            try { setHiddenModules(JSON.parse(savedHid)); } catch (e) {}
+        }
+        
         setLoaded(true);
     }, [overlayId]);
 
@@ -53,10 +77,98 @@ export default function DraggableOverlay({ overlayId, title, modules = [] }) {
         localStorage.setItem(storageKey, JSON.stringify(newPositions));
     };
 
+    const toggleModule = (modName) => {
+        const hidKey = `hiddenModules_${overlayId}`;
+        let newHidden;
+        if (hiddenModules.includes(modName)) {
+            newHidden = hiddenModules.filter(m => m !== modName);
+        } else {
+            newHidden = [...hiddenModules, modName];
+        }
+        setHiddenModules(newHidden);
+        localStorage.setItem(hidKey, JSON.stringify(newHidden));
+    };
+
     if (!loaded) return null;
 
     return (
         <div className="flex-1 w-full relative p-4 animate-in fade-in duration-300 pointer-events-none overflow-hidden">
+            {/* Docks */}
+            {!overlayTransparent && modules.length > 0 && (
+                <>
+                    {/* Top Dock: Categories */}
+                    <div 
+                        className="absolute top-0 left-1/2 -translate-x-1/2 flex items-center justify-center flex-row gap-8 backdrop-blur-xl border-b px-12 pt-6 z-50 pointer-events-auto"
+                        style={{ borderColor: 'var(--color-widget-hover)' }}
+                    >
+                        {availableCategories.map(cat => {
+                            const isActive = activeTab === cat;
+                            return (
+                                <button
+                                    key={`tab-${cat}`}
+                                    onClick={() => setActiveTab(cat)}
+                                    className="relative text-sm font-bold uppercase tracking-[0.2em] transition-all px-6 pt-5 pb-4 overflow-hidden"
+                                    style={{ 
+                                        color: 'var(--color-widget-text)', 
+                                        opacity: isActive ? 1 : 0.5 
+                                    }}
+                                >
+                                    {cat}
+                                    
+                                    {/* Shining gradient from bottom to top */}
+                                    {isActive && (
+                                        <div 
+                                            className="absolute bottom-0 left-0 w-full h-full pointer-events-none"
+                                            style={{
+                                                background: 'linear-gradient(to top, var(--color-widget-active) 0%, transparent 100%)',
+                                                opacity: 0.7
+                                            }}
+                                        />
+                                    )}
+                                    
+                                    {/* Solid active line at the very bottom */}
+                                    {isActive && (
+                                        <div 
+                                            className="absolute bottom-0 left-0 w-full h-0.75"
+                                            style={{ backgroundColor: 'var(--color-widget-active)' }}
+                                        />
+                                    )}
+                                </button>
+                            );
+                        })}
+                    </div>
+
+                    {/* Bottom Dock: Module Toggles */}
+                    <div 
+                        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center justify-center flex-row gap-1.5 backdrop-blur-xl border rounded-md px-5 py-2.5 z-50 shadow-2xl pointer-events-auto"
+                        style={{ 
+                            backgroundColor: 'var(--color-widget)', 
+                            borderColor: 'var(--color-widget-hover)' 
+                        }}
+                    >
+                        {modules.filter(m => (CATEGORY_MAP[m] || 'Other') === activeTab).map((modName) => {
+                            const isHidden = hiddenModules.includes(modName);
+                            return (
+                                <button
+                                    key={`toggle-${modName}`}
+                                    onClick={() => toggleModule(modName)}
+                                    className="px-3 py-1 rounded-md text-sm font-medium transition-all duration-300 hover:scale-105"
+                                    style={{
+                                        backgroundColor: isHidden ? 'transparent' : 'var(--color-widget-active)',
+                                        color: 'var(--color-widget-text)',
+                                        opacity: isHidden ? 0.5 : 1,
+                                        border: `1px solid ${isHidden ? 'transparent' : 'var(--color-widget-active-hover)'}`,
+                                        boxShadow: isHidden ? 'none' : '0 0 10px rgba(0,0,0,0.2)'
+                                    }}
+                                >
+                                    {modName}
+                                </button>
+                            )
+                        })}
+                    </div>
+                </>
+            )}
+
             {modules.length === 0 ? (
                 <div className="w-full h-full flex flex-col items-center justify-center">
                     <h1 className="text-6xl font-bold mb-4 bg-linear-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent drop-shadow-lg">
@@ -66,8 +178,11 @@ export default function DraggableOverlay({ overlayId, title, modules = [] }) {
                 </div>
             ) : (
                 modules.map((modName, index) => {
+                    const cat = CATEGORY_MAP[modName] || 'Other';
+                    if (cat !== activeTab) return null;
+                    if (hiddenModules.includes(modName)) return null;
                     const id = `${modName}-${index}`;
-                    const pos = positions[id] || { x: index * 40, y: index * 40 };
+                    const pos = positions[id] || { x: index * 40, y: (index * 40) + 80 }; // added +80 to offset from top dock
                     return (
                         <DraggableModule
                             key={id}

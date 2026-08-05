@@ -6,7 +6,7 @@ import DraggableOverlay from './overlay/DraggableOverlay';
 import PowerOverlay from './overlay/PowerOverlay';
 
 function App() {
-    const [config, setConfig] = useState({ left: [], center: [], right: [], modules: {} });
+    const [config, setConfig] = useState({ left: [], center: [], right: [], modules: [] });
     const [theme, setTheme] = useState(null);
     const [activeOverlay, setActiveOverlay] = useState(null);
     const [overlayTransparent, setOverlayTransparent] = useState(false);
@@ -18,11 +18,11 @@ function App() {
                 left: cfg.left || [],
                 center: cfg.center || [],
                 right: cfg.right || [],
-                modules: cfg.modules || {}
+                modules: cfg.modules || []
             });
         }).catch((err) => {
             console.error("Failed to load config from Go:", err);
-            setConfig({ left: [], center: ["clock"], right: [], modules: {} });
+            setConfig({ left: [], center: ["clock"], right: [], modules: [] });
         });
 
         GetTheme().then(setTheme).catch(console.error);
@@ -126,16 +126,10 @@ function App() {
 
                 {/* Overlay Section */}
                 <div style={{ display: activeOverlay === 'home' ? 'contents' : 'none' }}>
-                    <DraggableOverlay overlayId="home" title="Home Dashboard" modules={config.modules.home || []} />
-                </div>
-                <div style={{ display: activeOverlay === 'notes' ? 'contents' : 'none' }}>
-                    <DraggableOverlay overlayId="notes" title="Notes & Tasks" modules={config.modules.notes || []} />
+                    <DraggableOverlay overlayId="home" title="Dashboard" modules={config.modules || []} overlayTransparent={overlayTransparent} />
                 </div>
                 <div style={{ display: activeOverlay === 'power' ? 'contents' : 'none' }}>
                     <PowerOverlay />
-                </div>
-                <div style={{ display: activeOverlay === 'chat' ? 'contents' : 'none' }}>
-                    <DraggableOverlay overlayId="chat" title="AI Chat" modules={config.modules.chat || []} />
                 </div>
             </div>
         </div>
