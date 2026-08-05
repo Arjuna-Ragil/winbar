@@ -35,7 +35,8 @@ const CATEGORY_MAP = {
     todo: 'Notes',
     notepad: 'Notes',
     drawing: 'Notes',
-    companion: 'AI'
+    companion: 'AI',
+    controlcenter: 'Home'
 };
 
 export default function DraggableOverlay({ overlayId, title, modules = [], overlayTransparent = false }) {

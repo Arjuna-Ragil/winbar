@@ -82,6 +82,9 @@ export namespace dto {
 	    storageUsage: number;
 	    storageUsedGb: number;
 	    storageTotalGb: number;
+	    gpuName: string;
+	    netUpload: number;
+	    netDownload: number;
 	    gpuUsage: number;
 	    gpuUsedGb: number;
 	    gpuTotalGb: number;
@@ -99,6 +102,9 @@ export namespace dto {
 	        this.storageUsage = source["storageUsage"];
 	        this.storageUsedGb = source["storageUsedGb"];
 	        this.storageTotalGb = source["storageTotalGb"];
+	        this.gpuName = source["gpuName"];
+	        this.netUpload = source["netUpload"];
+	        this.netDownload = source["netDownload"];
 	        this.gpuUsage = source["gpuUsage"];
 	        this.gpuUsedGb = source["gpuUsedGb"];
 	        this.gpuTotalGb = source["gpuTotalGb"];
@@ -203,6 +209,22 @@ export namespace dto {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.isConnected = source["isConnected"];
 	        this.signal = source["signal"];
+	    }
+	}
+	export class WifiNetwork {
+	    ssid: string;
+	    signal: number;
+	    security: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new WifiNetwork(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.ssid = source["ssid"];
+	        this.signal = source["signal"];
+	        this.security = source["security"];
 	    }
 	}
 

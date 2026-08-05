@@ -22,8 +22,8 @@ func LoadConfig() dto.Config {
 			Theme:   "default",
 			Left:    []string{"power", "home", "theme_toggle", "overlay_toggle", "workspace"},
 			Center:  []string{"day"},
-			Right:   []string{"music", "volume", "battery", "wifi", "notification"},
-			Modules: []string{"yamw", "sysinfo", "todo", "notepad"},
+			Right:   []string{"tray", "power"},
+			Modules: []string{"yamw", "sysinfo", "companion", "notepad", "controlcenter"},
 		}
 		yamlData, err := yaml.Marshal(&defaultConfig)
 		if err == nil {

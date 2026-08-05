@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Cpu, HardDrive, Monitor, Settings, Check } from 'lucide-react';
+import { Cpu, HardDrive, Monitor, Settings, Check, ArrowDown, ArrowUp } from 'lucide-react';
 import { GetSysInfo } from '../../../wailsjs/go/handlers/SystemHandler';
 
 const REFRESH_OPTIONS = [
@@ -110,6 +110,27 @@ export default function SysInfoModule() {
                     mainText={<>{sysInfo.storageUsage?.toFixed(1) || 0}<span className="text-sm text-white/60 ml-0.5">%</span></>}
                     subText={`${sysInfo.storageUsedGb?.toFixed(0) || 0} / ${sysInfo.storageTotalGb?.toFixed(0) || 0} GB`}
                 />
+            </div>
+
+            <div className="mt-3 flex gap-3">
+                <div className="flex-1 bg-white/5 border border-white/10 rounded-xl p-3 flex items-center gap-3">
+                    <div className="p-2 bg-cyan-500/20 rounded-lg text-cyan-400">
+                        <ArrowDown size={18} />
+                    </div>
+                    <div>
+                        <div className="text-white/60 text-[10px] font-semibold uppercase tracking-wider">Download</div>
+                        <div className="text-white font-bold">{sysInfo.netDownload?.toFixed(2) || '0.00'} <span className="text-xs text-white/60 font-medium">MB/s</span></div>
+                    </div>
+                </div>
+                <div className="flex-1 bg-white/5 border border-white/10 rounded-xl p-3 flex items-center gap-3">
+                    <div className="p-2 bg-pink-500/20 rounded-lg text-pink-400">
+                        <ArrowUp size={18} />
+                    </div>
+                    <div>
+                        <div className="text-white/60 text-[10px] font-semibold uppercase tracking-wider">Upload</div>
+                        <div className="text-white font-bold">{sysInfo.netUpload?.toFixed(2) || '0.00'} <span className="text-xs text-white/60 font-medium">MB/s</span></div>
+                    </div>
+                </div>
             </div>
 
             {showSettings && (

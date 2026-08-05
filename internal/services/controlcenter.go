@@ -1,0 +1,98 @@
+package services
+
+import (
+	"fmt"
+	"os/exec"
+	"strings"
+	"winbar/internal/dto"
+
+	"github.com/itchyny/volume-go"
+)
+
+type ControlCenterService struct{}
+
+func NewControlCenterService() *ControlCenterService {
+	return &ControlCenterService{}
+}
+
+func (s *ControlCenterService) GetVolume() (int, error) {
+	return volume.GetVolume()
+}
+
+func (s *ControlCenterService) SetVolume(v int) error {
+	return volume.SetVolume(v)
+}
+
+func (s *ControlCenterService) GetBrightness() (int, error) {
+	cmd := exec.Command("powershell", "-Command", "(Get-WmiObject -Namespace root/WMI -Class WmiMonitorBrightness).CurrentBrightness")
+	out, err := cmd.Output()
+	if err != nil {
+		return 0, err
+	}
+	var b int
+	fmt.Sscanf(strings.TrimSpace(string(out)), "%d", &b)
+	return b, nil
+}
+
+func (s *ControlCenterService) SetBrightness(b int) error {
+	cmd := exec.Command("powershell", "-Command", fmt.Sprintf("(Get-WmiObject -Namespace root/WMI -Class WmiMonitorBrightnessMethods).WmiSetBrightness(1, %d)", b))
+	return cmd.Run()
+}
+
+func (s *ControlCenterService) GetWifiNetworks() []dto.WifiNetwork {
+	cmd := exec.Command("netsh", "wlan", "show", "networks", "mode=bssid")
+	out, err := cmd.Output()
+	if err != nil {
+		return nil
+	}
+
+	lines := strings.Split(string(out), "\n")
+	var networks []dto.WifiNetwork
+	var current dto.WifiNetwork
+
+	for _, line := range lines {
+		line = strings.TrimSpace(line)
+		if strings.HasPrefix(line, "SSID") {
+			parts := strings.SplitN(line, ":", 2)
+			if len(parts) == 2 {
+				current = dto.WifiNetwork{SSID: strings.TrimSpace(parts[1])}
+				if current.SSID == "" {
+					current.SSID = "Hidden Network"
+				}
+			}
+		} else if strings.HasPrefix(line, "Authentication") {
+			parts := strings.SplitN(line, ":", 2)
+			if len(parts) == 2 {
+				current.Security = strings.TrimSpace(parts[1])
+			}
+		} else if strings.HasPrefix(line, "Signal") {
+			parts := strings.SplitN(line, ":", 2)
+			if len(parts) == 2 {
+				var sig int
+				fmt.Sscanf(strings.TrimSpace(parts[1]), "%d%%", &sig)
+				current.Signal = sig
+				
+				// Deduplicate networks with same SSID (take strongest signal)
+				found := false
+				for i, n := range networks {
+					if n.SSID == current.SSID {
+						found = true
+						if current.Signal > n.Signal {
+							networks[i].Signal = current.Signal
+						}
+						break
+					}
+				}
+				if !found && current.SSID != "Hidden Network" {
+					networks = append(networks, current)
+				}
+			}
+		}
+	}
+	return networks
+}
+
+func (s *ControlCenterService) ConnectWifi(ssid string) error {
+	cmd := exec.Command("netsh", "wlan", "connect", fmt.Sprintf("name=\"%s\"", ssid))
+	return cmd.Run()
+}

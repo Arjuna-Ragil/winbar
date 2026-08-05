@@ -30,6 +30,9 @@ func main() {
 	systemService := services.NewSystemService(systemDB)
 	systemHandler := handlers.NewSystemHandler(systemService)
 
+	ccService := services.NewControlCenterService()
+	ccHandler := handlers.NewControlCenterHandler(ccService)
+
 	Subsonic := yamwDB.NewSubsonic()
 
 	hpService := yamwServices.NewHPService(Subsonic)
@@ -71,6 +74,7 @@ func main() {
 		Bind: []interface{}{
 			app,
 			systemHandler,
+			ccHandler,
 			yamwHealth,
 			yamwList,
 			yamwStream,

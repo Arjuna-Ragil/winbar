@@ -6,6 +6,7 @@ const TodoModule = lazy(() => import('./todo/TodoModule'));
 const DrawingModule = lazy(() => import('./drawing/DrawingModule'));
 const Companion = lazy(() => import('./companion/Companion'))
 const SysInfoModule = lazy(() => import('./sysinfo/SysInfoModule'));
+const ControlCenter = lazy(() => import('./controlcenter/ControlCenter'));
 
 const FallbackLoader = () => (
     <div className="flex items-center justify-center p-4">
@@ -28,8 +29,10 @@ const ModuleRenderer = ({ name }) => {
                 return <Companion />;
             case 'sysinfo':
                 return <SysInfoModule />;
+            case 'controlcenter':
+                return <ControlCenter />;
             default:
-                return <div className="p-4 bg-red-500/20 text-red-200 rounded">Unknown module: {name}</div>;
+                return <div className="p-4 bg-red-500/20 text-red-500 rounded-lg">Unknown Module: {name}</div>;
         }
     };
 

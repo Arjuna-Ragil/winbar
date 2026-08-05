@@ -4,16 +4,21 @@ import (
 	"os/exec"
 	"strconv"
 	"strings"
+	"time"
 	"winbar/internal/database"
 	"winbar/internal/dto"
 
 	"github.com/shirou/gopsutil/v4/cpu"
 	"github.com/shirou/gopsutil/v4/disk"
 	"github.com/shirou/gopsutil/v4/mem"
+	"github.com/shirou/gopsutil/v4/net"
 )
 
 type SystemService struct {
 	db *database.SystemDB
+	lastNetBytesRecv uint64
+	lastNetBytesSent uint64
+	lastNetCheck     time.Time
 }
 
 func NewSystemService(db *database.SystemDB) *SystemService {
@@ -60,6 +65,23 @@ func (s *SystemService) GetSysInfo() dto.SysInfoData {
 				}
 			}
 		}
+	}
+
+	netStats, err := net.IOCounters(false)
+	if err == nil && len(netStats) > 0 {
+		now := time.Now()
+		if !s.lastNetCheck.IsZero() {
+			duration := now.Sub(s.lastNetCheck).Seconds()
+			if duration > 0 {
+				recvDiff := netStats[0].BytesRecv - s.lastNetBytesRecv
+				sentDiff := netStats[0].BytesSent - s.lastNetBytesSent
+				data.NetDownload = float64(recvDiff) / duration / (1024 * 1024)
+				data.NetUpload = float64(sentDiff) / duration / (1024 * 1024)
+			}
+		}
+		s.lastNetBytesRecv = netStats[0].BytesRecv
+		s.lastNetBytesSent = netStats[0].BytesSent
+		s.lastNetCheck = now
 	}
 
 	return data

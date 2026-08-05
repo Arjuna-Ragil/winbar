@@ -8,6 +8,9 @@ type SysInfoData struct {
 	StorageUsage   float64 `json:"storageUsage"`
 	StorageUsedGB  float64 `json:"storageUsedGb"`
 	StorageTotalGB float64 `json:"storageTotalGb"`
+	GPUName        string  `json:"gpuName"`
+	NetUpload      float64 `json:"netUpload"` // MB/s
+	NetDownload    float64 `json:"netDownload"` // MB/s
 	GPUUsage       float64 `json:"gpuUsage"`
 	GPUUsedGB      float64 `json:"gpuUsedGb"`
 	GPUTotalGB     float64 `json:"gpuTotalGb"`
