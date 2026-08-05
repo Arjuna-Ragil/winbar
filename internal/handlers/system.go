@@ -18,6 +18,10 @@ func (h *SystemHandler) GetBattery() dto.BatteryData {
 	return h.service.GetBattery()
 }
 
+func (h *SystemHandler) GetSysInfo() dto.SysInfoData {
+	return h.service.GetSysInfo()
+}
+
 func (h *SystemHandler) GetVolume() (dto.VolumeData, error) {
 	return h.service.GetVolume()
 }

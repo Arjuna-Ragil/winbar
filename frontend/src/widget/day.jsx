@@ -33,8 +33,11 @@ export default function Day() {
     let bgType = 'clear';
     if (weather) {
         const w = weather.weatherCode;
-        if (w >= 1 && w <= 3) bgType = 'cloudy';
-        if (w >= 50) bgType = 'rain';
+        if ((w >= 1 && w <= 3) || (w === 45 || w === 48) || (w >= 51 && w <= 57) || (w >= 71 && w <= 77) || (w >= 85 && w <= 86)) {
+            bgType = 'cloudy';
+        } else if ((w >= 61 && w <= 67) || (w >= 80 && w <= 82) || (w >= 95 && w <= 99)) {
+            bgType = 'rain';
+        }
     }
 
     return (

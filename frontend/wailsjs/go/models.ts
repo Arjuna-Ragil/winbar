@@ -74,6 +74,36 @@ export namespace dto {
 	        this.duration = source["duration"];
 	    }
 	}
+	export class SysInfoData {
+	    cpuUsage: number;
+	    ramUsage: number;
+	    ramUsedGb: number;
+	    ramTotalGb: number;
+	    storageUsage: number;
+	    storageUsedGb: number;
+	    storageTotalGb: number;
+	    gpuUsage: number;
+	    gpuUsedGb: number;
+	    gpuTotalGb: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new SysInfoData(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.cpuUsage = source["cpuUsage"];
+	        this.ramUsage = source["ramUsage"];
+	        this.ramUsedGb = source["ramUsedGb"];
+	        this.ramTotalGb = source["ramTotalGb"];
+	        this.storageUsage = source["storageUsage"];
+	        this.storageUsedGb = source["storageUsedGb"];
+	        this.storageTotalGb = source["storageTotalGb"];
+	        this.gpuUsage = source["gpuUsage"];
+	        this.gpuUsedGb = source["gpuUsedGb"];
+	        this.gpuTotalGb = source["gpuTotalGb"];
+	    }
+	}
 	export class ThemeColors {
 	    widget: string;
 	    widgetHover: string;

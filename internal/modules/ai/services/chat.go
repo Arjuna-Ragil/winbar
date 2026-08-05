@@ -56,8 +56,6 @@ func (s *ChatServ) Prompt(messages []ChatMessage) (string, error) {
 		return "", err
 	}
 
-	fmt.Println(string(body))
-
 	var result map[string]interface{}
 	if err := json.Unmarshal(body, &result); err != nil {
 		return "", err

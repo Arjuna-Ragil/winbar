@@ -6,6 +6,7 @@ const Notepad = lazy(() => import('./notepad/Notepad'));
 const TodoModule = lazy(() => import('./todo/TodoModule'));
 const DrawingModule = lazy(() => import('./drawing/DrawingModule'));
 const AIModule = lazy(() => import('./ai/AIModule'));
+const SysInfoModule = lazy(() => import('./sysinfo/SysInfoModule'));
 
 const FallbackLoader = () => (
     <div className="flex items-center justify-center p-4">
@@ -26,6 +27,8 @@ const ModuleRenderer = ({ name }) => {
                 return <DrawingModule />;
             case 'ai':
                 return <AIModule />;
+            case 'sysinfo':
+                return <SysInfoModule />;
             default:
                 return <div className="p-4 bg-red-500/20 text-red-200 rounded">Unknown module: {name}</div>;
         }

@@ -6,6 +6,8 @@ export function GetBattery():Promise<dto.BatteryData>;
 
 export function GetConfig():Promise<dto.Config>;
 
+export function GetSysInfo():Promise<dto.SysInfoData>;
+
 export function GetTheme():Promise<dto.Theme>;
 
 export function GetThemes():Promise<Array<string>>;

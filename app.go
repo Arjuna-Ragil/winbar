@@ -189,8 +189,10 @@ func (a *App) onReady() {
 	systray.SetTooltip("Winbar")
 
 	mConfig := systray.AddMenuItem("Open Config", "Open Configuration")
-	mThemes := systray.AddMenuItem("Open Themes", "Open Themes")
+
+	systray.AddSeparator()
 	mRunOnLaunch := systray.AddMenuItemCheckbox("Run on Launch", "Run Winbar on system startup", a.isRunOnLaunchEnabled())
+	mReload := systray.AddMenuItem("Reload", "Reload Winbar")
 	
 	systray.AddSeparator()
 	mQuit := systray.AddMenuItem("Quit", "Quit Winbar")
@@ -201,9 +203,6 @@ func (a *App) onReady() {
 			case <-mConfig.ClickedCh:
 				pwd, _ := os.Getwd()
 				exec.Command("explorer", "/select,", filepath.Join(pwd, "config.yaml")).Start()
-			case <-mThemes.ClickedCh:
-				pwd, _ := os.Getwd()
-				exec.Command("explorer", filepath.Join(pwd, "themes")).Start()
 			case <-mRunOnLaunch.ClickedCh:
 				if mRunOnLaunch.Checked() {
 					a.toggleRunOnLaunch(false)
@@ -212,6 +211,8 @@ func (a *App) onReady() {
 					a.toggleRunOnLaunch(true)
 					mRunOnLaunch.Check()
 				}
+			case <-mReload.ClickedCh:
+				runtime.WindowReload(a.ctx)
 			case <-mQuit.ClickedCh:
 				systray.Quit()
 			}
