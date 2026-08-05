@@ -6,20 +6,32 @@ import (
 
 	"winbar/internal/dto"
 
-	"github.com/yaml/go-yaml"
+	"gopkg.in/yaml.v2"
 )
 
 func LoadConfig() dto.Config {
 	configPath := "config.yaml"
-	if _, err := os.Stat(configPath); os.IsNotExist(err) {
+	
+	writeDefault := false
+	if info, err := os.Stat(configPath); os.IsNotExist(err) || (err == nil && info.Size() == 0) {
+		writeDefault = true
+	}
+
+	if writeDefault {
 		defaultConfig := dto.Config{
 			Theme:  "default",
-			Left:   []string{},
-			Center: []string{"clock"},
-			Right:  []string{"theme_toggle"},
+			Left:   []string{"power", "home", "notes", "chat", "workspace"},
+			Center: []string{"day"},
+			Right:  []string{"overlay_toggle", "theme_toggle", "music", "volume", "battery", "wifi", "notification"},
+			Modules: map[string][]string{
+				"home": {"yamw", "sysinfo"},
+				"notes": {"todo", "notepad"},
+			},
 		}
-		yamlData, _ := yaml.Marshal(&defaultConfig)
-		os.WriteFile(configPath, yamlData, 0644)
+		yamlData, err := yaml.Marshal(&defaultConfig)
+		if err == nil {
+			os.WriteFile(configPath, yamlData, 0644)
+		}
 		return defaultConfig
 	}
 
