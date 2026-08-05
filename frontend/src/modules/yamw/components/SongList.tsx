@@ -30,13 +30,13 @@ export const SongList = ({ songs, setSongs, activeSongId, isPlaying, loading, t,
     const handleDragOver = (e: React.DragEvent, index: number) => {
         e.preventDefault();
         if (draggedIndex === null || draggedIndex === index) return;
-        
+
         const newSongs = [...songs];
         const draggedSong = newSongs[draggedIndex];
-        
+
         newSongs.splice(draggedIndex, 1);
         newSongs.splice(index, 0, draggedSong);
-        
+
         setDraggedIndex(index);
         setSongs(newSongs);
     };
@@ -65,15 +65,14 @@ export const SongList = ({ songs, setSongs, activeSongId, isPlaying, loading, t,
                 const isActive = song.id === activeSongId;
                 const isDragging = draggedIndex === index;
                 return (
-                    <div 
-                        key={song.id} 
+                    <div
+                        key={song.id}
                         draggable
                         onDragStart={(e) => handleDragStart(e, index)}
                         onDragOver={(e) => handleDragOver(e, index)}
                         onDragEnd={handleDragEnd}
-                        className={`flex gap-3 p-1.5 rounded cursor-pointer transition-all ${
-                            isActive ? `${t.bgActive} ${t.borderActive}` : `${t.bgHover} border-transparent`
-                        } border ${isDragging ? 'opacity-30 scale-95' : ''}`}
+                        className={`flex gap-3 p-1.5 rounded cursor-pointer transition-all ${isActive ? `${t.bgActive} ${t.borderActive}` : `${t.bgHover} border-transparent`
+                            } border ${isDragging ? 'opacity-30 scale-95' : ''}`}
                         onClick={() => onPlaySong(song)}
                     >
                         <div className={`cursor-grab flex self-center shrink-0 ${t.muted} hover:${t.base} active:cursor-grabbing`}>
@@ -81,9 +80,9 @@ export const SongList = ({ songs, setSongs, activeSongId, isPlaying, loading, t,
                         </div>
                         <CoverImage id={song.id} className="w-10 h-10 object-cover shrink-0 rounded-sm shadow-sm pointer-events-none" t={t} />
                         <div className="flex flex-col min-w-0 flex-1 items-start pointer-events-none pr-2 overflow-hidden">
-                            <MarqueeText 
-                                text={`${isPlaying && isActive ? "▶ " : ""}${song.title || "Unknown"}`} 
-                                className="text-lg flex items-start leading-tight mb-0.5" 
+                            <MarqueeText
+                                text={`${isPlaying && isActive ? "▶ " : ""}${song.title || "Unknown"}`}
+                                className="text-lg flex items-start leading-tight mb-0.5"
                             />
                             <div className={`truncate text-sm opacity-70 leading-tight ${t.muted}`}>
                                 {song.artist || "Unknown"}
@@ -97,12 +96,12 @@ export const SongList = ({ songs, setSongs, activeSongId, isPlaying, loading, t,
             })}
 
             <div className="w-full pt-4 pb-16 flex justify-center">
-                <button 
+                <button
                     onClick={(e) => { e.stopPropagation(); onLoadMore(); }}
                     disabled={loading}
                     className={`flex items-center gap-2 px-6 py-2 rounded-full border ${t.border} ${t.muted} hover:${t.base} ${t.bgHover} transition-colors cursor-pointer text-sm font-bold disabled:opacity-50`}
                 >
-                    <RefreshCw size={16} className={loading ? 'animate-spin' : ''} /> 
+                    <RefreshCw size={16} className={loading ? 'animate-spin' : ''} />
                     {loading ? "LOADING..." : "Reload Music List"}
                 </button>
             </div>

@@ -1,11 +1,12 @@
 @import "tailwindcss";
 
 @theme {
-  --color-widget: rgb(59 130 246 / 0.5);
-  --color-widget-hover: rgb(59 130 246 / 0.7);
-  --color-widget-active: rgb(168 85 247 / 0.8);
-  --color-widget-active-hover: rgb(168 85 247 / 0.6);
+  --color-widget: rgba(5, 73, 109, 0.5);
+  --color-widget-hover: rgba(43, 107, 185, 0.7);
+  --color-widget-active: rgba(9, 119, 147, 0.8);
+  --color-widget-active-hover: rgba(47, 177, 209, 0.8);
   --color-widget-text: #ffffff;
+  --color-background: rgba(8, 16, 39, 1);
   --font-retro: "VT323", monospace;
 }
 
@@ -30,16 +31,17 @@
     @apply text-sm font-medium;
   }
 
-  /* Hide scrollbar for Chrome, Safari and Opera */
+  /* Hide scrollbar */
   .hide-scrollbar::-webkit-scrollbar {
     display: none;
   }
-  /* Hide scrollbar for IE, Edge and Firefox */
+
   .hide-scrollbar {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }
+
 html {
     text-align: center;
     color: white;

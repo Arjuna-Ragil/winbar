@@ -3,6 +3,7 @@ package helper
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 )
@@ -13,31 +14,37 @@ type Config struct {
 	Password  string
 }
 
-func GetConfigPath() (string, error){
-	configDir, err := os.UserConfigDir(); if err != nil{
-		return "", fmt.Errorf("Failed to get config directory")
+func GetConfigPath() (string, error) {
+	configDir, err := os.UserConfigDir()
+	if err != nil {
+		return "", fmt.Errorf("failed to get config directory")
 	}
 
 	appDir := filepath.Join(configDir, "YAMW")
 
-	err = os.MkdirAll(appDir, 0755); if err != nil{
-		return "", fmt.Errorf("Failed to make directory")
+	err = os.MkdirAll(appDir, 0755)
+	if err != nil {
+		return "", fmt.Errorf("failed to make directory")
 	}
 
 	return filepath.Join(appDir, "config.json"), nil
 }
 
-func LoadConfig() (Config, error){
+func LoadConfig() (Config, error) {
 	var Config Config
-	filepath, err := GetConfigPath(); if err != nil{
+	filepath, err := GetConfigPath()
+	if err != nil {
 		return Config, fmt.Errorf("%s", err)
 	}
-	data, err := os.ReadFile(filepath); if err != nil{
-		return Config, fmt.Errorf("Failed to read config file: %s", err)
+	data, err := os.ReadFile(filepath)
+	if err != nil {
+		return Config, fmt.Errorf("failed to read config file: %s", err)
 	}
 
-	err = json.Unmarshal(data, &Config)
+	err = json.Unmarshal(data, &Config); if err != nil{
+		log.Printf("failed to unmarshal config file: %s", err)
+	}
 
 	return Config, nil
-	
+
 }

@@ -13,9 +13,9 @@ export default function Notepad() {
     } = useNotepad();
 
     return (
-        <div className="flex flex-col rounded-md shadow-[5px_5px_15px_rgba(0,0,0,0.6)] border-2 border-widget text-black pointer-events-auto resize overflow-hidden relative" 
-             style={{ width: '420px', height: '500px', minWidth: '350px', minHeight: '300px', backgroundColor: 'var(--color-background)' }}>
-            
+        <div className="flex flex-col rounded-md shadow-[5px_5px_15px_rgba(0,0,0,0.6)] border-2 border-widget text-black pointer-events-auto resize overflow-hidden relative"
+            style={{ width: '420px', height: '500px', minWidth: '350px', minHeight: '300px', backgroundColor: 'var(--color-background)' }}>
+
             <style>{`
                 @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap');
                 
@@ -38,27 +38,27 @@ export default function Notepad() {
                 .scrollable::-webkit-scrollbar-track { background: transparent; }
                 .scrollable::-webkit-scrollbar-thumb { background: var(--color-widget); border-radius: 10px; border: 2px solid #f4ecd8; }
             `}</style>
-            
+
             {/* Inner Paper Pages */}
             <div className="flex-1 m-1 mt-0 bg-[#f4ecd8] rounded-sm shadow-[inset_4px_0_10px_rgba(0,0,0,0.1),inset_-1px_0_2px_rgba(0,0,0,0.05)] overflow-hidden flex flex-col relative border-l border-black/10">
-                
+
                 {!activeNoteId ? (
-                    <TableOfContents 
-                        notes={notes} 
-                        setActiveNoteId={setActiveNoteId} 
-                        handleCreateNote={handleCreateNote} 
-                        handleDeleteNote={handleDeleteNote} 
+                    <TableOfContents
+                        notes={notes}
+                        setActiveNoteId={setActiveNoteId}
+                        handleCreateNote={handleCreateNote}
+                        handleDeleteNote={handleDeleteNote}
                     />
                 ) : (
-                    <NotepadEditor 
-                        activeNoteId={activeNoteId} 
-                        notes={notes} 
-                        saveNotes={saveNotes} 
-                        setActiveNoteId={setActiveNoteId} 
+                    <NotepadEditor
+                        activeNoteId={activeNoteId}
+                        notes={notes}
+                        saveNotes={saveNotes}
+                        setActiveNoteId={setActiveNoteId}
                     />
                 )}
             </div>
-            
+
             <div className="absolute bottom-1 right-1 w-3 h-3 border-r-2 border-b-2 border-widget-text/50 pointer-events-none rounded-br-sm"></div>
         </div>
     );

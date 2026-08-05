@@ -1,6 +1,5 @@
 import { lazy, Suspense } from 'react';
 
-// Lazy load modules so they are only downloaded/parsed when explicitly requested
 const YamwModule = lazy(() => import('./yamw/YamwModule'));
 const Notepad = lazy(() => import('./notepad/Notepad'));
 const TodoModule = lazy(() => import('./todo/TodoModule'));

@@ -7,7 +7,7 @@ export default function NotificationWidget() {
     };
 
     return (
-        <button 
+        <button
             onClick={handleClick}
             className="widget-btn"
         >

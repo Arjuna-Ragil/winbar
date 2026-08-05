@@ -19,7 +19,7 @@ export default function ThemeToggle() {
         if (currentIndex === -1) currentIndex = 0;
         const nextIndex = (currentIndex + 1) % themes.length;
         const nextTheme = themes[nextIndex];
-        
+
         SetTheme(nextTheme).then(() => {
             setCurrentTheme(nextTheme);
             window.dispatchEvent(new Event('theme_changed'));
@@ -27,7 +27,7 @@ export default function ThemeToggle() {
     };
 
     return (
-        <button 
+        <button
             onClick={toggleTheme}
             className="widget-btn"
             title={`Toggle Theme (Current: ${currentTheme})`}

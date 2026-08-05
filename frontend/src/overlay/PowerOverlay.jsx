@@ -1,4 +1,4 @@
-import { Power, LogOut, RefreshCcw, Moon } from 'lucide-react';
+import { LogOut, RefreshCcw, Moon } from 'lucide-react';
 import { Shutdown, Restart, Sleep } from '../../wailsjs/go/handlers/SystemHandler.js';
 
 export default function PowerOverlay() {
@@ -8,9 +8,9 @@ export default function PowerOverlay() {
                 Power Options
             </h1>
             <p className="text-white/60 mb-12 text-lg pointer-events-auto">Select an action to perform on your system.</p>
-            
+
             <div className="flex gap-8 pointer-events-auto">
-                <button 
+                <button
                     onClick={() => Sleep()}
                     className="w-40 h-40 rounded-3xl bg-white/3 hover:bg-white/8 border border-white/10 flex flex-col items-center justify-center gap-4 cursor-pointer transition-all hover:scale-105 hover:border-blue-500/50 hover:shadow-[0_0_32px_rgba(59,130,246,0.2)]"
                 >
@@ -20,7 +20,7 @@ export default function PowerOverlay() {
                     <span className="font-semibold tracking-wide">Sleep</span>
                 </button>
 
-                <button 
+                <button
                     onClick={() => Restart()}
                     className="w-40 h-40 rounded-3xl bg-white/3 hover:bg-white/8 border border-white/10 flex flex-col items-center justify-center gap-4 cursor-pointer transition-all hover:scale-105 hover:border-orange-500/50 hover:shadow-[0_0_32px_rgba(249,115,22,0.2)]"
                 >
@@ -30,7 +30,7 @@ export default function PowerOverlay() {
                     <span className="font-semibold tracking-wide">Restart</span>
                 </button>
 
-                <button 
+                <button
                     onClick={() => Shutdown()}
                     className="w-40 h-40 rounded-3xl bg-white/3 hover:bg-white/8 border border-white/10 flex flex-col items-center justify-center gap-4 cursor-pointer transition-all hover:scale-105 hover:border-red-500/50 hover:shadow-[0_0_32px_rgba(239,68,68,0.2)]"
                 >

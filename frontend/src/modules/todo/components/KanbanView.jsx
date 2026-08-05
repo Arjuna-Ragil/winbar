@@ -22,7 +22,6 @@ const Column = ({ title, status, todos, updateTaskStatus, deleteTask, editTask }
 
     const handleDragStart = (e, id) => {
         e.dataTransfer.setData("taskId", id);
-        // Small delay to allow the drag image to be generated before hiding the original
         setTimeout(() => e.target.classList.add('opacity-50'), 0);
     };
 
@@ -31,7 +30,7 @@ const Column = ({ title, status, todos, updateTaskStatus, deleteTask, editTask }
     };
 
     return (
-        <div 
+        <div
             className="flex-1 flex flex-col min-w-50 border-r border-black/10 last:border-r-0 transition-colors"
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
@@ -42,10 +41,10 @@ const Column = ({ title, status, todos, updateTaskStatus, deleteTask, editTask }
             </div>
             <div className="flex-1 overflow-y-auto p-2 flex flex-col gap-2 scrollable">
                 {todos.filter(t => t.status === status).map(task => (
-                    <TaskCard 
-                        key={task.id} 
-                        task={task} 
-                        handleDragStart={handleDragStart} 
+                    <TaskCard
+                        key={task.id}
+                        task={task}
+                        handleDragStart={handleDragStart}
                         handleDragEnd={handleDragEnd}
                         deleteTask={deleteTask}
                         editTask={editTask}
@@ -70,7 +69,7 @@ const TaskCard = ({ task, handleDragStart, handleDragEnd, deleteTask, editTask }
     };
 
     return (
-        <div 
+        <div
             draggable={!isEditing}
             onDragStart={(e) => handleDragStart(e, task.id)}
             onDragEnd={handleDragEnd}
@@ -78,8 +77,8 @@ const TaskCard = ({ task, handleDragStart, handleDragEnd, deleteTask, editTask }
         >
             {isEditing ? (
                 <div className="flex items-center gap-1">
-                    <input 
-                        type="text" 
+                    <input
+                        type="text"
                         value={text}
                         onChange={(e) => setText(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && handleSave()}
@@ -123,20 +122,20 @@ export default function KanbanView({ todos, addTask, updateTaskStatus, deleteTas
     return (
         <div className="flex flex-col h-full bg-[#f4ecd8]">
             <form onSubmit={handleAdd} className="flex gap-2 p-3 border-b border-black/10 bg-black/5 items-center">
-                <input 
-                    type="text" 
-                    placeholder="Add a new task..." 
+                <input
+                    type="text"
+                    placeholder="Add a new task..."
                     value={newTaskText}
                     onChange={(e) => setNewTaskText(e.target.value)}
                     className="flex-1 bg-transparent border-b border-black/20 focus:border-widget outline-none px-2 font-['Caveat'] text-2xl text-black transition-colors"
                 />
-                <input 
+                <input
                     type="date"
                     value={newTaskDate}
                     onChange={(e) => setNewTaskDate(e.target.value)}
                     className="bg-transparent border-b border-black/20 focus:border-widget outline-none px-2 text-black/60 font-sans text-sm transition-colors"
                 />
-                <button 
+                <button
                     type="submit"
                     className="p-2 rounded bg-widget text-widget-text hover:bg-widget-hover transition-colors shadow-sm shrink-0"
                 >

@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 export default function useTodo() {
     const [todos, setTodos] = useState([]);
 
-    // Load from local storage
     useEffect(() => {
         const saved = localStorage.getItem('todo_list');
         if (saved) {

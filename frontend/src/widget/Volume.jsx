@@ -10,7 +10,7 @@ export default function VolumeWidget() {
             GetVolume().then(setData).catch(console.error);
         };
         fetchVolume();
-        const timer = setInterval(fetchVolume, 2000); // Update every 2 seconds
+        const timer = setInterval(fetchVolume, 2000);
         return () => clearInterval(timer);
     }, []);
 

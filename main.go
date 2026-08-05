@@ -8,25 +8,24 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/options"
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
 	"github.com/wailsapp/wails/v2/pkg/options/windows"
-	
+
 	"winbar/internal/database"
 	"winbar/internal/handlers"
 	"winbar/internal/services"
-	
+
+	aiHandlers "winbar/internal/modules/ai/handlers"
+	aiServices "winbar/internal/modules/ai/services"
 	yamwDB "winbar/internal/modules/yamw/database"
 	yamwHandlers "winbar/internal/modules/yamw/handlers"
 	yamwServices "winbar/internal/modules/yamw/services"
-	aiHandlers "winbar/internal/modules/ai/handlers"
-	aiServices "winbar/internal/modules/ai/services"
 )
 
 //go:embed all:frontend/dist
 var assets embed.FS
 
 func main() {
-	// Create an instance of the app structure
 	app := NewApp()
-	
+
 	systemDB := database.NewSystemDB()
 	systemService := services.NewSystemService(systemDB)
 	systemHandler := handlers.NewSystemHandler(systemService)
@@ -54,16 +53,15 @@ func main() {
 
 	screenWidth := win.GetSystemMetrics(win.SM_CXSCREEN)
 
-	// Create application with options
 	err := wails.Run(&options.App{
-		Title:       "winbar",
-		Width:       int(screenWidth),
-		Height:      40,
-		Frameless:   true,
+		Title:         "winbar",
+		Width:         int(screenWidth),
+		Height:        40,
+		Frameless:     true,
 		DisableResize: true,
 		Windows: &windows.Options{
 			WebviewIsTransparent: true,
-			WindowIsTranslucent: true,
+			WindowIsTranslucent:  true,
 		},
 		AssetServer: &assetserver.Options{
 			Assets: assets,

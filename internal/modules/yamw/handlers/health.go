@@ -5,7 +5,7 @@ import (
 )
 
 type Health struct {
-	HPService *services.HPService 
+	HPService *services.HPService
 }
 
 func NewHealth(hpService *services.HPService) *Health {

@@ -1,11 +1,12 @@
 package services
 
 import (
-	"io"
 	"bytes"
 	"encoding/json"
 	"fmt"
-	
+	"io"
+	"log"
+
 	"net/http"
 )
 
@@ -24,10 +25,10 @@ func (s *ChatServ) Prompt(messages []ChatMessage) (string, error) {
 	url := "http://localhost:8080/v1/chat/completions"
 
 	payload := map[string]interface{}{
-		"model": "gemma-4-E4B",
+		"model":    "gemma-4-E4B",
 		"messages": messages,
 	}
-	
+
 	jsonPayload, err := json.Marshal(payload)
 	if err != nil {
 		return "", err
@@ -44,7 +45,11 @@ func (s *ChatServ) Prompt(messages []ChatMessage) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("failed to connect to local AI: %v", err)
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			log.Printf("Error closing response body: %v", err)
+		}
+	}()
 
 	if resp.StatusCode != http.StatusOK {
 		body, _ := io.ReadAll(resp.Body)

@@ -3,6 +3,7 @@ package services
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"time"
 
@@ -31,7 +32,12 @@ func (s *SystemService) GetWeather() dto.WeatherData {
 		client := &http.Client{Timeout: 3 * time.Second}
 		resp, err := client.Get("http://ip-api.com/json/")
 		if err == nil {
-			defer resp.Body.Close()
+			defer func(){
+				err := resp.Body.Close()
+				if err != nil{
+					log.Printf("weather close error: %v", err)
+				}
+			}()
 			var ipRes ipApiResponse
 			if json.NewDecoder(resp.Body).Decode(&ipRes) == nil {
 				cachedLat = ipRes.Lat
@@ -52,7 +58,12 @@ func (s *SystemService) GetWeather() dto.WeatherData {
 		fmt.Println("Weather fetch error:", err)
 		return dto.WeatherData{}
 	}
-	defer resp.Body.Close()
+	defer func(){
+		err := resp.Body.Close()
+		if err != nil{
+			log.Printf("weather close error: %v", err)
+		}
+	}()
 
 	var omRes openMeteoResponse
 	if err := json.NewDecoder(resp.Body).Decode(&omRes); err != nil {

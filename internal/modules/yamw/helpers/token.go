@@ -16,7 +16,7 @@ func GenerateSalt(n int) string {
 	return string(s)
 }
 
-func CreateToken(password, salt string) string{
+func CreateToken(password, salt string) string {
 	hash := md5.New()
 	hash.Write([]byte(password + salt))
 	return hex.EncodeToString(hash.Sum(nil))

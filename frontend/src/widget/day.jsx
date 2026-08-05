@@ -20,7 +20,7 @@ export default function Day() {
         const timer = setInterval(() => {
             setTime(new Date());
         }, 1000);
-        
+
         return () => {
             clearInterval(timer);
             clearInterval(weatherTimer);
@@ -42,7 +42,7 @@ export default function Day() {
 
     return (
         <div className="widget px-5! py-0.5! items-center justify-center relative overflow-hidden group">
-            
+
             {bgType === 'clear' && weather?.isDay && (
                 <div className="absolute -top-4 -right-4 text-yellow-400/20 group-hover:text-yellow-400/30 transition-colors">
                     <Sun size={64} fill="currentColor" />
@@ -69,7 +69,7 @@ export default function Day() {
                 <span className="text-lg font-semibold tracking-wide drop-shadow-md">{timeString}</span>
                 <span className="w-px h-4 bg-white/20 rounded-full"></span>
                 <span className="text-base font-normal text-white/90 drop-shadow-md">{dateString}</span>
-                
+
                 {weather && (
                     <>
                         <span className="w-px h-4 bg-white/20 rounded-full"></span>

@@ -23,13 +23,11 @@ func NewSystemService(db *database.SystemDB) *SystemService {
 func (s *SystemService) GetSysInfo() dto.SysInfoData {
 	data := dto.SysInfoData{}
 
-	// CPU Usage
 	cpuPercents, err := cpu.Percent(0, false)
 	if err == nil && len(cpuPercents) > 0 {
 		data.CPUUsage = cpuPercents[0]
 	}
 
-	// RAM Usage
 	vmStat, err := mem.VirtualMemory()
 	if err == nil {
 		data.RAMUsage = vmStat.UsedPercent
@@ -37,7 +35,6 @@ func (s *SystemService) GetSysInfo() dto.SysInfoData {
 		data.RAMTotalGB = float64(vmStat.Total) / (1024 * 1024 * 1024)
 	}
 
-	// Storage Usage (C: drive)
 	diskStat, err := disk.Usage("C:\\")
 	if err == nil {
 		data.StorageUsage = diskStat.UsedPercent
@@ -45,7 +42,6 @@ func (s *SystemService) GetSysInfo() dto.SysInfoData {
 		data.StorageTotalGB = float64(diskStat.Total) / (1024 * 1024 * 1024)
 	}
 
-	// GPU Usage via nvidia-smi
 	cmd := exec.Command("nvidia-smi", "--query-gpu=utilization.gpu,memory.used,memory.total", "--format=csv,noheader,nounits")
 	out, err := cmd.Output()
 	if err == nil {
@@ -57,7 +53,7 @@ func (s *SystemService) GetSysInfo() dto.SysInfoData {
 					data.GPUUsage = parsed
 				}
 				if parsed, err := strconv.ParseFloat(strings.TrimSpace(parts[1]), 64); err == nil {
-					data.GPUUsedGB = parsed / 1024.0 // nvidia-smi nounits gives MiB
+					data.GPUUsedGB = parsed / 1024.0
 				}
 				if parsed, err := strconv.ParseFloat(strings.TrimSpace(parts[2]), 64); err == nil {
 					data.GPUTotalGB = parsed / 1024.0
@@ -100,4 +96,3 @@ func (s *SystemService) Restart() {
 func (s *SystemService) Sleep() {
 	s.db.Sleep()
 }
-

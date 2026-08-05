@@ -1,12 +1,13 @@
 package services
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
-	"encoding/base64"
 )
 
 type CompanionConfig struct {
@@ -36,9 +37,11 @@ func (s *CompanionServ) GetCompanions() ([]Companion, error) {
 	}
 
 	companionsDir := filepath.Join(pwd, "companions")
-	
+
 	if _, err := os.Stat(companionsDir); os.IsNotExist(err) {
-		os.MkdirAll(companionsDir, 0755)
+		if err := os.MkdirAll(companionsDir, 0755); err != nil {
+			log.Fatalf("Error creating companions directory: %v", err)
+		}
 	}
 
 	entries, err := os.ReadDir(companionsDir)
@@ -55,16 +58,16 @@ func (s *CompanionServ) GetCompanions() ([]Companion, error) {
 
 		id := entry.Name()
 		compPath := filepath.Join(companionsDir, id)
-		
+
 		configPath := filepath.Join(compPath, "config.json")
 		configData, err := os.ReadFile(configPath)
 		if err != nil {
-			continue 
+			continue
 		}
 
 		var cfg CompanionConfig
 		if err := json.Unmarshal(configData, &cfg); err != nil {
-			continue 
+			continue
 		}
 
 		var expressions []string
@@ -99,7 +102,7 @@ func (s *CompanionServ) GetCompanionImageAsBase64(id string, expression string) 
 	}
 
 	imgPath := filepath.Join(pwd, "companions", id, expression+".png")
-	
+
 	imgData, err := os.ReadFile(imgPath)
 	if err != nil {
 		return "", fmt.Errorf("image not found: %s", err.Error())

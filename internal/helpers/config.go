@@ -11,7 +11,7 @@ import (
 
 func LoadConfig() dto.Config {
 	configPath := "config.yaml"
-	
+
 	writeDefault := false
 	if info, err := os.Stat(configPath); os.IsNotExist(err) || (err == nil && info.Size() == 0) {
 		writeDefault = true
@@ -19,15 +19,18 @@ func LoadConfig() dto.Config {
 
 	if writeDefault {
 		defaultConfig := dto.Config{
-			Theme:  "default",
-			Left:   []string{"power", "home", "theme_toggle", "overlay_toggle", "workspace"},
-			Center: []string{"day"},
-			Right:  []string{"music", "volume", "battery", "wifi", "notification"},
+			Theme:   "default",
+			Left:    []string{"power", "home", "theme_toggle", "overlay_toggle", "workspace"},
+			Center:  []string{"day"},
+			Right:   []string{"music", "volume", "battery", "wifi", "notification"},
 			Modules: []string{"yamw", "sysinfo", "todo", "notepad"},
 		}
 		yamlData, err := yaml.Marshal(&defaultConfig)
 		if err == nil {
-			os.WriteFile(configPath, yamlData, 0644)
+			err := os.WriteFile(configPath, yamlData, 0644)
+			if err != nil {
+				fmt.Println("Error writing default config:", err)
+			}
 		}
 		return defaultConfig
 	}

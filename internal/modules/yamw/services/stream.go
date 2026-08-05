@@ -1,8 +1,8 @@
 package services
 
 import (
-	helper "winbar/internal/modules/yamw/helpers"
 	"fmt"
+	helper "winbar/internal/modules/yamw/helpers"
 )
 
 type StreamServ struct{}
@@ -11,7 +11,7 @@ func NewStreamServ() *StreamServ {
 	return &StreamServ{}
 }
 
-func (s *StreamServ) CreateStream(id string) string{
+func (s *StreamServ) CreateStream(id string) string {
 	endpoint := "stream"
 	rawSSURL := helper.CreateSSURL(endpoint)
 	SSURL := fmt.Sprintf("%s&id=%s", rawSSURL, id)
@@ -19,7 +19,7 @@ func (s *StreamServ) CreateStream(id string) string{
 	return SSURL
 }
 
-func (s *StreamServ) CreateCover(id string) string{
+func (s *StreamServ) CreateCover(id string) string {
 	endpoint := "getCoverArt"
 	rawSSURL := helper.CreateSSURL(endpoint)
 	SSURL := fmt.Sprintf("%s&id=%s&size=%s", rawSSURL, id, "150")

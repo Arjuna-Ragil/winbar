@@ -6,7 +6,7 @@ export default function useDrawing() {
     useEffect(() => {
         const savedElements = localStorage.getItem('drawing_elements');
         const savedAppState = localStorage.getItem('drawing_appState');
-        
+
         if (savedElements) {
             try {
                 setInitialData({
@@ -23,11 +23,7 @@ export default function useDrawing() {
     }, []);
 
     const handleChange = (elements, appState) => {
-        // Debounce or save directly. Excalidraw calls onChange very frequently.
-        // For a simple setup, we just save to local storage.
         localStorage.setItem('drawing_elements', JSON.stringify(elements));
-        
-        // We only save important appState things if we want, like viewBackgroundColor
         if (appState) {
             localStorage.setItem('drawing_appState', JSON.stringify({
                 viewBackgroundColor: appState.viewBackgroundColor

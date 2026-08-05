@@ -14,7 +14,9 @@ func LoadTheme(themeName string) dto.Theme {
 	themePath := filepath.Join(themeDir, themeName+".json")
 
 	if _, err := os.Stat(themeDir); os.IsNotExist(err) {
-		os.MkdirAll(themeDir, 0755)
+		if err := os.MkdirAll(themeDir, 0755); err != nil {
+			fmt.Println("Error creating themes directory:", err)
+		}
 	}
 
 	defaultTheme := dto.Theme{
@@ -32,7 +34,9 @@ func LoadTheme(themeName string) dto.Theme {
 
 	if _, err := os.Stat(themePath); os.IsNotExist(err) {
 		jsonData, _ := json.MarshalIndent(defaultTheme, "", "  ")
-		os.WriteFile(themePath, jsonData, 0644)
+		if err := os.WriteFile(themePath, jsonData, 0644); err != nil {
+			fmt.Println("Error writing default theme:", err)
+		}
 		return defaultTheme
 	}
 

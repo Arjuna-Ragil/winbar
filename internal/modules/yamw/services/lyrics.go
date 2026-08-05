@@ -12,11 +12,11 @@ type LyricsServ struct {
 	Lrclib *database.Lrclib
 }
 
-func NewLyricsServ(lrclib *database.Lrclib) *LyricsServ{
+func NewLyricsServ(lrclib *database.Lrclib) *LyricsServ {
 	return &LyricsServ{Lrclib: lrclib}
 }
 
-func (l *LyricsServ) LrclibUrl(artist, title string) (dto.Lyrics, error){
+func (l *LyricsServ) LrclibUrl(artist, title string) (dto.Lyrics, error) {
 	baseUrl := "https://lrclib.net/api/get"
 
 	params := url.Values{}

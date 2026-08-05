@@ -5,8 +5,7 @@ import { CoverImage } from '../modules/yamw/components/CoverImage';
 export default function MusicWidget({ toggleOverlay }) {
     const [activeSong, setActiveSong] = useState(null);
     const [isPlaying, setIsPlaying] = useState(false);
-    
-    // Follow the main winbar theme
+
     const t = { bgMuted: 'bg-black/20' };
 
     useEffect(() => {
@@ -15,9 +14,8 @@ export default function MusicWidget({ toggleOverlay }) {
             setIsPlaying(e.detail.isPlaying);
         };
 
-        // Initialize state if already available
         window.addEventListener('yamw-state', handleState);
-        
+
         return () => {
             window.removeEventListener('yamw-state', handleState);
         };
@@ -40,7 +38,7 @@ export default function MusicWidget({ toggleOverlay }) {
 
     if (!activeSong) {
         return (
-            <div 
+            <div
                 className="widget cursor-pointer hover:bg-widget-hover px-2"
                 onClick={() => toggleOverlay('home')}
                 title="Open Music Player"
@@ -56,14 +54,14 @@ export default function MusicWidget({ toggleOverlay }) {
     const titleText = `${activeSong.title || 'Unknown'} - ${activeSong.artist || 'Unknown'}`;
 
     return (
-        <div 
+        <div
             className="widget cursor-pointer hover:bg-widget-hover p-1! gap-2!"
             onClick={() => toggleOverlay('home')}
         >
-            <CoverImage 
-                id={activeSong.id} 
-                className="w-6 h-6 rounded-sm object-cover shrink-0" 
-                t={t} 
+            <CoverImage
+                id={activeSong.id}
+                className="w-6 h-6 rounded-sm object-cover shrink-0"
+                t={t}
             />
 
             <div className="flex items-center gap-1 shrink-0 px-1 border-l border-widget-text/20">

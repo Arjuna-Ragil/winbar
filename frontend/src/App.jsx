@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import WidgetRenderer from './widget/WidgetRenderer';
 import { GetConfig, GetTheme } from '../wailsjs/go/handlers/SystemHandler.js';
 import { ExpandWindow, ShrinkWindow } from '../wailsjs/go/main/App.js';
+import { EventsOn, EventsOff } from '../wailsjs/runtime/runtime.js';
 import DraggableOverlay from './overlay/DraggableOverlay';
 import PowerOverlay from './overlay/PowerOverlay';
 
@@ -12,7 +13,6 @@ function App() {
     const [overlayTransparent, setOverlayTransparent] = useState(false);
 
     useEffect(() => {
-        // Fetch config and theme from Go backend
         GetConfig().then((cfg) => {
             setConfig({
                 left: cfg.left || [],
@@ -32,11 +32,9 @@ function App() {
         };
         window.addEventListener('theme_changed', handleThemeChange);
 
-        // Disable right-click context menu
         const handleContextMenu = (e) => e.preventDefault();
         window.addEventListener('contextmenu', handleContextMenu);
 
-        // Disable pinch-to-zoom (ctrl + scroll)
         const handleWheel = (e) => {
             if (e.ctrlKey) {
                 e.preventDefault();
@@ -44,7 +42,6 @@ function App() {
         };
         window.addEventListener('wheel', handleWheel, { passive: false });
 
-        // Disable keyboard zoom (ctrl + plus/minus)
         const handleKeyDown = (e) => {
             if (e.ctrlKey && (e.key === '=' || e.key === '-' || e.key === '+' || e.key === '0')) {
                 e.preventDefault();
@@ -59,6 +56,20 @@ function App() {
             window.removeEventListener('keydown', handleKeyDown);
         };
     }, []);
+    useEffect(() => {
+        EventsOn("toggle_dashboard", () => {
+            if (activeOverlay === 'home') {
+                ShrinkWindow();
+                setActiveOverlay(null);
+            } else {
+                if (!activeOverlay) {
+                    ExpandWindow();
+                }
+                setActiveOverlay('home');
+            }
+        });
+        return () => EventsOff("toggle_dashboard");
+    }, [activeOverlay]);
 
     const toggleOverlay = (overlayName) => {
         if (activeOverlay === overlayName) {
@@ -74,9 +85,9 @@ function App() {
 
     const renderZone = (widgets) => {
         return widgets.map((widgetName, index) => (
-            <WidgetRenderer 
-                key={`${widgetName}-${index}`} 
-                name={widgetName} 
+            <WidgetRenderer
+                key={`${widgetName}-${index}`}
+                name={widgetName}
                 activeOverlay={activeOverlay}
                 toggleOverlay={toggleOverlay}
                 overlayTransparent={overlayTransparent}
@@ -96,10 +107,9 @@ function App() {
 
     return (
         <div className="w-full h-screen overflow-hidden text-white font-sans relative" style={themeStyle}>
-            <div 
-                className={`absolute inset-0 transition-all duration-300 ${
-                    activeOverlay !== null ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-                }`}
+            <div
+                className={`absolute inset-0 transition-all duration-300 ${activeOverlay !== null ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+                    }`}
                 style={{ backgroundColor: overlayTransparent ? 'transparent' : 'var(--color-background)' }}
                 onClick={() => { if (activeOverlay) toggleOverlay(activeOverlay) }}
             />

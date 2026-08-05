@@ -3,6 +3,7 @@ package database
 import (
 	"encoding/json"
 	"io"
+	"log"
 	"net/http"
 
 	"winbar/internal/modules/yamw/dto"
@@ -14,24 +15,32 @@ func NewLrclib() *Lrclib {
 	return &Lrclib{}
 }
 
-func (l *Lrclib) FetchLRCLIB(url string) (dto.Lyrics, error){
+func (l *Lrclib) FetchLRCLIB(url string) (dto.Lyrics, error) {
 	var data dto.Lyrics
-	
-	req, err := http.NewRequest("GET", url, nil); if err != nil{
+
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
 		return data, err
 	}
 
 	req.Header.Set("User-Agent", "YAMW V1.1.1 (https://github.com/Arjuna-Ragil/YAMW)")
 
 	client := &http.Client{}
-	res, err := client.Do(req); if err != nil{
+	res, err := client.Do(req)
+	if err != nil {
 		return data, err
 	}
-	defer res.Body.Close()
+	defer func() {
+		err := res.Body.Close();
+		if err != nil {
+			log.Printf("Error closing response body: %v", err)
+		}
+	}()
 
 	body, _ := io.ReadAll(res.Body)
 
-	err = json.Unmarshal(body, &data); if err != nil{
+	err = json.Unmarshal(body, &data)
+	if err != nil {
 		return data, err
 	}
 

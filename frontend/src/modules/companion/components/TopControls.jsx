@@ -22,7 +22,7 @@ export default function TopControls({
                     </select>
                 </div>
             )}
-            
+
             <div className="flex gap-2">
                 {!hideUI && (
                     <button

@@ -11,7 +11,7 @@ export const MarqueeText = ({ text, className }: { text: string, className?: str
                 setShouldScroll(textRef.current.offsetWidth > containerRef.current.offsetWidth);
             }
         };
-        
+
         checkScroll();
         if (document.fonts) {
             document.fonts.ready.then(checkScroll);

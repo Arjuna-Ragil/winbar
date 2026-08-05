@@ -36,7 +36,7 @@ export default function WidgetRenderer({ name, activeOverlay, toggleOverlay, ove
             return <MusicWidget toggleOverlay={toggleOverlay} />;
         default:
             return (
-                <div className="bg-red-500/80 backdrop-blur-md rounded-full px-4 py-1 text-white text-sm font-semibold">
+                <div className="bg-red-500/80 backdrop-blur-md rounded-md px-4 py-1 text-white text-sm font-semibold">
                     Unknown Widget: {name}
                 </div>
             );

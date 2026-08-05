@@ -1,9 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import Draggable from 'react-draggable';
-import { GripVertical } from 'lucide-react';
 import ModuleRenderer from '../modules/ModuleRenderer';
 
-const DraggableModule = ({ id, overlayId, modName, position, onStop }) => {
+const DraggableModule = ({ id, modName, position, onStop, isVisible }) => {
     const nodeRef = useRef(null);
 
     return (
@@ -14,7 +13,11 @@ const DraggableModule = ({ id, overlayId, modName, position, onStop }) => {
             bounds="parent"
             handle=".drag-handle"
         >
-            <div ref={nodeRef} className="absolute flex flex-col group items-center pointer-events-auto rounded-md overflow-hidden backdrop-blur-md">
+            <div
+                ref={nodeRef}
+                className="absolute flex flex-col group items-center pointer-events-auto rounded-md overflow-hidden backdrop-blur-md"
+                style={{ display: isVisible ? 'flex' : 'none' }}
+            >
                 <div className="drag-handle w-full h-3 cursor-move bg-black/40 hover:bg-black/60 transition-all duration-200 z-50 flex items-center justify-center px-2">
                     <div className="w-12 h-1 bg-white/30 rounded-full group-hover:bg-white/50 transition-colors"></div>
                 </div>
@@ -38,10 +41,10 @@ const CATEGORY_MAP = {
 export default function DraggableOverlay({ overlayId, title, modules = [], overlayTransparent = false }) {
     const [positions, setPositions] = useState({});
     const [hiddenModules, setHiddenModules] = useState([]);
-    
+
     const availableCategories = Array.from(new Set(modules.map(m => CATEGORY_MAP[m] || 'Other')));
     const [activeTab, setActiveTab] = useState(availableCategories[0] || 'Home');
-    
+
     const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
@@ -53,17 +56,17 @@ export default function DraggableOverlay({ overlayId, title, modules = [], overl
     useEffect(() => {
         const posKey = `modulePositions_${overlayId}`;
         const hidKey = `hiddenModules_${overlayId}`;
-        
+
         const savedPos = localStorage.getItem(posKey);
         if (savedPos) {
-            try { setPositions(JSON.parse(savedPos)); } catch (e) {}
+            try { setPositions(JSON.parse(savedPos)); } catch (e) { }
         }
-        
+
         const savedHid = localStorage.getItem(hidKey);
         if (savedHid) {
-            try { setHiddenModules(JSON.parse(savedHid)); } catch (e) {}
+            try { setHiddenModules(JSON.parse(savedHid)); } catch (e) { }
         }
-        
+
         setLoaded(true);
     }, [overlayId]);
 
@@ -97,7 +100,7 @@ export default function DraggableOverlay({ overlayId, title, modules = [], overl
             {!overlayTransparent && modules.length > 0 && (
                 <>
                     {/* Top Dock: Categories */}
-                    <div 
+                    <div
                         className="absolute top-0 left-1/2 -translate-x-1/2 flex items-center justify-center flex-row gap-8 backdrop-blur-xl border-b px-12 pt-6 z-50 pointer-events-auto"
                         style={{ borderColor: 'var(--color-widget-hover)' }}
                     >
@@ -108,16 +111,15 @@ export default function DraggableOverlay({ overlayId, title, modules = [], overl
                                     key={`tab-${cat}`}
                                     onClick={() => setActiveTab(cat)}
                                     className="relative text-sm font-bold uppercase tracking-[0.2em] transition-all px-6 pt-5 pb-4 overflow-hidden"
-                                    style={{ 
-                                        color: 'var(--color-widget-text)', 
-                                        opacity: isActive ? 1 : 0.5 
+                                    style={{
+                                        color: 'var(--color-widget-text)',
+                                        opacity: isActive ? 1 : 0.5
                                     }}
                                 >
                                     {cat}
-                                    
-                                    {/* Shining gradient from bottom to top */}
+
                                     {isActive && (
-                                        <div 
+                                        <div
                                             className="absolute bottom-0 left-0 w-full h-full pointer-events-none"
                                             style={{
                                                 background: 'linear-gradient(to top, var(--color-widget-active) 0%, transparent 100%)',
@@ -125,10 +127,9 @@ export default function DraggableOverlay({ overlayId, title, modules = [], overl
                                             }}
                                         />
                                     )}
-                                    
-                                    {/* Solid active line at the very bottom */}
+
                                     {isActive && (
-                                        <div 
+                                        <div
                                             className="absolute bottom-0 left-0 w-full h-0.75"
                                             style={{ backgroundColor: 'var(--color-widget-active)' }}
                                         />
@@ -139,11 +140,11 @@ export default function DraggableOverlay({ overlayId, title, modules = [], overl
                     </div>
 
                     {/* Bottom Dock: Module Toggles */}
-                    <div 
+                    <div
                         className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center justify-center flex-row gap-1.5 backdrop-blur-xl border rounded-md px-5 py-2.5 z-50 shadow-2xl pointer-events-auto"
-                        style={{ 
-                            backgroundColor: 'var(--color-widget)', 
-                            borderColor: 'var(--color-widget-hover)' 
+                        style={{
+                            backgroundColor: 'var(--color-widget)',
+                            borderColor: 'var(--color-widget-hover)'
                         }}
                     >
                         {modules.filter(m => (CATEGORY_MAP[m] || 'Other') === activeTab).map((modName) => {
@@ -179,10 +180,10 @@ export default function DraggableOverlay({ overlayId, title, modules = [], overl
             ) : (
                 modules.map((modName, index) => {
                     const cat = CATEGORY_MAP[modName] || 'Other';
-                    if (cat !== activeTab) return null;
-                    if (hiddenModules.includes(modName)) return null;
+                    const isVisible = (cat === activeTab) && !hiddenModules.includes(modName);
+
                     const id = `${modName}-${index}`;
-                    const pos = positions[id] || { x: index * 40, y: (index * 40) + 80 }; // added +80 to offset from top dock
+                    const pos = positions[id] || { x: index * 40, y: (index * 40) + 80 };
                     return (
                         <DraggableModule
                             key={id}
@@ -191,6 +192,7 @@ export default function DraggableOverlay({ overlayId, title, modules = [], overl
                             modName={modName}
                             position={pos}
                             onStop={handleDragStop}
+                            isVisible={isVisible}
                         />
                     );
                 })

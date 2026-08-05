@@ -10,7 +10,7 @@ export default function WifiWidget() {
             GetWifi().then(setData).catch(console.error);
         };
         fetchWifi();
-        const timer = setInterval(fetchWifi, 10000); // Update every 10 seconds
+        const timer = setInterval(fetchWifi, 10000);
         return () => clearInterval(timer);
     }, []);
 

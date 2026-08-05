@@ -1,6 +1,7 @@
 package database
 
 import (
+	"log"
 	"os/exec"
 	"strings"
 	"syscall"
@@ -22,7 +23,7 @@ func (db *SystemDB) GetBattery() dto.BatteryData {
 	if err != nil {
 		return dto.BatteryData{Percentage: 0, IsCharging: false}
 	}
-	
+
 	percentage := int((batt.Current / batt.Full) * 100)
 	isCharging := batt.State.Raw == battery.Charging
 
@@ -53,11 +54,11 @@ func (db *SystemDB) GetWifi() dto.WifiData {
 	if err != nil {
 		return dto.WifiData{IsConnected: false, Signal: "0%"}
 	}
-	
+
 	output := string(out)
-	
+
 	var isConnected bool
-	var signal string = "0%"
+	var signal = "0%"
 
 	lines := strings.Split(output, "\n")
 	for _, line := range lines {
@@ -86,10 +87,10 @@ func (db *SystemDB) OpenNotifications() {
 	const VK_N = 0x4E
 	const KEYEVENTF_KEYUP = 0x0002
 
-	keybdEvent.Call(uintptr(VK_LWIN), 0, 0, 0)
-	keybdEvent.Call(uintptr(VK_N), 0, 0, 0)
-	keybdEvent.Call(uintptr(VK_N), 0, uintptr(KEYEVENTF_KEYUP), 0)
-	keybdEvent.Call(uintptr(VK_LWIN), 0, uintptr(KEYEVENTF_KEYUP), 0)
+	_, _, _ = keybdEvent.Call(uintptr(VK_LWIN), 0, 0, 0)
+	_, _, _ = keybdEvent.Call(uintptr(VK_N), 0, 0, 0)
+	_, _, _ = keybdEvent.Call(uintptr(VK_N), 0, uintptr(KEYEVENTF_KEYUP), 0)
+	_, _, _ = keybdEvent.Call(uintptr(VK_LWIN), 0, uintptr(KEYEVENTF_KEYUP), 0)
 }
 
 func (db *SystemDB) SwitchWorkspace(ws int) {
@@ -103,22 +104,28 @@ func (db *SystemDB) SwitchWorkspace(ws int) {
 	const VK_MENU = 0x12
 	const KEYEVENTF_KEYUP = 0x0002
 
-	vkCode := uintptr(0x30 + ws) // 0x31 is '1'
+	vkCode := uintptr(0x30 + ws) // '1'
 
-	keybdEvent.Call(uintptr(VK_MENU), 0, 0, 0)
-	keybdEvent.Call(vkCode, 0, 0, 0)
-	keybdEvent.Call(vkCode, 0, uintptr(KEYEVENTF_KEYUP), 0)
-	keybdEvent.Call(uintptr(VK_MENU), 0, uintptr(KEYEVENTF_KEYUP), 0)
+	_, _, _ = keybdEvent.Call(uintptr(VK_MENU), 0, 0, 0)
+	_, _, _ = keybdEvent.Call(vkCode, 0, 0, 0)
+	_, _, _ = keybdEvent.Call(vkCode, 0, uintptr(KEYEVENTF_KEYUP), 0)
+	_, _, _ = keybdEvent.Call(uintptr(VK_MENU), 0, uintptr(KEYEVENTF_KEYUP), 0)
 }
 
 func (db *SystemDB) Shutdown() {
-	exec.Command("shutdown", "/s", "/t", "0").Run()
+	if err := exec.Command("shutdown", "/s", "/t", "0").Run(); err != nil {
+		log.Fatalf("Command failed to run: %v", err)
+	}
 }
 
 func (db *SystemDB) Restart() {
-	exec.Command("shutdown", "/r", "/t", "0").Run()
+	if err := exec.Command("shutdown", "/r", "/t", "0").Run(); err != nil {
+		log.Fatalf("Command failed to run: %v", err)
+	}
 }
 
 func (db *SystemDB) Sleep() {
-	exec.Command("rundll32.exe", "powrprof.dll,SetSuspendState", "0,1,0").Run()
+	if err := exec.Command("rundll32.exe", "powrprof.dll,SetSuspendState", "0,1,0").Run(); err != nil {
+		log.Fatalf("Command failed to run: %v", err)
+	}
 }

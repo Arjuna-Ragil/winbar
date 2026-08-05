@@ -12,14 +12,14 @@ type ListServ struct {
 	Subsonic *database.Subsonic
 }
 
-func NewListServ(subsonic *database.Subsonic) *ListServ{
+func NewListServ(subsonic *database.Subsonic) *ListServ {
 	return &ListServ{Subsonic: subsonic}
 }
 
-func (l *ListServ) SGetRandomSongs() ([]dto.Song, error){
+func (l *ListServ) SGetRandomSongs() ([]dto.Song, error) {
 	endpoint := "getRandomSongs"
 	rawSSURL := helper.CreateSSURL(endpoint)
 	SSURL := fmt.Sprintf("%s&size=%s", rawSSURL, "50")
-	
+
 	return l.Subsonic.FetchRandomSongs(SSURL)
 }

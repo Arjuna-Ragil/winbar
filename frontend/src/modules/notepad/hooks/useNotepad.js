@@ -4,11 +4,10 @@ export default function useNotepad() {
     const [notes, setNotes] = useState([]);
     const [activeNoteId, setActiveNoteId] = useState(null);
 
-    // Load notes on mount and handle migration
     useEffect(() => {
         const savedList = localStorage.getItem('notepad_list');
         const legacyNote = localStorage.getItem('notepad_content');
-        
+
         if (savedList) {
             try {
                 setNotes(JSON.parse(savedList));
@@ -16,7 +15,6 @@ export default function useNotepad() {
                 console.error("Failed to parse notes", e);
             }
         } else if (legacyNote && legacyNote !== "<div>Write something here...</div>") {
-            // Migrate old note
             const migrated = [{
                 id: Date.now().toString(),
                 title: 'Chapter I',

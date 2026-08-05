@@ -5,7 +5,8 @@ import (
 )
 
 func CreateSSURL(endpoint string) string {
-	config, err := LoadConfig(); if err != nil{
+	config, err := LoadConfig()
+	if err != nil {
 		return err.Error()
 	}
 

@@ -10,7 +10,7 @@ export default function BatteryWidget() {
             GetBattery().then(setData).catch(console.error);
         };
         fetchBattery();
-        const timer = setInterval(fetchBattery, 30000); // Update every 30 seconds
+        const timer = setInterval(fetchBattery, 30000);
         return () => clearInterval(timer);
     }, []);
 

@@ -6,6 +6,7 @@ import (
 	_ "embed"
 	"encoding/json"
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -14,30 +15,32 @@ import (
 	"time"
 	"unsafe"
 
+	yamwHelper "winbar/internal/modules/yamw/helpers"
+	"winbar/internal/services"
+
 	"github.com/getlantern/systray"
 	"github.com/lxn/win"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"golang.org/x/sys/windows/registry"
-	yamwHelper "winbar/internal/modules/yamw/helpers"
 )
 
 //go:embed build/windows/icon.ico
 var iconData []byte
 
 const (
-	ABM_NEW = 0
+	ABM_NEW      = 0
 	ABM_QUERYPOS = 2
-	ABM_SETPOS = 3
-	ABE_TOP = 1
+	ABM_SETPOS   = 3
+	ABE_TOP      = 1
 )
 
-type APPBARDATA struct{
-	cbSize 	uint32
-	hwnd   	win.HWND
+type APPBARDATA struct {
+	cbSize           uint32
+	hwnd             win.HWND
 	uCallbackMessage uint32
-	uEdge uint32
-	rc 	win.RECT
-	lparam uintptr
+	uEdge            uint32
+	rc               win.RECT
+	lparam           uintptr
 }
 
 type App struct {
@@ -51,16 +54,23 @@ func NewApp() *App {
 
 func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
+	services.RegisterHotkey(ctx)
 
 	pwd, _ := os.Getwd()
 	themesPath := filepath.Join(pwd, "themes")
 	if _, err := os.Stat(themesPath); os.IsNotExist(err) {
-		os.MkdirAll(themesPath, 0755)
+		err := os.MkdirAll(themesPath, 0755)
+		if err != nil {
+			log.Printf("error creating themes directory: %v\n", err)
+		}
 	}
-	
+
 	configPath := filepath.Join(pwd, "config.yaml")
 	if _, err := os.Stat(configPath); os.IsNotExist(err) {
-		os.WriteFile(configPath, []byte(""), 0644)
+		err := os.WriteFile(configPath, []byte(""), 0644)
+		if err != nil {
+			log.Printf("error creating config file: %v\n", err)
+		}
 	}
 	shell32 := syscall.NewLazyDLL("shell32.dll")
 
@@ -80,20 +90,20 @@ func (a *App) startup(ctx context.Context) {
 	}
 	screenWidth := win.GetSystemMetrics(win.SM_CXSCREEN)
 	abb := APPBARDATA{
-		cbSize: uint32(unsafe.Sizeof(APPBARDATA{})),
-		hwnd:   hwnd,
+		cbSize:           uint32(unsafe.Sizeof(APPBARDATA{})),
+		hwnd:             hwnd,
 		uCallbackMessage: win.WM_USER + 1,
-		uEdge: ABE_TOP,
+		uEdge:            ABE_TOP,
 		rc: win.RECT{
-			Left: 0,
-			Top: 0,
-			Right: screenWidth,
+			Left:   0,
+			Top:    0,
+			Right:  screenWidth,
 			Bottom: 40,
 		},
 	}
-	proc.Call(uintptr(ABM_NEW), uintptr(unsafe.Pointer(&abb)))
-	proc.Call(uintptr(ABM_QUERYPOS), uintptr(unsafe.Pointer(&abb)))
-	proc.Call(uintptr(ABM_SETPOS), uintptr(unsafe.Pointer(&abb)))
+	_, _, _ = proc.Call(uintptr(ABM_NEW), uintptr(unsafe.Pointer(&abb)))
+	_, _, _ = proc.Call(uintptr(ABM_QUERYPOS), uintptr(unsafe.Pointer(&abb)))
+	_, _, _ = proc.Call(uintptr(ABM_SETPOS), uintptr(unsafe.Pointer(&abb)))
 
 	style := win.GetWindowLong(hwnd, win.GWL_STYLE)
 	style = style &^ (win.WS_BORDER | win.WS_THICKFRAME)
@@ -105,13 +115,13 @@ func (a *App) startup(ctx context.Context) {
 	win.SetWindowLong(hwnd, win.GWL_EXSTYLE, exStyle)
 
 	win.SetWindowPos(
-		hwnd, 
+		hwnd,
 		win.HWND_NOTOPMOST,
-		0, 
+		0,
 		0,
 		screenWidth,
 		40,
-		win.SWP_NOACTIVATE | win.SWP_FRAMECHANGED,
+		win.SWP_NOACTIVATE|win.SWP_FRAMECHANGED,
 	)
 
 	go func() {
@@ -168,18 +178,18 @@ func (a *App) SaveConfig(serverURL, username, password string) error {
 	if err != nil {
 		return err
 	}
-	
+
 	config := yamwHelper.Config{
 		ServerURL: serverURL,
 		Username:  username,
 		Password:  password,
 	}
-	
+
 	data, err := json.Marshal(config)
 	if err != nil {
 		return err
 	}
-	
+
 	return os.WriteFile(path, data, 0644)
 }
 
@@ -193,7 +203,7 @@ func (a *App) onReady() {
 	systray.AddSeparator()
 	mRunOnLaunch := systray.AddMenuItemCheckbox("Run on Launch", "Run Winbar on system startup", a.isRunOnLaunchEnabled())
 	mReload := systray.AddMenuItem("Reload", "Reload Winbar")
-	
+
 	systray.AddSeparator()
 	mQuit := systray.AddMenuItem("Quit", "Quit Winbar")
 
@@ -202,13 +212,22 @@ func (a *App) onReady() {
 			select {
 			case <-mConfig.ClickedCh:
 				pwd, _ := os.Getwd()
-				exec.Command("explorer", "/select,", filepath.Join(pwd, "config.yaml")).Start()
+				err := exec.Command("explorer", "/select,", filepath.Join(pwd, "config.yaml")).Start()
+				if err != nil {
+					log.Printf("error opening config file: %v\n", err)
+				}
 			case <-mRunOnLaunch.ClickedCh:
 				if mRunOnLaunch.Checked() {
-					a.toggleRunOnLaunch(false)
+					err := a.toggleRunOnLaunch(false)
+					if err != nil {
+						log.Printf("error toggling run on launch: %v\n", err)
+					}
 					mRunOnLaunch.Uncheck()
 				} else {
-					a.toggleRunOnLaunch(true)
+					err := a.toggleRunOnLaunch(true)
+					if err != nil {
+						log.Printf("error toggling run on launch: %v\n", err)
+					}
 					mRunOnLaunch.Check()
 				}
 			case <-mReload.ClickedCh:
@@ -229,7 +248,12 @@ func (a *App) toggleRunOnLaunch(enabled bool) error {
 	if err != nil {
 		return err
 	}
-	defer key.Close()
+	defer func() {
+		err := key.Close()
+		if err != nil {
+			log.Printf("error closing key: %v\n", err)
+		}
+	}()
 
 	if enabled {
 		return key.SetStringValue("Winbar", exePath)
@@ -243,7 +267,12 @@ func (a *App) isRunOnLaunchEnabled() bool {
 	if err != nil {
 		return false
 	}
-	defer key.Close()
+	defer func() {
+		err := key.Close()
+		if err != nil {
+			log.Printf("error closing key: %v\n", err)
+		}
+	}()
 	_, _, err = key.GetStringValue("Winbar")
 	return err == nil
 }

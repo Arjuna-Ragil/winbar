@@ -13,7 +13,7 @@ interface MiniPlayerProps {
 
 export const MiniPlayer = ({ activeSong, t, isPlayerOpen, isPlaying, setIsPlayerOpen, togglePlayPause }: MiniPlayerProps) => {
     return (
-        <div 
+        <div
             className={`absolute bottom-0 left-0 w-full p-2 bg-slate-950/95 backdrop-blur-xl border-t ${t.borderLight} z-30 cursor-pointer flex gap-3 shadow-[0_-5px_15px_rgba(0,0,0,0.5)] transition-transform duration-300 [--wails-draggable:no-drag] ${isPlayerOpen ? 'translate-y-full' : 'translate-y-0'}`}
             onClick={() => setIsPlayerOpen(true)}
         >
@@ -22,7 +22,7 @@ export const MiniPlayer = ({ activeSong, t, isPlayerOpen, isPlaying, setIsPlayer
                 <div className={`truncate text-sm font-bold ${t.accent}`}>{activeSong.title || "Unknown"}</div>
                 <div className={`truncate text-xs ${t.muted}`}>{activeSong.artist || "Unknown"}</div>
             </div>
-            <button 
+            <button
                 className={`mr-2 shrink-0 ${t.base} hover:${t.accent} transition-transform hover:scale-110 cursor-pointer`}
                 onClick={(e) => { e.stopPropagation(); togglePlayPause(e); }}
             >
