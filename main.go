@@ -18,6 +18,9 @@ import (
 	yamwDB "winbar/internal/modules/yamw/database"
 	yamwHandlers "winbar/internal/modules/yamw/handlers"
 	yamwServices "winbar/internal/modules/yamw/services"
+
+	dockerHandlers "winbar/internal/modules/docker/handlers"
+	serverHandlers "winbar/internal/modules/server/handlers"
 )
 
 //go:embed all:frontend/dist
@@ -54,6 +57,10 @@ func main() {
 	companionServ := aiServices.NewCompanionServ()
 	aiCompanion := aiHandlers.NewCompanion(companionServ)
 
+	promService := services.NewPrometheusService()
+	serverHandler := serverHandlers.NewServer(promService)
+	dockerHandler := dockerHandlers.NewDocker(promService)
+
 	screenWidth := win.GetSystemMetrics(win.SM_CXSCREEN)
 
 	err := wails.Run(&options.App{
@@ -81,6 +88,8 @@ func main() {
 			yamwLyrics,
 			aiChat,
 			aiCompanion,
+			serverHandler,
+			dockerHandler,
 		},
 	})
 

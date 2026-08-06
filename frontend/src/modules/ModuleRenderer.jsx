@@ -7,6 +7,8 @@ const DrawingModule = lazy(() => import('./drawing/DrawingModule'));
 const Companion = lazy(() => import('./companion/Companion'))
 const SysInfoModule = lazy(() => import('./sysinfo/SysInfoModule'));
 const ControlCenter = lazy(() => import('./controlcenter/ControlCenter'));
+const ServerModule = lazy(() => import('./server/ServerModule'));
+const DockerModule = lazy(() => import('./docker/DockerModule'));
 
 const FallbackLoader = () => (
     <div className="flex items-center justify-center p-4">
@@ -31,6 +33,10 @@ const ModuleRenderer = ({ name }) => {
                 return <SysInfoModule />;
             case 'controlcenter':
                 return <ControlCenter />;
+            case 'server':
+                return <ServerModule />;
+            case 'docker':
+                return <DockerModule />;
             default:
                 return <div className="p-4 bg-red-500/20 text-red-500 rounded-lg">Unknown Module: {name}</div>;
         }

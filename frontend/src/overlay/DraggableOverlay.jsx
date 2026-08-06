@@ -32,11 +32,13 @@ const DraggableModule = ({ id, modName, position, onStop, isVisible }) => {
 const CATEGORY_MAP = {
     yamw: 'Home',
     sysinfo: 'Home',
+    controlcenter: 'Home',
     todo: 'Notes',
     notepad: 'Notes',
     drawing: 'Notes',
     companion: 'AI',
-    controlcenter: 'Home'
+    server: 'Server',
+    docker: 'Server'
 };
 
 export default function DraggableOverlay({ overlayId, title, modules = [], overlayTransparent = false }) {

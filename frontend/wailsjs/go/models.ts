@@ -20,6 +20,7 @@ export namespace dto {
 	    center: string[];
 	    right: string[];
 	    modules: string[];
+	    prometheus_url: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new Config(source);
@@ -32,6 +33,7 @@ export namespace dto {
 	        this.center = source["center"];
 	        this.right = source["right"];
 	        this.modules = source["modules"];
+	        this.prometheus_url = source["prometheus_url"];
 	    }
 	}
 	export class Lyrics {
@@ -225,6 +227,53 @@ export namespace dto {
 	        this.ssid = source["ssid"];
 	        this.signal = source["signal"];
 	        this.security = source["security"];
+	    }
+	}
+
+}
+
+export namespace handlers {
+	
+	export class ContainerStat {
+	    name: string;
+	    cpu_usage: number;
+	    ram_usage: number;
+	    state: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new ContainerStat(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.name = source["name"];
+	        this.cpu_usage = source["cpu_usage"];
+	        this.ram_usage = source["ram_usage"];
+	        this.state = source["state"];
+	    }
+	}
+	export class ServerStats {
+	    cpu_usage: number;
+	    ram_usage: number;
+	    disk_usage: number;
+	    ram_total: number;
+	    ram_used: number;
+	    disk_total: number;
+	    disk_used: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new ServerStats(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.cpu_usage = source["cpu_usage"];
+	        this.ram_usage = source["ram_usage"];
+	        this.disk_usage = source["disk_usage"];
+	        this.ram_total = source["ram_total"];
+	        this.ram_used = source["ram_used"];
+	        this.disk_total = source["disk_total"];
+	        this.disk_used = source["disk_used"];
 	    }
 	}
 

@@ -5,5 +5,6 @@ type Config struct {
 	Left    []string `yaml:"left" json:"left"`
 	Center  []string `yaml:"center" json:"center"`
 	Right   []string `yaml:"right" json:"right"`
-	Modules []string `yaml:"modules" json:"modules"`
+	Modules       []string `yaml:"modules" json:"modules"`
+	PrometheusURL string   `yaml:"prometheus_url" json:"prometheus_url"`
 }
