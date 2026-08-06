@@ -1,4 +1,4 @@
-package handlers
+package terminal
 
 import (
 	"os/exec"
@@ -16,7 +16,6 @@ func (h *Terminal) LaunchTerminal() error {
 	cmd := exec.Command("wt.exe")
 	err := cmd.Start()
 	if err != nil {
-		// Fallback if Windows Terminal isn't installed
 		cmd = exec.Command("cmd.exe", "/c", "start", "powershell.exe")
 		return cmd.Start()
 	}

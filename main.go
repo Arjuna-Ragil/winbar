@@ -21,8 +21,9 @@ import (
 	yamwServices "winbar/internal/modules/yamw/services"
 
 	dockerHandlers "winbar/internal/modules/docker/handlers"
+	launcherHandlers "winbar/internal/modules/launcher/handlers"
 	serverHandlers "winbar/internal/modules/server/handlers"
-	terminalHandlers "winbar/internal/modules/terminal/handlers"
+	terminalHandlers "winbar/internal/modules/terminal"
 )
 
 //go:embed all:frontend/dist
@@ -62,6 +63,7 @@ func main() {
 	promService := services.NewPrometheusService()
 	serverHandler := serverHandlers.NewServer(promService)
 	dockerHandler := dockerHandlers.NewDocker(promService)
+	launcherHandler := launcherHandlers.NewLauncher()
 
 	terminalHandler := terminalHandlers.NewTerminal()
 
@@ -83,6 +85,7 @@ func main() {
 		BackgroundColour: &options.RGBA{A: 0},
 		OnStartup: func(ctx context.Context) {
 			app.startup(ctx)
+			launcherHandler.Startup(ctx)
 		},
 		Bind: []interface{}{
 			app,
@@ -97,6 +100,7 @@ func main() {
 			serverHandler,
 			dockerHandler,
 			terminalHandler,
+			launcherHandler,
 		},
 	})
 

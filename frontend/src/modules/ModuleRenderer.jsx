@@ -10,6 +10,7 @@ const ControlCenter = lazy(() => import('./controlcenter/ControlCenter'));
 const ServerModule = lazy(() => import('./server/ServerModule'));
 const DockerModule = lazy(() => import('./docker/DockerModule'));
 const TerminalModule = lazy(() => import('./terminal/TerminalModule'));
+const LauncherModule = lazy(() => import('./launcher/LauncherModule'));
 
 const FallbackLoader = () => (
     <div className="flex items-center justify-center p-4">
@@ -40,6 +41,8 @@ const ModuleRenderer = ({ name }) => {
                 return <DockerModule />;
             case 'terminal':
                 return <TerminalModule />;
+            case 'launcher':
+                return <LauncherModule />;
             default:
                 return <div className="p-4 bg-red-500/20 text-red-500 rounded-lg">Unknown Module: {name}</div>;
         }

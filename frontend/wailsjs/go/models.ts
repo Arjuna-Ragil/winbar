@@ -1,5 +1,19 @@
 export namespace dto {
 	
+	export class AppConfig {
+	    name: string;
+	    path: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new AppConfig(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.name = source["name"];
+	        this.path = source["path"];
+	    }
+	}
 	export class BatteryData {
 	    percentage: number;
 	    isCharging: boolean;
@@ -21,6 +35,7 @@ export namespace dto {
 	    right: string[];
 	    modules: string[];
 	    prometheus_url: string;
+	    launcher_apps: AppConfig[];
 	
 	    static createFrom(source: any = {}) {
 	        return new Config(source);
@@ -34,7 +49,26 @@ export namespace dto {
 	        this.right = source["right"];
 	        this.modules = source["modules"];
 	        this.prometheus_url = source["prometheus_url"];
+	        this.launcher_apps = this.convertValues(source["launcher_apps"], AppConfig);
 	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
 	}
 	export class Lyrics {
 	    instrumental: boolean;
@@ -234,6 +268,22 @@ export namespace dto {
 
 export namespace handlers {
 	
+	export class AppFrontend {
+	    name: string;
+	    path: string;
+	    icon: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new AppFrontend(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.name = source["name"];
+	        this.path = source["path"];
+	        this.icon = source["icon"];
+	    }
+	}
 	export class ContainerStat {
 	    name: string;
 	    cpu_usage: number;

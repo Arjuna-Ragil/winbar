@@ -1,4 +1,4 @@
-import { LaunchTerminal } from '../../../wailsjs/go/handlers/Terminal';
+import { LaunchTerminal } from '../../../wailsjs/go/terminal/Terminal';
 import { EventsEmit } from '../../../wailsjs/runtime/runtime';
 
 const TerminalModule = () => {

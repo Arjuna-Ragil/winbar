@@ -33,6 +33,7 @@ const CATEGORY_MAP = {
     yamw: 'Home',
     sysinfo: 'Home',
     controlcenter: 'Home',
+    launcher: 'Home',
     todo: 'Notes',
     notepad: 'Notes',
     drawing: 'Notes',
