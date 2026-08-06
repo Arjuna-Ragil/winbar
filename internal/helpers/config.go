@@ -23,7 +23,7 @@ func LoadConfig() dto.Config {
 			Left:    []string{"power", "home", "theme_toggle", "overlay_toggle", "workspace"},
 			Center:  []string{"day"},
 			Right:   []string{"tray", "power"},
-			Modules: []string{"yamw", "sysinfo", "companion", "notepad", "controlcenter", "server", "docker"},
+			Modules: []string{"yamw", "sysinfo", "companion", "notepad", "controlcenter", "server", "docker", "terminal"},
 			PrometheusURL: "http://localhost:9090",
 		}
 		yamlData, err := yaml.Marshal(&defaultConfig)

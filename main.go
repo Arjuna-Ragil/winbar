@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"embed"
 
 	"github.com/lxn/win"
@@ -21,6 +22,7 @@ import (
 
 	dockerHandlers "winbar/internal/modules/docker/handlers"
 	serverHandlers "winbar/internal/modules/server/handlers"
+	terminalHandlers "winbar/internal/modules/terminal/handlers"
 )
 
 //go:embed all:frontend/dist
@@ -61,6 +63,8 @@ func main() {
 	serverHandler := serverHandlers.NewServer(promService)
 	dockerHandler := dockerHandlers.NewDocker(promService)
 
+	terminalHandler := terminalHandlers.NewTerminal()
+
 	screenWidth := win.GetSystemMetrics(win.SM_CXSCREEN)
 
 	err := wails.Run(&options.App{
@@ -77,7 +81,9 @@ func main() {
 			Assets: assets,
 		},
 		BackgroundColour: &options.RGBA{A: 0},
-		OnStartup:        app.startup,
+		OnStartup: func(ctx context.Context) {
+			app.startup(ctx)
+		},
 		Bind: []interface{}{
 			app,
 			systemHandler,
@@ -90,6 +96,7 @@ func main() {
 			aiCompanion,
 			serverHandler,
 			dockerHandler,
+			terminalHandler,
 		},
 	})
 

@@ -38,7 +38,8 @@ const CATEGORY_MAP = {
     drawing: 'Notes',
     companion: 'AI',
     server: 'Server',
-    docker: 'Server'
+    docker: 'Server',
+    terminal: 'Server'
 };
 
 export default function DraggableOverlay({ overlayId, title, modules = [], overlayTransparent = false }) {
