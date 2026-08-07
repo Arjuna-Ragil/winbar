@@ -15,7 +15,7 @@ export default function CalendarView({ todos, addTask }) {
     const prevMonth = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
     const nextMonth = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
 
-    const getTasksForDate = (dateStr) => todos.filter(t => t.date === dateStr);
+    const getTasksForDate = (dateStr) => todos.filter(t => (t.type || 'normal') === 'normal' && t.date === dateStr);
 
     const handleAdd = (e) => {
         e.preventDefault();
