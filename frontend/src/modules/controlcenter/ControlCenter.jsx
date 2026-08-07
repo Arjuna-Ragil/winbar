@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Volume2, VolumeX, Sun, Wifi, Loader2, ChevronDown, ChevronUp } from 'lucide-react';
 import { GetVolume, SetVolume, GetBrightness, SetBrightness, GetWifiNetworks, ConnectWifi } from '../../../wailsjs/go/handlers/ControlCenterHandler.js';
 
@@ -8,15 +8,20 @@ export default function ControlCenter() {
     const [wifiNetworks, setWifiNetworks] = useState([]);
     const [isWifiOpen, setIsWifiOpen] = useState(false);
     const [connectingWifi, setConnectingWifi] = useState(null);
+    const lastInteraction = useRef(0);
 
     useEffect(() => {
         const syncState = async () => {
             if (typeof GetVolume === 'function') {
                 try {
                     const v = await GetVolume();
-                    setVolume(v);
                     const b = await GetBrightness();
-                    setBrightness(b);
+                    
+                    // Only apply background state if user hasn't interacted recently
+                    if (Date.now() - lastInteraction.current > 2000) {
+                        setVolume(v);
+                        setBrightness(b);
+                    }
                 } catch(e) {
                     // Ignore errors during polling
                 }
@@ -37,15 +42,16 @@ export default function ControlCenter() {
     }, []);
 
     const handleVolumeChange = (e) => {
+        lastInteraction.current = Date.now();
         const v = parseInt(e.target.value);
         setVolume(v);
         if (typeof SetVolume === 'function') SetVolume(v);
     };
 
-    const handleBrightnessChange = (e) => {
-        const b = parseInt(e.target.value);
-        setBrightness(b);
-        if (typeof SetBrightness === 'function') SetBrightness(b);
+    const handleBrightnessChange = (val) => {
+        lastInteraction.current = Date.now();
+        setBrightness(val);
+        if (typeof SetBrightness === 'function') SetBrightness(val);
     };
 
     const handleConnectWifi = async (ssid) => {
@@ -64,15 +70,21 @@ export default function ControlCenter() {
             <div className="flex flex-col gap-4 mb-6">
                 {/* Brightness */}
                 <div className="flex items-center gap-3 bg-white/5 p-3 rounded-xl border border-white/10">
-                    <Sun size={20} className="text-amber-400" />
-                    <input 
-                        type="range" 
-                        min="0" max="100" 
-                        value={brightness} 
-                        onChange={handleBrightnessChange}
-                        className="w-full accent-amber-400 h-1.5 bg-white/20 rounded-lg appearance-none cursor-pointer"
-                    />
-                    <span className="text-xs font-bold w-8 text-right">{brightness}%</span>
+                    <Sun size={20} className="text-amber-400 shrink-0" />
+                    <div className="flex flex-1 gap-1 h-2 items-center">
+                        {[...Array(10)].map((_, i) => {
+                            const level = (i + 1) * 10;
+                            const isActive = brightness >= level - 5;
+                            return (
+                                <div
+                                    key={level}
+                                    onClick={() => handleBrightnessChange(level)}
+                                    className={`flex-1 h-full rounded-sm cursor-pointer transition-all ${isActive ? 'bg-amber-400' : 'bg-white/20 hover:bg-white/40'}`}
+                                />
+                            );
+                        })}
+                    </div>
+                    <span className="text-xs font-bold w-8 text-right shrink-0">{brightness}%</span>
                 </div>
 
                 {/* Volume */}

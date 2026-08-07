@@ -55,7 +55,17 @@ export const SongList = ({ songs, setSongs, activeSongId, isPlaying, loading, t,
 
     if (songs.length === 0) {
         return (
-            <div className={`flex flex-col items-center justify-center h-full ${t.muted}`}>NO SONGS FOUND</div>
+            <div className={`flex flex-col items-center justify-center h-full gap-4 ${t.muted}`}>
+                <div>NO SONGS FOUND</div>
+                <button
+                    onClick={(e) => { e.stopPropagation(); onLoadMore(); }}
+                    disabled={loading}
+                    className={`flex items-center gap-2 px-6 py-2 rounded-full border ${t.border} ${t.muted} hover:${t.base} ${t.bgHover} transition-colors cursor-pointer text-sm font-bold disabled:opacity-50`}
+                >
+                    <RefreshCw size={16} className={loading ? 'animate-spin' : ''} />
+                    {loading ? "LOADING..." : "Reload Music List"}
+                </button>
+            </div>
         );
     }
 
