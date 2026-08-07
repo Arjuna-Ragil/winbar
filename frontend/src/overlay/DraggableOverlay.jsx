@@ -15,13 +15,13 @@ const DraggableModule = ({ id, modName, position, onStop, isVisible }) => {
         >
             <div
                 ref={nodeRef}
-                className="absolute flex flex-col group items-center pointer-events-auto rounded-md overflow-hidden backdrop-blur-md"
+                className="absolute flex flex-col group items-center pointer-events-auto rounded-xl overflow-hidden bg-background/90 border border-border shadow-[0_8px_32px_rgba(0,0,0,0.7)]"
                 style={{ display: isVisible ? 'flex' : 'none' }}
             >
-                <div className="drag-handle w-full h-3 cursor-move bg-black/40 hover:bg-black/60 transition-all duration-200 z-50 flex items-center justify-center px-2">
+                <div className="drag-handle w-full h-5 cursor-move bg-black/20 hover:bg-black/40 border-b border-white/5 transition-all duration-200 z-50 flex items-center justify-center">
                     <div className="w-12 h-1 bg-white/30 rounded-full group-hover:bg-white/50 transition-colors"></div>
                 </div>
-                <div className="relative w-full">
+                <div className="relative w-full h-full">
                     <ModuleRenderer name={modName} />
                 </div>
             </div>
@@ -97,6 +97,27 @@ export default function DraggableOverlay({ overlayId, title, modules = [], overl
         localStorage.setItem(hidKey, JSON.stringify(newHidden));
     };
 
+    const cleanLayout = () => {
+        const storageKey = `modulePositions_${overlayId}`;
+        const newPositions = { ...positions };
+        
+        const activeModules = modules.filter(m => (CATEGORY_MAP[m] || 'Other') === activeTab);
+        
+        activeModules.forEach((modName) => {
+            const globalIndex = modules.indexOf(modName);
+            const id = `${modName}-${globalIndex}`;
+            
+            const localIdx = activeModules.indexOf(modName);
+            const row = Math.floor(localIdx / 3);
+            const col = localIdx % 3;
+            
+            newPositions[id] = { x: 50 + (col * 420), y: 150 + (row * 420) };
+        });
+
+        setPositions(newPositions);
+        localStorage.setItem(storageKey, JSON.stringify(newPositions));
+    };
+
     if (!loaded) return null;
 
     return (
@@ -152,6 +173,23 @@ export default function DraggableOverlay({ overlayId, title, modules = [], overl
                             borderColor: 'var(--color-widget-hover)'
                         }}
                     >
+                        <button
+                            onClick={cleanLayout}
+                            className="px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-300 hover:scale-105 mr-2 flex items-center gap-2"
+                            style={{
+                                backgroundColor: 'var(--color-widget-active)',
+                                color: 'var(--color-widget-text)',
+                                border: '1px solid var(--color-widget-active-hover)',
+                                boxShadow: '0 0 10px rgba(0,0,0,0.2)'
+                            }}
+                            title="Auto-arrange layout"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
+                            Clean Layout
+                        </button>
+                        
+                        <div className="w-px h-6 bg-white/20 mx-1"></div>
+
                         {modules.filter(m => (CATEGORY_MAP[m] || 'Other') === activeTab).map((modName) => {
                             const isHidden = hiddenModules.includes(modName);
                             return (

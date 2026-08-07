@@ -59,15 +59,15 @@ export default function NotepadEditor({ activeNoteId, notes, saveNotes, setActiv
     };
 
     const btnClass = (isActive) =>
-        `p-1 rounded transition-colors ${isActive ? 'bg-[var(--color-widget-active)] text-[var(--color-widget-text)]' : 'hover:bg-black/10 active:bg-black/20 text-black'}`;
+        `p-1 rounded transition-colors ${isActive ? 'bg-[var(--color-widget-active)] text-white' : 'hover:bg-white/10 active:bg-white/20 text-white/80 hover:text-white'}`;
 
     return (
         <div key="editor-view" className="flex-1 flex flex-col h-full overflow-hidden">
             {/* Editor Toolbar */}
-            <div className="flex items-center justify-between p-1.5 border-b border-black/10 bg-black/5 shrink-0">
+            <div className="flex items-center justify-between p-1.5 border-b border-white/10 bg-white/5 shrink-0">
                 <button
                     onClick={() => setActiveNoteId(null)}
-                    className="p-1 hover:bg-black/10 rounded transition-colors mr-1 text-black"
+                    className="p-1 hover:bg-white/10 rounded transition-colors mr-1 text-white"
                     title="Back to Index"
                 >
                     <ArrowLeft size={16} />
@@ -79,7 +79,7 @@ export default function NotepadEditor({ activeNoteId, notes, saveNotes, setActiv
                     <button onClick={() => format('formatBlock', 'H3')} className={btnClass(activeFormats.h3)} title="Heading 3"><Heading3 size={14} /></button>
                 </div>
 
-                <div className="w-px h-4 bg-black/20 mx-0.5"></div>
+                <div className="w-px h-4 bg-white/20 mx-0.5"></div>
 
                 <div className="flex items-center gap-0.5">
                     <button onClick={() => format('bold')} className={btnClass(activeFormats.bold)} title="Bold"><Bold size={14} /></button>
@@ -88,7 +88,7 @@ export default function NotepadEditor({ activeNoteId, notes, saveNotes, setActiv
                     <button onClick={() => format('strikeThrough')} className={btnClass(activeFormats.strikethrough)} title="Strikethrough"><Strikethrough size={14} /></button>
                 </div>
 
-                <div className="w-px h-4 bg-black/20 mx-0.5"></div>
+                <div className="w-px h-4 bg-white/20 mx-0.5"></div>
 
                 <div className="flex items-center gap-0.5">
                     <button onClick={() => format('justifyLeft')} className={btnClass(activeFormats.justifyLeft)} title="Align Left"><AlignLeft size={14} /></button>
@@ -97,7 +97,7 @@ export default function NotepadEditor({ activeNoteId, notes, saveNotes, setActiv
                     <button onClick={() => format('justifyFull')} className={btnClass(activeFormats.justifyFull)} title="Justify"><AlignJustify size={14} /></button>
                 </div>
 
-                <div className="w-px h-4 bg-black/20 mx-0.5"></div>
+                <div className="w-px h-4 bg-white/20 mx-0.5"></div>
 
                 <button onClick={() => format('insertUnorderedList')} className={btnClass(activeFormats.list)} title="Bullet List"><List size={14} /></button>
             </div>
@@ -105,7 +105,7 @@ export default function NotepadEditor({ activeNoteId, notes, saveNotes, setActiv
             {/* Editor Content */}
             <div
                 ref={editorRef}
-                className="flex-1 p-6 overflow-y-auto notepad-editor scrollable cursor-text text-black"
+                className="flex-1 p-6 overflow-y-auto notepad-editor scrollable cursor-text text-white"
                 contentEditable
                 onInput={handleInput}
                 onKeyUp={checkActiveFormats}

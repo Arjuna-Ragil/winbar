@@ -21,7 +21,7 @@ export default function YamwModule() {
     // Unconfigured state (Settings)
     if (isConfigured === false) {
         return (
-            <div className={`w-76.5 h-96 flex flex-col relative rounded-xl mx-auto overflow-hidden bg-slate-950/90 backdrop-blur-md border ${t.border} shadow-2xl ${t.base} ${t.selection} text-lg pointer-events-auto`}>
+            <div className={`w-76.5 h-96 flex flex-col relative text-lg pointer-events-auto ${t.base} ${t.selection}`}>
                 <div className="absolute inset-0 pointer-events-none opacity-10 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.8)_50%)] bg-size-[100%_4px] z-50"></div>
                 <header className={`px-3 py-2 border-b ${t.border} flex justify-between items-center bg-black/40 shrink-0 select-none`}>
                     <span className="text-xl font-bold tracking-wider">YAMW</span>
@@ -39,10 +39,10 @@ export default function YamwModule() {
 
     // Configured State (Main Player)
     return (
-        <div className={`w-76.5 h-96 flex flex-col relative rounded-xl mx-auto overflow-hidden bg-slate-950/90 backdrop-blur-md border ${t.border} shadow-2xl ${t.base} ${t.selection} text-lg pointer-events-auto`}>
+        <div className={`w-76.5 h-96 flex flex-col relative text-lg pointer-events-auto ${t.base} ${t.selection}`}>
             <div className="absolute inset-0 pointer-events-none opacity-10 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.8)_50%)] bg-size-[100%_4px] z-50" />
             
-            <header className={`px-3 py-2 border-b ${t.border} flex justify-between items-center bg-black/40 shrink-0 select-none z-10 relative`}>
+            <header className={`px-3 py-2 flex justify-between items-center bg-black/40 shrink-0 select-none z-10 relative`}>
                 <span className="text-xl font-bold tracking-wider">YAMW.exe</span>
                 <div className="flex items-center gap-2">
                     <button 
@@ -55,7 +55,7 @@ export default function YamwModule() {
             </header>
             
             {showSettings && (
-                <div className="absolute inset-0 z-50 bg-slate-950/95 backdrop-blur-md flex flex-col">
+                <div className="absolute inset-0 z-50 bg-black/40 backdrop-blur-xl flex flex-col">
                     <header className={`px-3 py-2 border-b ${t.border} flex justify-between items-center bg-black/40 shrink-0 select-none`}>
                         <span className="text-xl font-bold tracking-wider">YAMW.exe</span>
                         <span className="text-sm tracking-widest opacity-70">SETTINGS</span>

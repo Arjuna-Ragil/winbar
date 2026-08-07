@@ -57,7 +57,7 @@ export default function ControlCenter() {
     };
 
     return (
-        <div className="w-80 relative flex flex-col rounded-2xl mx-auto overflow-hidden bg-slate-950/80 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)] p-4 text-white">
+        <div className="w-80 relative flex flex-col p-4 text-white">
             <h2 className="text-lg font-bold mb-4">Control Center</h2>
             
             {/* Sliders */}

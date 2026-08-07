@@ -61,7 +61,7 @@ const ServerModule = () => {
     };
 
     return (
-        <div className="p-6 bg-[#090b14] backdrop-blur-md rounded-2xl w-90 shadow-2xl border border-white/5 text-white font-sans flex flex-col gap-4">
+        <div className="p-6 w-90 text-white font-sans flex flex-col gap-4">
             <h2 className="text-xl font-bold flex items-center justify-between mb-2">
                 Server Resources
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white/40 cursor-pointer hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">

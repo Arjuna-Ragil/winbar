@@ -41,7 +41,7 @@ const DockerModule = () => {
     }, [containers, searchQuery, sortBy]);
 
     return (
-        <div className="p-6 bg-[#090b14] backdrop-blur-md rounded-2xl min-w-[320px] shadow-2xl border border-white/5 text-white font-sans flex flex-col gap-4 min-h-75 resize overflow-hidden" style={{ maxHeight: '80vh', maxWidth: '90vw' }}>
+        <div className="p-6 min-w-[320px] text-white font-sans flex flex-col gap-4 min-h-75 resize overflow-hidden" style={{ maxHeight: '80vh', maxWidth: '90vw' }}>
             <div className="flex justify-between items-center">
                 <h2 className="text-xl font-bold">Docker Containers</h2>
                 <span className="bg-white/10 text-white/80 text-xs px-2 py-1 rounded-full font-medium">

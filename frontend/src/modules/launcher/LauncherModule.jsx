@@ -55,7 +55,7 @@ const LauncherModule = () => {
     };
 
     return (
-        <div className="p-6 bg-[#090b14]/80 backdrop-blur-md rounded-2xl w-full max-w-2xl shadow-2xl border border-white/5 text-white flex flex-col gap-4">
+        <div className="p-6 w-full max-w-2xl text-white flex flex-col gap-4">
             <div className="flex justify-between items-center mb-2 drag-handle cursor-move">
                 <h2 className="text-xs font-bold text-white/50 uppercase tracking-wider flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

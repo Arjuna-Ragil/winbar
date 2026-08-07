@@ -3,7 +3,7 @@ import { EventsEmit } from '../../../wailsjs/runtime/runtime';
 
 const TerminalModule = () => {
     return (
-        <div className="p-6 bg-[#090b14]/80 backdrop-blur-md rounded-2xl shadow-2xl border border-white/5 text-white flex flex-col justify-center items-center text-center gap-4 min-w-80">
+        <div className="p-6 text-white flex flex-col justify-center items-center text-center gap-4 min-w-80">
             <div className="flex justify-between items-center w-full mb-2 drag-handle cursor-move absolute top-0 left-0 p-4">
                 <h2 className="text-xs font-bold text-white/50 uppercase tracking-wider flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

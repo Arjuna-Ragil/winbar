@@ -62,7 +62,7 @@ export default function Companion() {
                 activeCompanion={activeCompanion} 
             />
 
-            <div className="absolute bottom-1 right-1 w-3 h-3 border-r-2 border-b-2 border-white/20 pointer-events-none rounded-br-sm z-20"></div>
+            <div className="absolute bottom-1 right-1 w-3 h-3 border-r-2 border-b-2 border-white/20 pointer-events-none rounded-br-sm z-50"></div>
         </div>
     );
 }

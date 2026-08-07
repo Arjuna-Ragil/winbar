@@ -54,7 +54,7 @@ export default function SysInfoModule() {
     };
 
     return (
-        <div className="w-80 relative flex flex-col rounded-2xl mx-auto overflow-hidden bg-slate-950/80 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)] p-4 text-white">
+        <div className="w-80 relative flex flex-col p-4 text-white">
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-bold ">System Monitor</h2>
                 <div className="relative">
@@ -65,7 +65,7 @@ export default function SysInfoModule() {
                         <Settings size={18} />
                     </button>
                     {showSettings && (
-                        <div className="absolute right-0 top-full mt-2 w-40 bg-slate-900 border border-white/10 rounded-xl shadow-xl overflow-hidden z-50 animate-in slide-in-from-top-2">
+                        <div className="absolute right-0 top-full mt-2 w-40 bg-black/40 backdrop-blur-xl border border-white/10 rounded-xl shadow-xl overflow-hidden z-50 animate-in slide-in-from-top-2">
                             {REFRESH_OPTIONS.map(opt => (
                                 <button
                                     key={opt.value}

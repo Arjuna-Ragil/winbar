@@ -7,18 +7,19 @@
   --color-widget-active-hover: rgba(47, 177, 209, 0.8);
   --color-widget-text: #ffffff;
   --color-background: rgba(8, 16, 39, 1);
+  --color-border: rgba(255, 255, 255, 0.15);
   --font-retro: "VT323", monospace;
 }
 
 @layer components {
   /* Generic Widget Container */
   .widget {
-    @apply flex items-center gap-2 px-2 py-1.5 text-widget-text bg-widget rounded-md transition-colors;
+    @apply flex items-center gap-2 px-2 py-1.5 text-widget-text bg-widget rounded-md transition-colors border border-border;
   }
   
   /* Clickable Widget */
   .widget-btn {
-    @apply flex items-center gap-2 px-2 py-1.5 text-widget-text bg-widget rounded-md transition-colors cursor-pointer justify-center hover:bg-widget-hover;
+    @apply flex items-center gap-2 px-2 py-1.5 text-widget-text bg-widget rounded-md transition-colors cursor-pointer justify-center hover:bg-widget-hover border border-border;
   }
   
   /* Active State */
