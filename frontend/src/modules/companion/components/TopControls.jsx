@@ -1,10 +1,6 @@
 import { Settings2, History, X, Eye, EyeOff } from 'lucide-react';
 
-export default function TopControls({
-    hideUI, setHideUI,
-    companions, activeCompanionId, setActiveCompanionId,
-    showHistory, setShowHistory
-}) {
+export default function TopControls({ hideUI, setHideUI, companions, activeCompanionId, setActiveCompanionId, showHistory, setShowHistory }) {
     return (
         <div className={`z-20 flex px-3 mb-2 pointer-events-none transition-all duration-300 ${hideUI ? 'justify-end' : 'justify-between'}`}>
             {!hideUI && (

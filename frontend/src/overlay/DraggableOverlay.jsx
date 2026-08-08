@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import Draggable from 'react-draggable';
-import ModuleRenderer from '../modules/ModuleRenderer';
+import ModuleRenderer from '../renderer/ModuleRenderer';
 
 const DraggableModule = ({ id, modName, position, onStop, isVisible }) => {
     const nodeRef = useRef(null);
@@ -32,14 +32,17 @@ const DraggableModule = ({ id, modName, position, onStop, isVisible }) => {
 const CATEGORY_MAP = {
     yamw: 'Home',
     sysinfo: 'Home',
-    controlcenter: 'Home',
+    control: 'Home',
     launcher: 'Home',
+
     todo: 'Notes',
     notepad: 'Notes',
     drawing: 'Notes',
+
     companion: 'AI',
-    server: 'Server',
-    docker: 'Server',
+
+    serverinfo: 'Server',
+    container: 'Server',
     terminal: 'Server'
 };
 
@@ -100,17 +103,17 @@ export default function DraggableOverlay({ overlayId, title, modules = [], overl
     const cleanLayout = () => {
         const storageKey = `modulePositions_${overlayId}`;
         const newPositions = { ...positions };
-        
+
         const activeModules = modules.filter(m => (CATEGORY_MAP[m] || 'Other') === activeTab);
-        
+
         activeModules.forEach((modName) => {
             const globalIndex = modules.indexOf(modName);
             const id = `${modName}-${globalIndex}`;
-            
+
             const localIdx = activeModules.indexOf(modName);
             const row = Math.floor(localIdx / 3);
             const col = localIdx % 3;
-            
+
             newPositions[id] = { x: 50 + (col * 420), y: 150 + (row * 420) };
         });
 
@@ -122,10 +125,9 @@ export default function DraggableOverlay({ overlayId, title, modules = [], overl
 
     return (
         <div className="flex-1 w-full relative p-4 animate-in fade-in duration-300 pointer-events-none overflow-hidden">
-            {/* Docks */}
             {!overlayTransparent && modules.length > 0 && (
                 <>
-                    {/* Top Dock: Categories */}
+                    {/* Categories */}
                     <div
                         className="absolute top-0 left-1/2 -translate-x-1/2 flex items-center justify-center flex-row gap-8 backdrop-blur-xl border-b px-12 pt-6 z-50 pointer-events-auto"
                         style={{ borderColor: 'var(--color-widget-hover)' }}
@@ -165,7 +167,7 @@ export default function DraggableOverlay({ overlayId, title, modules = [], overl
                         })}
                     </div>
 
-                    {/* Bottom Dock: Module Toggles */}
+                    {/* Module Toggles */}
                     <div
                         className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center justify-center flex-row gap-1.5 backdrop-blur-xl border rounded-md px-5 py-2.5 z-50 shadow-2xl pointer-events-auto"
                         style={{
@@ -187,7 +189,7 @@ export default function DraggableOverlay({ overlayId, title, modules = [], overl
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
                             Clean Layout
                         </button>
-                        
+
                         <div className="w-px h-6 bg-white/20 mx-1"></div>
 
                         {modules.filter(m => (CATEGORY_MAP[m] || 'Other') === activeTab).map((modName) => {

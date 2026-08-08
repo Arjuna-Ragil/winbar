@@ -31,7 +31,7 @@ const Column = ({ title, status, todos, updateTaskStatus, deleteTask, editTask }
 
     return (
         <div
-            className="flex-1 flex flex-col min-w-[250px] shrink-0 border-r border-white/10 last:border-r-0 transition-colors"
+            className="flex-1 flex flex-col min-w-62.5 shrink-0 border-r border-white/10 last:border-r-0 transition-colors"
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
@@ -114,20 +114,18 @@ const RecurringListView = ({ todos, updateTaskStatus, deleteTask }) => {
         <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3 scrollable">
             {todos.map(task => {
                 const isDone = task.status === 'done';
-                
+
                 return (
                     <div key={task.id} className="flex h-20 bg-white/5 border border-white/10 rounded-lg overflow-hidden relative group shadow-sm hover:border-white/20 transition-all">
-                        
-                        {/* Task Text */}
+
                         <div className="flex-1 p-4 flex flex-col items-start justify-center border-l-4 border-l-transparent group-hover:border-l-widget transition-colors z-10 pointer-events-none">
                             <span className={`font-sans text-lg font-medium drop-shadow-sm ${isDone ? 'text-white/60 line-through' : 'text-white'}`}>{task.text}</span>
                         </div>
-                        
-                        {/* Right Side Action / Status */}
+
                         {isDone ? (
-                            <div 
+                            <div
                                 onClick={() => updateTaskStatus(task.id, 'todo')}
-                                className="absolute inset-0 bg-gradient-to-l from-widget via-widget/70 to-transparent flex justify-end items-center pr-8 text-widget-text font-bold overflow-hidden cursor-pointer hover:opacity-90 transition-opacity z-0"
+                                className="absolute inset-0 bg-linear-to-l from-widget via-widget/70 to-transparent flex justify-end items-center pr-8 text-widget-text font-bold overflow-hidden cursor-pointer hover:opacity-90 transition-opacity z-0"
                             >
                                 <span className="absolute right-0 text-5xl font-black opacity-20 whitespace-nowrap transform -rotate-12 select-none pointer-events-none translate-x-2">COMPLETED</span>
                                 <div className="flex items-center gap-2 z-10 mr-2 drop-shadow-sm">
@@ -136,8 +134,8 @@ const RecurringListView = ({ todos, updateTaskStatus, deleteTask }) => {
                                 </div>
                             </div>
                         ) : (
-                            <div className="absolute inset-y-0 right-0 w-48 bg-gradient-to-l from-black/40 to-transparent flex flex-col justify-center items-end pr-4 shrink-0 z-10 pointer-events-none">
-                                <button 
+                            <div className="absolute inset-y-0 right-0 w-48 bg-linear-to-l from-black/40 to-transparent flex flex-col justify-center items-end pr-4 shrink-0 z-10 pointer-events-none">
+                                <button
                                     onClick={() => updateTaskStatus(task.id, 'done')}
                                     className="px-6 py-2 bg-widget/20 hover:bg-widget hover:text-widget-text border border-widget/50 hover:border-widget rounded font-bold transition-all flex items-center gap-2 text-sm text-white pointer-events-auto shadow-sm"
                                 >
@@ -147,7 +145,6 @@ const RecurringListView = ({ todos, updateTaskStatus, deleteTask }) => {
                             </div>
                         )}
 
-                        {/* Hover actions for delete */}
                         <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 flex gap-2 transition-opacity z-20">
                             <button onClick={() => deleteTask(task.id)} className="text-white hover:text-red-400 bg-black/40 hover:bg-black/60 p-1.5 rounded-full shadow backdrop-blur-sm transition-colors">
                                 <X size={12} strokeWidth={3} />
@@ -180,7 +177,6 @@ export default function KanbanView({ todos, addTask, updateTaskStatus, deleteTas
 
     return (
         <div className="flex flex-col h-full bg-transparent">
-            {/* Tabs */}
             <div className="flex px-3 pt-2 gap-2 border-b border-white/10 bg-white/5">
                 {['daily', 'weekly', 'monthly', 'normal'].map(tab => (
                     <button

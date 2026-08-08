@@ -39,7 +39,6 @@ export default function Notepad() {
                 .scrollable::-webkit-scrollbar-thumb { background: var(--color-widget); border-radius: 10px; border: 2px solid transparent; }
             `}</style>
 
-            {/* Inner Paper Pages */}
             <div className="flex-1 m-1 mt-0 bg-transparent rounded-sm overflow-hidden flex flex-col relative border-l border-white/10">
 
                 {!activeNoteId ? (

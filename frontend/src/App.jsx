@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import WidgetRenderer from './widget/WidgetRenderer';
+import WidgetRenderer from './renderer/WidgetRenderer.jsx';
 import { GetConfig, GetTheme } from '../wailsjs/go/handlers/SystemHandler.js';
 import { ExpandWindow, ShrinkWindow } from '../wailsjs/go/main/App.js';
 import { EventsOn, EventsOff } from '../wailsjs/runtime/runtime.js';

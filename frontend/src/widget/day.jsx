@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { GetWeather } from '../../wailsjs/go/handlers/SystemHandler';
 import { Sun, Cloud, Moon } from 'lucide-react';
 
-export default function Day() {
+export default function DayWidget() {
     const [time, setTime] = useState(new Date());
     const [weather, setWeather] = useState(null);
 

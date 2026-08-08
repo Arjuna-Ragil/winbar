@@ -20,8 +20,8 @@ export default function WorkspaceWidget() {
                     key={ws}
                     onClick={() => SwitchWorkspace(ws)}
                     className={`cursor-pointer w-5 h-5 flex items-center justify-center rounded-sm text-sm font-bold transition-all duration-300 ${activeWs === ws
-                            ? 'bg-white text-blue-600 shadow-sm'
-                            : 'text-white/60 hover:bg-white/20 hover:text-white'
+                        ? 'bg-white text-blue-600 shadow-sm'
+                        : 'text-white/60 hover:bg-white/20 hover:text-white'
                         }`}
                 >
                     {ws}

@@ -1,5 +1,4 @@
 export const themes: Record<string, any> = {
-    // Winbar dynamic theme wrapper (maps to CSS variables defined in winbar/frontend/src/style.css)
     emerald: {
         base: 'text-[var(--color-widget-text)] font-retro',
         muted: 'text-[var(--color-widget-text)] opacity-60 font-retro',

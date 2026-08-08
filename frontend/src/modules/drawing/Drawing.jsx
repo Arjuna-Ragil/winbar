@@ -27,9 +27,6 @@ export default function DrawingModule() {
                 }
             `}</style>
 
-
-
-            {/* Toolbar Area */}
             <div className="flex items-center justify-between p-2 mx-1 mt-0 bg-white/5 border-b border-white/10 rounded-t-sm border-l">
                 <div className="flex items-center gap-2">
                     <Palette size={18} className="text-white" />
@@ -37,7 +34,6 @@ export default function DrawingModule() {
                 </div>
             </div>
 
-            {/* Excalidraw Canvas Area */}
             <div className="flex-1 m-1 mt-0 rounded-b-sm overflow-hidden relative border-l border-white/10 bg-transparent">
                 <Excalidraw
                     initialData={{
@@ -64,7 +60,6 @@ export default function DrawingModule() {
                 />
             </div>
 
-            {/* Visual resize indicator */}
             <div className="absolute bottom-1 right-1 w-3 h-3 border-r-2 border-b-2 border-widget-text/50 pointer-events-none rounded-br-sm z-50"></div>
         </div>
     );

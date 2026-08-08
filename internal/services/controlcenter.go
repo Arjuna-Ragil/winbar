@@ -9,21 +9,21 @@ import (
 	"github.com/itchyny/volume-go"
 )
 
-type ControlCenterService struct{}
+type ControlService struct{}
 
-func NewControlCenterService() *ControlCenterService {
-	return &ControlCenterService{}
+func NewControlService() *ControlService {
+	return &ControlService{}
 }
 
-func (s *ControlCenterService) GetVolume() (int, error) {
+func (s *ControlService) GetVolume() (int, error) {
 	return volume.GetVolume()
 }
 
-func (s *ControlCenterService) SetVolume(v int) error {
+func (s *ControlService) SetVolume(v int) error {
 	return volume.SetVolume(v)
 }
 
-func (s *ControlCenterService) GetBrightness() (int, error) {
+func (s *ControlService) GetBrightness() (int, error) {
 	cmd := exec.Command("powershell", "-Command", "(Get-WmiObject -Namespace root/WMI -Class WmiMonitorBrightness).CurrentBrightness")
 	out, err := cmd.Output()
 	if err != nil {
@@ -34,12 +34,12 @@ func (s *ControlCenterService) GetBrightness() (int, error) {
 	return b, nil
 }
 
-func (s *ControlCenterService) SetBrightness(b int) error {
+func (s *ControlService) SetBrightness(b int) error {
 	cmd := exec.Command("powershell", "-Command", fmt.Sprintf("(Get-WmiObject -Namespace root/WMI -Class WmiMonitorBrightnessMethods).WmiSetBrightness(1, %d)", b))
 	return cmd.Run()
 }
 
-func (s *ControlCenterService) GetWifiNetworks() []dto.WifiNetwork {
+func (s *ControlService) GetWifiNetworks() []dto.WifiNetwork {
 	cmd := exec.Command("netsh", "wlan", "show", "networks", "mode=bssid")
 	out, err := cmd.Output()
 	if err != nil {
@@ -92,7 +92,7 @@ func (s *ControlCenterService) GetWifiNetworks() []dto.WifiNetwork {
 	return networks
 }
 
-func (s *ControlCenterService) ConnectWifi(ssid string) error {
+func (s *ControlService) ConnectWifi(ssid string) error {
 	cmd := exec.Command("netsh", "wlan", "connect", fmt.Sprintf("name=\"%s\"", ssid))
 	return cmd.Run()
 }

@@ -36,8 +36,8 @@ func main() {
 	systemService := services.NewSystemService(systemDB)
 	systemHandler := handlers.NewSystemHandler(systemService)
 
-	ccService := services.NewControlCenterService()
-	ccHandler := handlers.NewControlCenterHandler(ccService)
+	ccService := services.NewControlService()
+	ccHandler := handlers.NewControlHandler(ccService)
 
 	Subsonic := yamwDB.NewSubsonic()
 

@@ -63,7 +63,6 @@ export default function NotepadEditor({ activeNoteId, notes, saveNotes, setActiv
 
     return (
         <div key="editor-view" className="flex-1 flex flex-col h-full overflow-hidden">
-            {/* Editor Toolbar */}
             <div className="flex items-center justify-between p-1.5 border-b border-white/10 bg-white/5 shrink-0">
                 <button
                     onClick={() => setActiveNoteId(null)}
@@ -102,7 +101,6 @@ export default function NotepadEditor({ activeNoteId, notes, saveNotes, setActiv
                 <button onClick={() => format('insertUnorderedList')} className={btnClass(activeFormats.list)} title="Bullet List"><List size={14} /></button>
             </div>
 
-            {/* Editor Content */}
             <div
                 ref={editorRef}
                 className="flex-1 p-6 overflow-y-auto notepad-editor scrollable cursor-text text-white"

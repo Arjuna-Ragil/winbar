@@ -22,7 +22,7 @@ const isDifferentWeek = (dateStr) => {
 
 const isDifferentMonth = (dateStr) => {
     if (!dateStr) return false;
-    const todayStr = new Date().toISOString().slice(0, 7); // YYYY-MM
+    const todayStr = new Date().toISOString().slice(0, 7);
     const completedStr = new Date(dateStr).toISOString().slice(0, 7);
     return completedStr < todayStr;
 };
@@ -35,16 +35,14 @@ export default function useTodo() {
         if (saved) {
             try {
                 let parsed = JSON.parse(saved);
-                
-                // Reset logic for recurring tasks
+
                 let needsSave = false;
                 parsed = parsed.map(task => {
-                    // Default legacy tasks to normal
                     if (!task.type) {
                         task.type = 'normal';
                         needsSave = true;
                     }
-                    
+
                     if (task.status === 'done' && task.completedAt) {
                         if (task.type === 'daily' && isDifferentDay(task.completedAt)) {
                             needsSave = true;

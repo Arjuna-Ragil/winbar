@@ -6,7 +6,7 @@ import { Kanban, CalendarDays } from 'lucide-react';
 
 export default function TodoModule() {
     const { todos, addTask, updateTaskStatus, deleteTask, editTask } = useTodo();
-    const [view, setView] = useState('kanban'); // 'kanban' | 'calendar'
+    const [view, setView] = useState('kanban'); // kanban | calendar
 
     const btnClass = (isActive) =>
         `flex items-center gap-2 px-3 py-1.5 rounded transition-colors ${isActive ? 'bg-[var(--color-widget-active)] text-white' : 'hover:bg-white/10 text-white/80 hover:text-white'}`;
@@ -24,7 +24,6 @@ export default function TodoModule() {
                 .scrollable::-webkit-scrollbar-thumb { background: var(--color-widget); border-radius: 10px; border: 2px solid #f4ecd8; }
             `}</style>
 
-            {/* Toolbar */}
             <div className="flex items-center justify-between p-2 mx-1 mt-0 bg-white/5 border-b border-white/10 rounded-t-sm shadow-sm border-l">
                 <div className="font-serif font-bold text-xl ml-2 text-white">Tasks</div>
                 <div className="flex gap-1 bg-black/20 p-1 rounded">
@@ -47,7 +46,6 @@ export default function TodoModule() {
                 </div>
             </div>
 
-            {/* Inner Content Area */}
             <div className="flex-1 m-1 mt-0 bg-transparent rounded-b-sm overflow-hidden flex flex-col relative border-l border-white/10">
                 {view === 'kanban' ? (
                     <KanbanView
@@ -65,7 +63,6 @@ export default function TodoModule() {
                 )}
             </div>
 
-            {/* Visual resize indicator */}
             <div className="absolute bottom-1 right-1 w-3 h-3 border-r-2 border-b-2 border-widget-text/50 pointer-events-none rounded-br-sm z-50"></div>
         </div>
     );

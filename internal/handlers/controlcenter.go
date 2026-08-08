@@ -5,34 +5,34 @@ import (
 	"winbar/internal/services"
 )
 
-type ControlCenterHandler struct {
-	service *services.ControlCenterService
+type ControlHandler struct {
+	service *services.ControlService
 }
 
-func NewControlCenterHandler(service *services.ControlCenterService) *ControlCenterHandler {
-	return &ControlCenterHandler{service: service}
+func NewControlHandler(service *services.ControlService) *ControlHandler {
+	return &ControlHandler{service: service}
 }
 
-func (h *ControlCenterHandler) GetVolume() (int, error) {
+func (h *ControlHandler) GetVolume() (int, error) {
 	return h.service.GetVolume()
 }
 
-func (h *ControlCenterHandler) SetVolume(v int) error {
+func (h *ControlHandler) SetVolume(v int) error {
 	return h.service.SetVolume(v)
 }
 
-func (h *ControlCenterHandler) GetBrightness() (int, error) {
+func (h *ControlHandler) GetBrightness() (int, error) {
 	return h.service.GetBrightness()
 }
 
-func (h *ControlCenterHandler) SetBrightness(b int) error {
+func (h *ControlHandler) SetBrightness(b int) error {
 	return h.service.SetBrightness(b)
 }
 
-func (h *ControlCenterHandler) GetWifiNetworks() []dto.WifiNetwork {
+func (h *ControlHandler) GetWifiNetworks() []dto.WifiNetwork {
 	return h.service.GetWifiNetworks()
 }
 
-func (h *ControlCenterHandler) ConnectWifi(ssid string) error {
+func (h *ControlHandler) ConnectWifi(ssid string) error {
 	return h.service.ConnectWifi(ssid)
 }

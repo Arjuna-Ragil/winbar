@@ -59,14 +59,12 @@ export default function CalendarView({ todos, addTask }) {
 
     return (
         <div className="flex flex-col h-full bg-transparent overflow-y-auto scrollable">
-            {/* Calendar Header */}
             <div className="flex justify-between items-center p-3 border-b border-white/10">
                 <button onClick={prevMonth} className="p-1 rounded hover:bg-white/10 text-white"><ChevronLeft size={20} /></button>
                 <h2 className="font-serif font-bold text-xl text-white">{monthName} {year}</h2>
                 <button onClick={nextMonth} className="p-1 rounded hover:bg-white/10 text-white"><ChevronRight size={20} /></button>
             </div>
 
-            {/* Calendar Grid */}
             <div className="p-2 border-b border-white/10">
                 <div className="grid grid-cols-7 text-center mb-1">
                     {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(d => (
@@ -78,7 +76,6 @@ export default function CalendarView({ todos, addTask }) {
                 </div>
             </div>
 
-            {/* Selected Date Tasks */}
             <div className="flex flex-col">
                 <div className="p-2 font-serif font-bold text-white border-b border-white/10 bg-white/5">
                     Tasks for {new Date(selectedDate).toLocaleDateString()}
@@ -99,7 +96,6 @@ export default function CalendarView({ todos, addTask }) {
                     )}
                 </div>
 
-                {/* Add task for selected date */}
                 <form onSubmit={handleAdd} className="flex gap-2 p-3 border-t border-white/10">
                     <input
                         type="text"

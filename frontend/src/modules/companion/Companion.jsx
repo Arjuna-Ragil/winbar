@@ -23,43 +23,43 @@ export default function Companion() {
                 .chat-scrollable::-webkit-scrollbar-thumb { background: var(--color-widget); border-radius: 10px; }
             `}</style>
 
-            <CharacterSprite 
-                activeCompanion={activeCompanion} 
-                imageError={imageError} 
-                currentImageSrc={currentImageSrc} 
-                currentExpression={currentExpression} 
+            <CharacterSprite
+                activeCompanion={activeCompanion}
+                imageError={imageError}
+                currentImageSrc={currentImageSrc}
+                currentExpression={currentExpression}
             />
 
             <div className="flex-1 pointer-events-none"></div>
 
-            <TopControls 
-                hideUI={hideUI} 
+            <TopControls
+                hideUI={hideUI}
                 setHideUI={setHideUI}
-                companions={companions} 
-                activeCompanionId={activeCompanionId} 
+                companions={companions}
+                activeCompanionId={activeCompanionId}
                 setActiveCompanionId={setActiveCompanionId}
-                showHistory={showHistory} 
-                setShowHistory={setShowHistory} 
+                showHistory={showHistory}
+                setShowHistory={setShowHistory}
             />
 
             {!hideUI && (
-                <ChatDialog 
-                    activeCompanion={activeCompanion} 
+                <ChatDialog
+                    activeCompanion={activeCompanion}
                     isLoading={isLoading}
-                    displayedMessage={displayedMessage} 
-                    fullMessage={fullMessage} 
+                    displayedMessage={displayedMessage}
+                    fullMessage={fullMessage}
                     setDisplayedMessage={setDisplayedMessage}
-                    input={input} 
-                    setInput={setInput} 
-                    handleSend={handleSend} 
+                    input={input}
+                    setInput={setInput}
+                    handleSend={handleSend}
                 />
             )}
 
-            <HistoryModal 
-                showHistory={showHistory} 
-                setShowHistory={setShowHistory} 
-                messages={messages} 
-                activeCompanion={activeCompanion} 
+            <HistoryModal
+                showHistory={showHistory}
+                setShowHistory={setShowHistory}
+                messages={messages}
+                activeCompanion={activeCompanion}
             />
 
             <div className="absolute bottom-1 right-1 w-3 h-3 border-r-2 border-b-2 border-white/20 pointer-events-none rounded-br-sm z-50"></div>

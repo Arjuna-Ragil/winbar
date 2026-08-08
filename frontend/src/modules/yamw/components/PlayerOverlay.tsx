@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Shuffle, Repeat, Play, Pause, Repeat1, Volume2, VolumeX, Mic2, SkipBack, SkipForward } from 'lucide-react';
 import { dto } from "../../../../wailsjs/go/models";
 import { CoverImage } from "./CoverImage";

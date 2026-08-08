@@ -51,8 +51,6 @@ export default function MusicWidget({ toggleOverlay }) {
         );
     }
 
-    const titleText = `${activeSong.title || 'Unknown'} - ${activeSong.artist || 'Unknown'}`;
-
     return (
         <div
             className="widget cursor-pointer hover:bg-widget-hover p-1! gap-2!"

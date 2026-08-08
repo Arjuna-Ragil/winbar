@@ -1,6 +1,6 @@
 import { House, X } from 'lucide-react';
 
-export default function HomeWidget({ activeOverlay, toggleOverlay }) {
+export default function OverlayWidget({ activeOverlay, toggleOverlay }) {
     const isOverlay = activeOverlay === 'home';
 
     return (

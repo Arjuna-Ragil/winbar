@@ -1,19 +1,19 @@
-import Day from './day';
-import BatteryWidget from './Battery';
-import VolumeWidget from './Volume';
-import WifiWidget from './Wifi';
-import NotificationWidget from './Notification';
-import WorkspaceWidget from './Workspace';
-import PowerMenuWidget from './Home';
-import PowerWidget from './Power';
-import ThemeToggle from './ThemeToggle';
-import OverlayToggleWidget from './OverlayToggle';
-import MusicWidget from './Music';
+import DayWidget from '../widget/day'; 
+import BatteryWidget from '../widget/Battery';
+import VolumeWidget from '../widget/Volume';
+import WifiWidget from '../widget/Wifi';
+import NotificationWidget from '../widget/Notification';
+import WorkspaceWidget from '../widget/Workspace';
+import OverlayWidget from '../widget/Overlay';
+import PowerWidget from '../widget/Power';
+import ThemeToggle from '../widget/ThemeToggle';
+import OverlayToggleWidget from '../widget/OverlayToggle';
+import MusicWidget from '../widget/Music';
 
 export default function WidgetRenderer({ name, activeOverlay, toggleOverlay, overlayTransparent, toggleOverlayTransparent }) {
     switch (name.toLowerCase()) {
         case 'day':
-            return <Day />;
+            return <DayWidget />;
         case 'battery':
             return <BatteryWidget />;
         case 'volume':
@@ -24,8 +24,8 @@ export default function WidgetRenderer({ name, activeOverlay, toggleOverlay, ove
             return <NotificationWidget />;
         case 'workspace':
             return <WorkspaceWidget />;
-        case 'home':
-            return <PowerMenuWidget activeOverlay={activeOverlay} toggleOverlay={toggleOverlay} />;
+        case 'overlay':
+            return <OverlayWidget activeOverlay={activeOverlay} toggleOverlay={toggleOverlay} />;
         case 'power':
             return <PowerWidget activeOverlay={activeOverlay} toggleOverlay={toggleOverlay} />;
         case 'theme_toggle':

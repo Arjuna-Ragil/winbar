@@ -1,4 +1,3 @@
-import React from 'react';
 import { Settings } from 'lucide-react';
 import { SetupForm } from './components/SetupForm';
 import { SongList } from './components/SongList';
@@ -18,7 +17,6 @@ export default function YamwModule() {
 
     const t = themes[currentTheme] || themes.emerald;
 
-    // Unconfigured state (Settings)
     if (isConfigured === false) {
         return (
             <div className={`w-76.5 h-96 flex flex-col relative text-lg pointer-events-auto ${t.base} ${t.selection}`}>
@@ -28,24 +26,23 @@ export default function YamwModule() {
                     <span className="text-sm tracking-widest opacity-70">SETUP</span>
                 </header>
                 <div className="flex-1 overflow-auto relative z-10 hide-scrollbar">
-                    <SetupForm 
-                        t={t} 
-                        onSuccess={appLogic.handleSetupSuccess} 
+                    <SetupForm
+                        t={t}
+                        onSuccess={appLogic.handleSetupSuccess}
                     />
                 </div>
             </div>
         );
     }
 
-    // Configured State (Main Player)
     return (
         <div className={`w-76.5 h-96 flex flex-col relative text-lg pointer-events-auto ${t.base} ${t.selection}`}>
             <div className="absolute inset-0 pointer-events-none opacity-10 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.8)_50%)] bg-size-[100%_4px] z-50" />
-            
+
             <header className={`px-3 py-2 flex justify-between items-center bg-black/40 shrink-0 select-none z-10 relative`}>
                 <span className="text-xl font-bold tracking-wider">YAMW.exe</span>
                 <div className="flex items-center gap-2">
-                    <button 
+                    <button
                         onClick={() => setShowSettings(!showSettings)}
                         className={`p-1 rounded ${t.bgHover} transition-colors`}
                     >
@@ -53,7 +50,7 @@ export default function YamwModule() {
                     </button>
                 </div>
             </header>
-            
+
             {showSettings && (
                 <div className="absolute inset-0 z-50 bg-black/40 backdrop-blur-xl flex flex-col">
                     <header className={`px-3 py-2 border-b ${t.border} flex justify-between items-center bg-black/40 shrink-0 select-none`}>
@@ -61,9 +58,9 @@ export default function YamwModule() {
                         <span className="text-sm tracking-widest opacity-70">SETTINGS</span>
                     </header>
                     <div className="flex-1 overflow-auto hide-scrollbar">
-                        <SetupForm 
-                            t={t} 
-                            onSuccess={() => setShowSettings(false)} 
+                        <SetupForm
+                            t={t}
+                            onSuccess={() => setShowSettings(false)}
                             onClose={() => setShowSettings(false)}
                             isOverlay={true}
                         />
@@ -72,19 +69,18 @@ export default function YamwModule() {
             )}
 
             <div className="flex-1 overflow-auto hide-scrollbar relative z-10">
-                <SongList 
-                    songs={songs} 
-                    setSongs={appLogic.setSongs} 
-                    activeSongId={activeSongId} 
-                    isPlaying={isPlaying} 
-                    loading={loading} 
-                    t={t} 
-                    onPlaySong={appLogic.handlePlaySong} 
-                    onLoadMore={appLogic.fetchSongs} 
+                <SongList
+                    songs={songs}
+                    setSongs={appLogic.setSongs}
+                    activeSongId={activeSongId}
+                    isPlaying={isPlaying}
+                    loading={loading}
+                    t={t}
+                    onPlaySong={appLogic.handlePlaySong}
+                    onLoadMore={appLogic.fetchSongs}
                 />
             </div>
 
-            {/* Hidden Audio Element */}
             <audio
                 ref={audioRef}
                 onTimeUpdate={appLogic.handleTimeUpdate}
@@ -92,19 +88,19 @@ export default function YamwModule() {
             />
 
             {activeSong && (
-                <MiniPlayer 
-                    activeSong={activeSong} 
-                    t={t} 
-                    isPlayerOpen={isPlayerOpen} 
-                    isPlaying={isPlaying} 
-                    setIsPlayerOpen={appLogic.setIsPlayerOpen} 
-                    togglePlayPause={appLogic.togglePlayPause} 
+                <MiniPlayer
+                    activeSong={activeSong}
+                    t={t}
+                    isPlayerOpen={isPlayerOpen}
+                    isPlaying={isPlaying}
+                    setIsPlayerOpen={appLogic.setIsPlayerOpen}
+                    togglePlayPause={appLogic.togglePlayPause}
                 />
             )}
 
             {activeSong && (
-                <PlayerOverlay 
-                    t={t} 
+                <PlayerOverlay
+                    t={t}
                     activeSong={activeSong}
                     isPlayerOpen={isPlayerOpen}
                     setIsPlayerOpen={appLogic.setIsPlayerOpen}
