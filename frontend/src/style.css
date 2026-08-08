@@ -9,6 +9,16 @@
   --color-background: rgba(8, 16, 39, 1);
   --color-border: rgba(255, 255, 255, 0.15);
   --font-retro: "VT323", monospace;
+  --animate-marquee: marquee 15s linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 @layer components {

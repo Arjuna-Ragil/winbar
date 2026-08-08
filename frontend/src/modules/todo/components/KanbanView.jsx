@@ -31,7 +31,7 @@ const Column = ({ title, status, todos, updateTaskStatus, deleteTask, editTask }
 
     return (
         <div
-            className="flex-1 flex flex-col min-w-50 border-r border-white/10 last:border-r-0 transition-colors"
+            className="flex-1 flex flex-col min-w-[250px] shrink-0 border-r border-white/10 last:border-r-0 transition-colors"
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
@@ -119,7 +119,7 @@ const RecurringListView = ({ todos, updateTaskStatus, deleteTask }) => {
                     <div key={task.id} className="flex h-20 bg-white/5 border border-white/10 rounded-lg overflow-hidden relative group shadow-sm hover:border-white/20 transition-all">
                         
                         {/* Task Text */}
-                        <div className="flex-1 p-4 flex flex-col justify-center border-l-4 border-l-transparent group-hover:border-l-widget transition-colors z-10 pointer-events-none">
+                        <div className="flex-1 p-4 flex flex-col items-start justify-center border-l-4 border-l-transparent group-hover:border-l-widget transition-colors z-10 pointer-events-none">
                             <span className={`font-sans text-lg font-medium drop-shadow-sm ${isDone ? 'text-white/60 line-through' : 'text-white'}`}>{task.text}</span>
                         </div>
                         
@@ -206,7 +206,7 @@ export default function KanbanView({ todos, addTask, updateTaskStatus, deleteTas
                         type="date"
                         value={newTaskDate}
                         onChange={(e) => setNewTaskDate(e.target.value)}
-                        className="bg-transparent border-b border-white/20 focus:border-widget outline-none px-2 text-white/60 font-sans text-sm transition-colors"
+                        className="bg-transparent border-b border-white/20 focus:border-widget outline-none px-2 py-1.5 text-white/60 font-sans text-sm transition-colors scheme-dark"
                     />
                 )}
                 <button
@@ -217,7 +217,7 @@ export default function KanbanView({ todos, addTask, updateTaskStatus, deleteTas
                 </button>
             </form>
 
-            <div className="flex-1 flex overflow-hidden">
+            <div className="flex-1 flex overflow-x-auto overflow-y-hidden scrollable">
                 {activeTab === 'normal' ? (
                     <>
                         <Column title="To Do" status="todo" todos={filteredTodos} updateTaskStatus={updateTaskStatus} deleteTask={deleteTask} editTask={editTask} />

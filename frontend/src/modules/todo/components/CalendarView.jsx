@@ -58,7 +58,7 @@ export default function CalendarView({ todos, addTask }) {
     const selectedDayTasks = getTasksForDate(selectedDate);
 
     return (
-        <div className="flex flex-col h-full bg-transparent">
+        <div className="flex flex-col h-full bg-transparent overflow-y-auto scrollable">
             {/* Calendar Header */}
             <div className="flex justify-between items-center p-3 border-b border-white/10">
                 <button onClick={prevMonth} className="p-1 rounded hover:bg-white/10 text-white"><ChevronLeft size={20} /></button>
@@ -79,12 +79,12 @@ export default function CalendarView({ todos, addTask }) {
             </div>
 
             {/* Selected Date Tasks */}
-            <div className="flex-1 flex flex-col overflow-hidden">
+            <div className="flex flex-col">
                 <div className="p-2 font-serif font-bold text-white border-b border-white/10 bg-white/5">
                     Tasks for {new Date(selectedDate).toLocaleDateString()}
                 </div>
 
-                <div className="flex-1 overflow-y-auto p-3 flex flex-col gap-2 scrollable">
+                <div className="p-3 flex flex-col gap-2">
                     {selectedDayTasks.length === 0 ? (
                         <div className="text-center font-['Caveat'] text-xl text-white/50 mt-4">No tasks for this day...</div>
                     ) : (
