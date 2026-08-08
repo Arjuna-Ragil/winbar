@@ -49,7 +49,7 @@ export default function useAIChat() {
     useEffect(() => {
         if (activeCompanion) {
             setFullMessage(activeCompanion.startMessage || 'Hello there! How can I help you today?');
-            setCurrentExpression('happy');
+            setCurrentExpression('normal');
             setMessages([]);
         }
     }, [activeCompanionId, companions]);

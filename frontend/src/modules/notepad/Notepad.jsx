@@ -14,7 +14,7 @@ export default function Notepad() {
 
     return (
         <div className="flex flex-col text-white pointer-events-auto resize overflow-hidden relative"
-            style={{ width: '420px', height: '500px', minWidth: '350px', minHeight: '300px' }}>
+            style={{ width: '350px', height: '400px', minWidth: '350px', minHeight: '300px' }}>
 
             <style>{`
                 @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap');

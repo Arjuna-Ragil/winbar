@@ -16,8 +16,8 @@ export default function DrawingModule() {
     }
 
     return (
-        <div className="flex flex-col text-white pointer-events-auto resize overflow-hidden relative"
-            style={{ width: '500px', height: '400px', minWidth: '400px', minHeight: '300px' }}>
+        <div className="flex flex-col text-white pointer-events-auto resize overflow-hidden relative text-left"
+            style={{ width: '650px', height: '450px', minWidth: '650px', minHeight: '450px' }}>
 
             <style>{`
                 /* Target Excalidraw's internal UI if we want to theme it slightly */
@@ -49,7 +49,7 @@ export default function DrawingModule() {
                         }
                     }}
                     onChange={handleChange}
-                    theme={theme}
+                    theme="dark"
                     UIOptions={{
                         canvasActions: {
                             changeViewBackgroundColor: false,
