@@ -1,5 +1,15 @@
 import { useEffect, useState } from 'react';
 import { GetServerStats } from '../../../wailsjs/go/handlers/Server';
+import { Settings, Check } from 'lucide-react';
+
+const REFRESH_OPTIONS = [
+    { label: 'Realtime (1s)', value: 1000 },
+    { label: '5s', value: 5000 },
+    { label: '10s', value: 10000 },
+    { label: '30s', value: 30000 },
+    { label: '1m', value: 60000 },
+    { label: '5m', value: 300000 },
+];
 
 const CpuIcon = (
     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#3b82f6]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -38,6 +48,8 @@ const StatCard = ({ icon, label, value, subtext, color }) => (
 const ServerModule = () => {
     const [stats, setStats] = useState({ cpu_usage: 0, ram_usage: 0, disk_usage: 0 });
     const [error, setError] = useState(null);
+    const [refreshRate, setRefreshRate] = useState(5000);
+    const [showSettings, setShowSettings] = useState(false);
 
     useEffect(() => {
         const fetchStats = async () => {
@@ -51,9 +63,9 @@ const ServerModule = () => {
         };
 
         fetchStats();
-        const interval = setInterval(fetchStats, 5000);
+        const interval = setInterval(fetchStats, refreshRate);
         return () => clearInterval(interval);
-    }, []);
+    }, [refreshRate]);
 
     const formatBytes = (bytes) => {
         if (!bytes) return '0.0 GB';
@@ -62,13 +74,38 @@ const ServerModule = () => {
 
     return (
         <div className="p-6 w-90 text-white font-sans flex flex-col gap-4">
-            <h2 className="text-xl font-bold flex items-center justify-between mb-2">
-                Server Resources
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white/40 cursor-pointer hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-            </h2>
+            <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-bold flex items-center gap-2">
+                    Server Resources
+                </h2>
+                <div className="relative">
+                    <button
+                        onClick={() => setShowSettings(!showSettings)}
+                        className="p-1.5 rounded-full hover:bg-white/10 text-white/60 hover:text-white transition-colors"
+                    >
+                        <Settings size={18} />
+                    </button>
+                    {showSettings && (
+                        <div className="absolute right-0 top-full mt-2 w-40 bg-[#111827]/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-xl overflow-hidden z-50 animate-in slide-in-from-top-2">
+                            {REFRESH_OPTIONS.map(opt => (
+                                <button
+                                    key={opt.value}
+                                    onClick={() => {
+                                        setRefreshRate(opt.value);
+                                        setShowSettings(false);
+                                    }}
+                                    className="w-full text-left px-4 py-2 text-sm flex items-center justify-between hover:bg-white/10 transition-colors"
+                                >
+                                    <span className={refreshRate === opt.value ? "text-cyan-400 font-medium" : "text-white/80"}>
+                                        {opt.label}
+                                    </span>
+                                    {refreshRate === opt.value && <Check size={14} className="text-cyan-400" />}
+                                </button>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            </div>
             {error && <div className="text-red-400 text-sm mb-2">{error}</div>}
             
             <div className="flex flex-wrap gap-4">
@@ -93,6 +130,13 @@ const ServerModule = () => {
                     icon={DiskIcon} 
                 />
             </div>
+
+            {showSettings && (
+                <div
+                    className="fixed inset-0 z-40"
+                    onClick={() => setShowSettings(false)}
+                />
+            )}
         </div>
     );
 };

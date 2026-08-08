@@ -64,7 +64,7 @@ export default function ControlCenter() {
 
     return (
         <div className="w-80 relative flex flex-col p-4 text-white">
-            <h2 className="text-lg font-bold mb-4">Control Center</h2>
+            <h2 className="text-lg font-bold mb-4">Control</h2>
             
             {/* Sliders */}
             <div className="flex flex-col gap-4 mb-6">

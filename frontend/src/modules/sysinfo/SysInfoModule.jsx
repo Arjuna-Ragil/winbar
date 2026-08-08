@@ -56,7 +56,7 @@ export default function SysInfoModule() {
     return (
         <div className="w-80 relative flex flex-col p-4 text-white">
             <div className="flex justify-between items-center mb-4">
-                <h2 className="text-lg font-bold ">System Monitor</h2>
+                <h2 className="text-lg font-bold ">System Resources</h2>
                 <div className="relative">
                     <button
                         onClick={() => setShowSettings(!showSettings)}
