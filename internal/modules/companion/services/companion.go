@@ -8,6 +8,8 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+
+	"winbar/internal/modules/companion/assets"
 )
 
 type CompanionConfig struct {
@@ -41,6 +43,19 @@ func (s *CompanionServ) GetCompanions() ([]Companion, error) {
 	if _, err := os.Stat(companionsDir); os.IsNotExist(err) {
 		if err := os.MkdirAll(companionsDir, 0755); err != nil {
 			log.Fatalf("Error creating companions directory: %v", err)
+		}
+
+		defaultDir := filepath.Join(companionsDir, "default")
+		if err := os.MkdirAll(defaultDir, 0755); err == nil {
+			defaultConfig := CompanionConfig{
+				Name:         "Default",
+				SystemPrompt: "You are a desktop companion. Be concise and helpful.",
+				StartMessage: "Hello there! I'm your default system companion. How can I help you today?",
+			}
+			configBytes, _ := json.MarshalIndent(defaultConfig, "", "  ")
+			os.WriteFile(filepath.Join(defaultDir, "config.json"), configBytes, 0644)
+
+			os.WriteFile(filepath.Join(defaultDir, "normal.png"), assets.DefaultNormalPNG, 0644)
 		}
 	}
 

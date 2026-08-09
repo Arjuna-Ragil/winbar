@@ -20,11 +20,11 @@ func LoadConfig() dto.Config {
 	if writeDefault {
 		defaultConfig := dto.Config{
 			Theme:   "default",
-			Left:    []string{"power", "home", "theme_toggle", "overlay_toggle", "workspace"},
+			Left:    []string{"power", "overlay", "theme_toggle", "overlay_toggle", "workspace"},
 			Center:  []string{"day"},
-			Right:   []string{"tray", "power"},
-			Modules: []string{"yamw", "sysinfo", "companion", "notepad", "control", "server", "docker", "terminal", "launcher"},
-			PrometheusURL: "http://localhost:9090",
+			Right:   []string{"volume", "battery", "wifi", "notification"},
+			Modules: []string{"notepad", "todo", "sysinfo", "control", "launcher"},
+			PrometheusURL: "http://[IP_ADDRESS]",
 		}
 		yamlData, err := yaml.Marshal(&defaultConfig)
 		if err == nil {
