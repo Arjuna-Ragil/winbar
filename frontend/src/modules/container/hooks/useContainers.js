@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from 'react';
-import { GetContainers } from '../../../../wailsjs/go/handlers/Docker';
+import { GetContainers } from '../../../../wailsjs/go/handlers/Container';
 
 export function useContainers() {
     const [containers, setContainers] = useState([]);

@@ -9,7 +9,11 @@ const DraggableModule = ({ id, modName, position, onStop, isVisible }) => {
         <Draggable
             nodeRef={nodeRef}
             position={position}
-            onStop={(e, data) => onStop(id, data)}
+            onDrag={() => window.dispatchEvent(new Event('resize'))}
+            onStop={(e, data) => {
+                window.dispatchEvent(new Event('resize'));
+                onStop(id, data);
+            }}
             bounds="parent"
             handle=".drag-handle"
         >
