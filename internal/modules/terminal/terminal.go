@@ -11,7 +11,6 @@ func NewTerminal() *Terminal {
 	return &Terminal{}
 }
 
-// LaunchTerminal opens the native Windows Terminal app, falling back to powershell
 func (h *Terminal) LaunchTerminal(sshTarget string) error {
 	var cmd *exec.Cmd
 	if sshTarget != "" {

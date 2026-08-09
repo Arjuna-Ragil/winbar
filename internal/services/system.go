@@ -15,7 +15,7 @@ import (
 )
 
 type SystemService struct {
-	db *database.SystemDB
+	db               *database.SystemDB
 	lastNetBytesRecv uint64
 	lastNetBytesSent uint64
 	lastNetCheck     time.Time

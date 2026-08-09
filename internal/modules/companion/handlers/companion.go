@@ -1,6 +1,6 @@
 package handlers
 
-import "winbar/internal/modules/ai/services"
+import "winbar/internal/modules/companion/services"
 
 type Companion struct {
 	CompanionServ *services.CompanionServ

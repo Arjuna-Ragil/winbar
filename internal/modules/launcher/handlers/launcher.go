@@ -20,7 +20,7 @@ type Launcher struct {
 type AppFrontend struct {
 	Name string `json:"name"`
 	Path string `json:"path"`
-	Icon string `json:"icon"` // Base64 png data URI
+	Icon string `json:"icon"`
 }
 
 func NewLauncher() *Launcher {
@@ -66,8 +66,7 @@ func (h *Launcher) AddApp() *AppFrontend {
 	name = strings.TrimSuffix(name, filepath.Ext(name))
 
 	cfg := helpers.LoadConfig()
-	
-	// Avoid duplicates
+
 	for _, app := range cfg.LauncherApps {
 		if app.Path == path {
 			return nil
@@ -79,7 +78,10 @@ func (h *Launcher) AddApp() *AppFrontend {
 		Path: path,
 	})
 
-	helpers.SaveConfig(cfg)
+	err = helpers.SaveConfig(cfg)
+	if err != nil {
+		return nil
+	}
 
 	iconB64 := extractIcon(path)
 	return &AppFrontend{
@@ -107,24 +109,22 @@ func (h *Launcher) LaunchApp(path string) error {
 	return cmd.Start()
 }
 
-// extractIcon uses PowerShell to extract the associated icon of a file and convert it to a base64 PNG data URI.
 func extractIcon(path string) string {
 	script := `
-$path = "` + path + `"
-Add-Type -AssemblyName System.Drawing
-try {
-	$icon = [System.Drawing.Icon]::ExtractAssociatedIcon($path)
-	if ($icon) {
-		$bitmap = $icon.ToBitmap()
-		$stream = New-Object System.IO.MemoryStream
-		$bitmap.Save($stream, [System.Drawing.Imaging.ImageFormat]::Png)
-		$base64 = [Convert]::ToBase64String($stream.ToArray())
-		Write-Output $base64
-	}
-} catch {
-	# Ignore errors
-}
-`
+		$path = "` + path + `"
+		Add-Type -AssemblyName System.Drawing
+		try {
+			$icon = [System.Drawing.Icon]::ExtractAssociatedIcon($path)
+			if ($icon) {
+				$bitmap = $icon.ToBitmap()
+				$stream = New-Object System.IO.MemoryStream
+				$bitmap.Save($stream, [System.Drawing.Imaging.ImageFormat]::Png)
+				$base64 = [Convert]::ToBase64String($stream.ToArray())
+				Write-Output $base64
+			}
+		} catch {
+		}
+	`
 	cmd := exec.Command("powershell", "-NoProfile", "-NonInteractive", "-Command", script)
 	var out bytes.Buffer
 	cmd.Stdout = &out

@@ -14,13 +14,13 @@ import (
 	"winbar/internal/handlers"
 	"winbar/internal/services"
 
-	aiHandlers "winbar/internal/modules/ai/handlers"
-	aiServices "winbar/internal/modules/ai/services"
+	companionHandlers "winbar/internal/modules/companion/handlers"
+	companionServices "winbar/internal/modules/companion/services"
 	yamwDB "winbar/internal/modules/yamw/database"
 	yamwHandlers "winbar/internal/modules/yamw/handlers"
 	yamwServices "winbar/internal/modules/yamw/services"
 
-	dockerHandlers "winbar/internal/modules/docker/handlers"
+	containerHandlers "winbar/internal/modules/container/handlers"
 	launcherHandlers "winbar/internal/modules/launcher/handlers"
 	serverHandlers "winbar/internal/modules/server/handlers"
 	terminalHandlers "winbar/internal/modules/terminal"
@@ -54,15 +54,15 @@ func main() {
 	lyricsServ := yamwServices.NewLyricsServ(lrclib)
 	yamwLyrics := yamwHandlers.NewLyrics(lyricsServ)
 
-	chatServ := aiServices.NewChatServ()
-	aiChat := aiHandlers.NewChat(chatServ)
+	chatServ := companionServices.NewChatServ()
+	companionChat := companionHandlers.NewChat(chatServ)
 
-	companionServ := aiServices.NewCompanionServ()
-	aiCompanion := aiHandlers.NewCompanion(companionServ)
+	companionServ := companionServices.NewCompanionServ()
+	companion := companionHandlers.NewCompanion(companionServ)
 
 	promService := services.NewPrometheusService()
 	serverHandler := serverHandlers.NewServer(promService)
-	dockerHandler := dockerHandlers.NewDocker(promService)
+	containerHandler := containerHandlers.NewContainer(promService)
 	launcherHandler := launcherHandlers.NewLauncher()
 
 	terminalHandler := terminalHandlers.NewTerminal()
@@ -95,10 +95,10 @@ func main() {
 			yamwList,
 			yamwStream,
 			yamwLyrics,
-			aiChat,
-			aiCompanion,
+			companionChat,
+			companion,
 			serverHandler,
-			dockerHandler,
+			containerHandler,
 			terminalHandler,
 			launcherHandler,
 		},

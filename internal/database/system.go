@@ -60,8 +60,8 @@ func (db *SystemDB) GetWifi() dto.WifiData {
 	var isConnected bool
 	var signal = "0%"
 
-	lines := strings.Split(output, "\n")
-	for _, line := range lines {
+	lines := strings.SplitSeq(output, "\n")
+	for line := range lines {
 		if strings.Contains(line, "State") && strings.Contains(line, "connected") {
 			isConnected = true
 		}

@@ -31,7 +31,7 @@ func (l *Lrclib) FetchLRCLIB(url string) (dto.Lyrics, error) {
 		return data, err
 	}
 	defer func() {
-		err := res.Body.Close();
+		err := res.Body.Close()
 		if err != nil {
 			log.Printf("Error closing response body: %v", err)
 		}

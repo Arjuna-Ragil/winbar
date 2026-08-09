@@ -30,7 +30,10 @@ func (s *ControlService) GetBrightness() (int, error) {
 		return 0, err
 	}
 	var b int
-	fmt.Sscanf(strings.TrimSpace(string(out)), "%d", &b)
+	_, err = fmt.Sscanf(strings.TrimSpace(string(out)), "%d", &b)
+	if err != nil {
+		return 0, err
+	}
 	return b, nil
 }
 
@@ -69,10 +72,12 @@ func (s *ControlService) GetWifiNetworks() []dto.WifiNetwork {
 			parts := strings.SplitN(line, ":", 2)
 			if len(parts) == 2 {
 				var sig int
-				fmt.Sscanf(strings.TrimSpace(parts[1]), "%d%%", &sig)
+				_, err := fmt.Sscanf(strings.TrimSpace(parts[1]), "%d%%", &sig)
+				if err != nil {
+					continue
+				}
 				current.Signal = sig
-				
-				// Deduplicate networks with same SSID (take strongest signal)
+
 				found := false
 				for i, n := range networks {
 					if n.SSID == current.SSID {

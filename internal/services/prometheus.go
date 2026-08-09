@@ -49,7 +49,12 @@ func (s *PrometheusService) Query(query string) (*PromResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func() {
+		err := resp.Body.Close()
+		if err != nil {
+			fmt.Println("error closing response body: ", err.Error())
+		}
+	}()
 
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("prometheus returned status: %d", resp.StatusCode)

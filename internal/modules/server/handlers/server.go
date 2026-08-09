@@ -35,7 +35,6 @@ type ServerStats struct {
 func (s *Server) GetServerStats() (*ServerStats, error) {
 	stats := &ServerStats{}
 
-	// CPU Usage
 	cpuResp, err := s.prom.Query(`100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[1m])) * 100)`)
 	if err == nil && len(cpuResp.Data.Result) > 0 && len(cpuResp.Data.Result[0].Value) > 1 {
 		if val, ok := cpuResp.Data.Result[0].Value[1].(string); ok {
@@ -43,21 +42,20 @@ func (s *Server) GetServerStats() (*ServerStats, error) {
 		}
 	}
 
-	// RAM Usage
 	ramResp, err := s.prom.Query(`100 * (1 - ((node_memory_MemFree_bytes + node_memory_Cached_bytes + node_memory_Buffers_bytes) / node_memory_MemTotal_bytes))`)
 	if err == nil && len(ramResp.Data.Result) > 0 && len(ramResp.Data.Result[0].Value) > 1 {
 		if val, ok := ramResp.Data.Result[0].Value[1].(string); ok {
 			stats.RAMUsage, _ = strconv.ParseFloat(val, 64)
 		}
 	}
-	
+
 	ramTotalResp, err := s.prom.Query(`node_memory_MemTotal_bytes`)
 	if err == nil && len(ramTotalResp.Data.Result) > 0 && len(ramTotalResp.Data.Result[0].Value) > 1 {
 		if val, ok := ramTotalResp.Data.Result[0].Value[1].(string); ok {
 			stats.RAMTotal, _ = strconv.ParseFloat(val, 64)
 		}
 	}
-	
+
 	ramUsedResp, err := s.prom.Query(`node_memory_MemTotal_bytes - (node_memory_MemFree_bytes + node_memory_Cached_bytes + node_memory_Buffers_bytes)`)
 	if err == nil && len(ramUsedResp.Data.Result) > 0 && len(ramUsedResp.Data.Result[0].Value) > 1 {
 		if val, ok := ramUsedResp.Data.Result[0].Value[1].(string); ok {
@@ -65,7 +63,6 @@ func (s *Server) GetServerStats() (*ServerStats, error) {
 		}
 	}
 
-	// Disk Usage
 	diskResp, err := s.prom.Query(`100 - ((node_filesystem_avail_bytes{mountpoint="/",fstype!="rootfs"} * 100) / node_filesystem_size_bytes{mountpoint="/",fstype!="rootfs"})`)
 	if err == nil && len(diskResp.Data.Result) > 0 && len(diskResp.Data.Result[0].Value) > 1 {
 		if val, ok := diskResp.Data.Result[0].Value[1].(string); ok {
@@ -79,7 +76,7 @@ func (s *Server) GetServerStats() (*ServerStats, error) {
 			stats.DiskTotal, _ = strconv.ParseFloat(val, 64)
 		}
 	}
-	
+
 	diskUsedResp, err := s.prom.Query(`node_filesystem_size_bytes{mountpoint="/",fstype!="rootfs"} - node_filesystem_avail_bytes{mountpoint="/",fstype!="rootfs"}`)
 	if err == nil && len(diskUsedResp.Data.Result) > 0 && len(diskUsedResp.Data.Result[0].Value) > 1 {
 		if val, ok := diskUsedResp.Data.Result[0].Value[1].(string); ok {

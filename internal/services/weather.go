@@ -32,9 +32,9 @@ func (s *SystemService) GetWeather() dto.WeatherData {
 		client := &http.Client{Timeout: 3 * time.Second}
 		resp, err := client.Get("http://ip-api.com/json/")
 		if err == nil {
-			defer func(){
+			defer func() {
 				err := resp.Body.Close()
-				if err != nil{
+				if err != nil {
 					log.Printf("weather close error: %v", err)
 				}
 			}()
@@ -58,9 +58,9 @@ func (s *SystemService) GetWeather() dto.WeatherData {
 		fmt.Println("Weather fetch error:", err)
 		return dto.WeatherData{}
 	}
-	defer func(){
+	defer func() {
 		err := resp.Body.Close()
-		if err != nil{
+		if err != nil {
 			log.Printf("weather close error: %v", err)
 		}
 	}()
