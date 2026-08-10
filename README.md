@@ -44,11 +44,11 @@
   - **Server**: Modules for tech enthusiast. Manage & monitor your server with ease.
     
     <div align="center">
-      <img src="docs/demo/drawing_demo.gif" width="400" alt="Demo 1">
-      <img src="docs/demo/notepad_demo.gif" width="400" alt="Demo 2">
+      <img src="docs/demo/drawing_demo.gif" width="300" alt="Demo 1">
+      <img src="docs/demo/notepad_demo.gif" width="300" alt="Demo 2">
       <br>
-      <img src="docs/demo/launcher_demo.gif" width="400" alt="Demo 3">
-      <img src="docs/demo/server_demo.gif" width="400" alt="Demo 4">
+      <img src="docs/demo/launcher_demo.gif" width="300" alt="Demo 3">
+      <img src="docs/demo/server_demo.gif" width="300" alt="Demo 4">
     </div>
 
 - **System Tray**: Manage the app quietly in the background, open configurations, and easily toggle "Run on Launch".
