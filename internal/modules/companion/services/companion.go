@@ -53,9 +53,15 @@ func (s *CompanionServ) GetCompanions() ([]Companion, error) {
 				StartMessage: "Hello there! I'm your default system companion. How can I help you today?",
 			}
 			configBytes, _ := json.MarshalIndent(defaultConfig, "", "  ")
-			os.WriteFile(filepath.Join(defaultDir, "config.json"), configBytes, 0644)
+			err := os.WriteFile(filepath.Join(defaultDir, "config.json"), configBytes, 0644)
+			if err != nil {
+				log.Printf("Error writing config file: %v\n", err)
+			}
 
-			os.WriteFile(filepath.Join(defaultDir, "normal.png"), assets.DefaultNormalPNG, 0644)
+			err = os.WriteFile(filepath.Join(defaultDir, "normal.png"), assets.DefaultNormalPNG, 0644)
+			if err != nil {
+				log.Printf("Error writing image file: %v\n", err)
+			}
 		}
 	}
 

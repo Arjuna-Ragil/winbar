@@ -10,7 +10,7 @@ export default function WifiWidget() {
             GetWifi().then(setData).catch(console.error);
         };
         fetchWifi();
-        const timer = setInterval(fetchWifi, 10000);
+        const timer = setInterval(fetchWifi, 120000); // Poll every 2 minutes to avoid location icon spam
         return () => clearInterval(timer);
     }, []);
 

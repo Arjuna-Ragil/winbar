@@ -125,19 +125,47 @@ func (a *App) startup(ctx context.Context) {
 	)
 
 	go func() {
+		isOffline := false
 		for {
+			select {
+			case <-ctx.Done():
+				return
+			default:
+			}
+
 			conn, err := os.OpenFile(`\\.\pipe\SpaceWorkspace`, os.O_RDWR, 0)
 			if err != nil {
-				time.Sleep(2 * time.Second)
+				if !isOffline {
+					runtime.EventsEmit(ctx, "workspace_changed", "offline")
+					isOffline = true
+				}
+				select {
+				case <-ctx.Done():
+					return
+				case <-time.After(2 * time.Second):
+				}
 				continue
 			}
+
+			isOffline = false
 			scanner := bufio.NewScanner(conn)
-			if err := scanner.Err(); err != nil {
-				continue
-			}
 			for scanner.Scan() {
 				ws := strings.TrimSpace(scanner.Text())
 				runtime.EventsEmit(ctx, "workspace_changed", ws)
+			}
+
+			if err := scanner.Err(); err != nil {
+				fmt.Println("Error scanning pipe:", err)
+			}
+
+			err = conn.Close()
+			if err != nil {
+				log.Printf("error closing connection: %v\n", err)
+			}
+
+			if !isOffline {
+				runtime.EventsEmit(ctx, "workspace_changed", "offline")
+				isOffline = true
 			}
 		}
 	}()

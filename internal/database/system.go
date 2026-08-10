@@ -1,12 +1,13 @@
 package database
 
 import (
+	"fmt"
 	"log"
 	"os/exec"
-	"strings"
 	"syscall"
 
 	"winbar/internal/dto"
+	"winbar/internal/helpers"
 
 	"github.com/distatus/battery"
 	"github.com/itchyny/volume-go"
@@ -49,33 +50,16 @@ func (db *SystemDB) GetVolume() (dto.VolumeData, error) {
 }
 
 func (db *SystemDB) GetWifi() dto.WifiData {
-	cmd := exec.Command("netsh", "wlan", "show", "interfaces")
-	out, err := cmd.Output()
-	if err != nil {
-		return dto.WifiData{IsConnected: false, Signal: "0%"}
-	}
+	connected, signal := helpers.GetNativeWifiData()
 
-	output := string(out)
-
-	var isConnected bool
-	var signal = "0%"
-
-	lines := strings.SplitSeq(output, "\n")
-	for line := range lines {
-		if strings.Contains(line, "State") && strings.Contains(line, "connected") {
-			isConnected = true
-		}
-		if strings.Contains(line, "Signal") {
-			parts := strings.Split(line, ":")
-			if len(parts) > 1 {
-				signal = strings.TrimSpace(parts[1])
-			}
-		}
+	signalStr := "0%"
+	if connected {
+		signalStr = fmt.Sprintf("%d%%", signal)
 	}
 
 	return dto.WifiData{
-		IsConnected: isConnected,
-		Signal:      signal,
+		IsConnected: connected,
+		Signal:      signalStr,
 	}
 }
 

@@ -4,14 +4,28 @@ import { SwitchWorkspace } from '../../wailsjs/go/handlers/SystemHandler';
 
 export default function WorkspaceWidget() {
     const [activeWs, setActiveWs] = useState(1);
+    const [isOffline, setIsOffline] = useState(true);
 
     useEffect(() => {
         EventsOn("workspace_changed", (numStr) => {
-            setActiveWs(parseInt(numStr, 10));
+            if (numStr === "offline") {
+                setIsOffline(true);
+            } else {
+                setIsOffline(false);
+                setActiveWs(parseInt(numStr, 10));
+            }
         });
     }, []);
 
     const workspaces = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+    if (isOffline) {
+        return (
+            <div className="widget px-3! py-1.5! flex items-center justify-center text-white/60 text-sm font-bold uppercase tracking-wider">
+                Offline
+            </div>
+        );
+    }
 
     return (
         <div className="widget p-1! py-1.5! gap-1!">
