@@ -4,6 +4,10 @@
   
   [![Release](https://img.shields.io/github/v/release/Arjuna-Ragil/winbar)](https://github.com/Arjuna-Ragil/winbar/releases)
   [![Winbar Release](https://github.com/Arjuna-Ragil/winbar/actions/workflows/release.yaml/badge.svg)](https://github.com/Arjuna-Ragil/winbar/actions/workflows/release.yaml)
+
+  ### Documentation
+  
+  [Config](docs/config.md) | [Theme](docs/theme.md) | [Companion](docs/companions.md)
 </div>
 
 ---
@@ -96,6 +100,18 @@ launcher_apps:                                      # insert your application fi
 - name: steam                                       # Recommended to add apps from the launcher module, instead of from changing this config file 
   path: C:\Program Files (x86)\Steam\steam.exe
 ```
+---
+
+### More Config, Themes, Companions Documentation
+The explanation above is a brief documentation on how to get started on configurating the config.yaml. Winbar customization doesn't stop at the config.yaml, you can add your custom theme and even a custom companion for you AI chat. For more in-depth information and explanation about all the configuration that can be done, please see this other documentations
+
+[Config](docs/config.md) | [Theme](docs/theme.md) | [Companion](docs/companions.md)
+
+### Configuration & Extra Notes
+- Some modules and widget may need an external program to be working, this include the yamw (music player widget & module) & workspace widget. For example, the workspace widget works only if you have downloaded [Space](https://github.com/Arjuna-Ragil/Space).
+- Some modules also need a server to be working. For example, all the server category module need a server to run. Including it without actually having a server might bring error and waste computer resources
+- The companion module is still experimental, as of now the module only been tested using llama.cpp. Other inference engine might not work (e.g. ollama)
+- **Winbar is still brand new and bug may appear**
 
 ## Local Development
 
@@ -132,5 +148,8 @@ wails dev
   - [wailsapp/wails/v2](https://github.com/wailsapp/wails/v2)
   
 - **Frontend**: React (JS & TS), Vite, TailwindCSS, Excalidraw, Lucide React.
+
+### Contributing
+This project is getting larger day by day and I can't exactly find every single bug. So I hope if you are interested, please create an issue if you found a bug. Futhermore, if you have found and fix a bug, please create a PR. Other than that, if you have a request for a new widget, module, or even you have created your own widget & module and one to share with others, feel free to create an issue or a PR. Thanks :)
 
 ## Thank You For using Winbar
