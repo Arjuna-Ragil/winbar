@@ -86,6 +86,7 @@ func main() {
 		OnStartup: func(ctx context.Context) {
 			app.startup(ctx)
 			launcherHandler.Startup(ctx)
+			_, _ = companionServ.GetCompanions()
 		},
 		Bind: []interface{}{
 			app,

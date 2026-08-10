@@ -4,6 +4,7 @@ import (
 	"os/exec"
 	"strconv"
 	"strings"
+	"syscall"
 	"time"
 	"winbar/internal/database"
 	"winbar/internal/dto"
@@ -48,6 +49,7 @@ func (s *SystemService) GetSysInfo() dto.SysInfoData {
 	}
 
 	cmd := exec.Command("nvidia-smi", "--query-gpu=utilization.gpu,memory.used,memory.total", "--format=csv,noheader,nounits")
+	cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
 	out, err := cmd.Output()
 	if err == nil {
 		lines := strings.Split(strings.TrimSpace(string(out)), "\n")

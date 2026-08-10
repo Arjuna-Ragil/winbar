@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os/exec"
 	"strings"
+	"syscall"
 	"winbar/internal/dto"
 
 	"github.com/itchyny/volume-go"
@@ -25,6 +26,7 @@ func (s *ControlService) SetVolume(v int) error {
 
 func (s *ControlService) GetBrightness() (int, error) {
 	cmd := exec.Command("powershell", "-Command", "(Get-WmiObject -Namespace root/WMI -Class WmiMonitorBrightness).CurrentBrightness")
+	cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
 	out, err := cmd.Output()
 	if err != nil {
 		return 0, err
@@ -39,11 +41,13 @@ func (s *ControlService) GetBrightness() (int, error) {
 
 func (s *ControlService) SetBrightness(b int) error {
 	cmd := exec.Command("powershell", "-Command", fmt.Sprintf("(Get-WmiObject -Namespace root/WMI -Class WmiMonitorBrightnessMethods).WmiSetBrightness(1, %d)", b))
+	cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
 	return cmd.Run()
 }
 
 func (s *ControlService) GetWifiNetworks() []dto.WifiNetwork {
 	cmd := exec.Command("netsh", "wlan", "show", "networks", "mode=bssid")
+	cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
 	out, err := cmd.Output()
 	if err != nil {
 		return nil
@@ -99,5 +103,6 @@ func (s *ControlService) GetWifiNetworks() []dto.WifiNetwork {
 
 func (s *ControlService) ConnectWifi(ssid string) error {
 	cmd := exec.Command("netsh", "wlan", "connect", fmt.Sprintf("name=\"%s\"", ssid))
+	cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
 	return cmd.Run()
 }

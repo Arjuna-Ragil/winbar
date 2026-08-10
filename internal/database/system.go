@@ -97,19 +97,25 @@ func (db *SystemDB) SwitchWorkspace(ws int) {
 }
 
 func (db *SystemDB) Shutdown() {
-	if err := exec.Command("shutdown", "/s", "/t", "0").Run(); err != nil {
+	cmd := exec.Command("shutdown", "/s", "/t", "0")
+	cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
+	if err := cmd.Run(); err != nil {
 		log.Fatalf("Command failed to run: %v", err)
 	}
 }
 
 func (db *SystemDB) Restart() {
-	if err := exec.Command("shutdown", "/r", "/t", "0").Run(); err != nil {
+	cmd := exec.Command("shutdown", "/r", "/t", "0")
+	cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
+	if err := cmd.Run(); err != nil {
 		log.Fatalf("Command failed to run: %v", err)
 	}
 }
 
 func (db *SystemDB) Sleep() {
-	if err := exec.Command("rundll32.exe", "powrprof.dll,SetSuspendState", "0,1,0").Run(); err != nil {
+	cmd := exec.Command("rundll32.exe", "powrprof.dll,SetSuspendState", "0,1,0")
+	cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
+	if err := cmd.Run(); err != nil {
 		log.Fatalf("Command failed to run: %v", err)
 	}
 }

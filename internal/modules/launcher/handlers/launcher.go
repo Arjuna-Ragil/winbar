@@ -6,6 +6,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"syscall"
 
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 
@@ -126,6 +127,7 @@ func extractIcon(path string) string {
 		}
 	`
 	cmd := exec.Command("powershell", "-NoProfile", "-NonInteractive", "-Command", script)
+	cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
 	var out bytes.Buffer
 	cmd.Stdout = &out
 	err := cmd.Run()
