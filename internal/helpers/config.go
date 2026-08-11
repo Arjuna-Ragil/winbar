@@ -3,6 +3,7 @@ package helpers
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"winbar/internal/dto"
 
@@ -10,7 +11,8 @@ import (
 )
 
 func LoadConfig() dto.Config {
-	configPath := "config.yaml"
+	exePath, _ := os.Executable()
+	configPath := filepath.Join(filepath.Dir(exePath), "config.yaml")
 
 	writeDefault := false
 	if info, err := os.Stat(configPath); os.IsNotExist(err) || (err == nil && info.Size() == 0) {
@@ -57,7 +59,8 @@ func LoadConfig() dto.Config {
 }
 
 func SaveConfig(cfg dto.Config) error {
-	configPath := "config.yaml"
+	exePath, _ := os.Executable()
+	configPath := filepath.Join(filepath.Dir(exePath), "config.yaml")
 	yamlData, err := yaml.Marshal(&cfg)
 	if err != nil {
 		return err

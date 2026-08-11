@@ -56,7 +56,8 @@ func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 	services.RegisterHotkey(ctx)
 
-	pwd, _ := os.Getwd()
+	exePath, _ := os.Executable()
+	pwd := filepath.Dir(exePath)
 	themesPath := filepath.Join(pwd, "themes")
 	if _, err := os.Stat(themesPath); os.IsNotExist(err) {
 		err := os.MkdirAll(themesPath, 0755)
@@ -239,7 +240,8 @@ func (a *App) onReady() {
 		for {
 			select {
 			case <-mConfig.ClickedCh:
-				pwd, _ := os.Getwd()
+				exePath, _ := os.Executable()
+				pwd := filepath.Dir(exePath)
 				err := exec.Command("explorer", "/select,", filepath.Join(pwd, "config.yaml")).Start()
 				if err != nil {
 					log.Printf("error opening config file: %v\n", err)

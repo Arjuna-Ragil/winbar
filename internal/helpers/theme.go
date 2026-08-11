@@ -76,7 +76,8 @@ func getPredefinedThemes() map[string]dto.Theme {
 }
 
 func InitializeThemes() {
-	themeDir := "themes"
+	exePath, _ := os.Executable()
+	themeDir := filepath.Join(filepath.Dir(exePath), "themes")
 	
 	if _, err := os.Stat(themeDir); os.IsNotExist(err) {
 		if err := os.MkdirAll(themeDir, 0755); err != nil {
@@ -98,7 +99,8 @@ func InitializeThemes() {
 }
 
 func LoadTheme(themeName string) dto.Theme {
-	themeDir := "themes"
+	exePath, _ := os.Executable()
+	themeDir := filepath.Join(filepath.Dir(exePath), "themes")
 	themePath := filepath.Join(themeDir, themeName+".json")
 
 	predefined := getPredefinedThemes()
@@ -135,7 +137,8 @@ func LoadTheme(themeName string) dto.Theme {
 }
 
 func ListThemes() []string {
-	themeDir := "themes"
+	exePath, _ := os.Executable()
+	themeDir := filepath.Join(filepath.Dir(exePath), "themes")
 	var themes []string
 
 	InitializeThemes()

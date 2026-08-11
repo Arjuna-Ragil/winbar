@@ -33,10 +33,11 @@ func NewCompanionServ() *CompanionServ {
 }
 
 func (s *CompanionServ) GetCompanions() ([]Companion, error) {
-	pwd, err := os.Getwd()
+	exePath, err := os.Executable()
 	if err != nil {
 		return nil, err
 	}
+	pwd := filepath.Dir(exePath)
 
 	companionsDir := filepath.Join(pwd, "companions")
 
@@ -117,10 +118,11 @@ func (s *CompanionServ) GetCompanions() ([]Companion, error) {
 }
 
 func (s *CompanionServ) GetCompanionImageAsBase64(id string, expression string) (string, error) {
-	pwd, err := os.Getwd()
+	exePath, err := os.Executable()
 	if err != nil {
 		return "", err
 	}
+	pwd := filepath.Dir(exePath)
 
 	imgPath := filepath.Join(pwd, "companions", id, expression+".png")
 
